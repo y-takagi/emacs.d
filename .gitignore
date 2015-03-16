@@ -31,3 +31,6 @@ ac-comphist.dat
 
 # cask packages
 .cask/
+
+# undohist
+undohist/
