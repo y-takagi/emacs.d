@@ -5,7 +5,6 @@
 (setq locale-coding-system 'utf-8)
 
 (menu-bar-mode 0)
-(scroll-bar-mode 0)
 (line-number-mode t)
 (column-number-mode t)
 (blink-cursor-mode 1)
