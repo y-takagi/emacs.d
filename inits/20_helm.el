@@ -1,6 +1,24 @@
+(require 'helm)
+
+;; customize
+(progn
+  (require 'helm-ls-git)
+  (custom-set-variables
+   '(helm-truncate-lines t)
+   '(helm-buffer-max-length 35)
+   '(helm-delete-minibuffer-contents-from-point t)
+   '(helm-ff-skip-boring-files t)
+   '(helm-boring-file-regexp-list '("~$" "\\.elc$"))
+   '(helm-ls-git-show-abs-or-relative 'relative)
+   '(helm-mini-default-sources '(helm-source-buffers-list
+                                 helm-source-ls-git
+                                 helm-source-recentf
+                                 helm-source-buffer-not-found))))
+
 (when (require 'helm-config nil t)
   (helm-mode 1)
 
+  (define-key global-map (kbd "C-q")     'helm-mini)
   (define-key global-map (kbd "M-x")     'helm-M-x)
   (define-key global-map (kbd "C-x C-f") 'helm-find-files)
   (define-key global-map (kbd "C-x C-r") 'helm-recentf)
@@ -17,7 +35,7 @@
   (add-to-list 'helm-completing-read-handlers-alist '(find-alternate-file . nil))
 
   ;; Emulate `kill-line' in helm minibuffer
-  (setq helm-delete-minibuffer-contents-from-point t)
+  ;; (setq helm-delete-minibuffer-contents-from-point t)
   (defadvice helm-delete-minibuffer-contents (before helm-emulate-kill-line activate)
     "Emulate `kill-line' in helm minibuffer"
     (kill-new (buffer-substring (point) (field-end))))

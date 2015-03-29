@@ -1,6 +1,7 @@
-(require 'undohist)
-(undohist-initialize)
+(when (require 'undohist nil t)
+  (undohist-initialize)
 
 ;;; 永続化を無視するファイル名の正規表現
-(setq undohist-ignored-files
-      '("/COMMIT_EDITMSG/"))
+  (setq undohist-ignored-files
+        '("/COMMIT_EDITMSG/"))
+  )

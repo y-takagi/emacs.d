@@ -1,3 +1,2 @@
-(require 'undo-tree)
-(global-undo-tree-mode t)
-;;(global-set-key (kbd "C-z") 'undo-tree-redo)
+(when (require 'undo-tree nil t)
+  (global-undo-tree-mode t))
