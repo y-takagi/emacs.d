@@ -1,2 +1,3 @@
-(when (require 'undo-tree nil t)
+(use-package undo-tree
+  :config
   (global-undo-tree-mode t))

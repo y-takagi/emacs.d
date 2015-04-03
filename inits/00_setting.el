@@ -12,6 +12,9 @@
 (setq inhibit-startup-message t)
 (setq ring-bell-function 'ignore)
 
+;; disable auto indent
+(electric-indent-mode -1)
+
 ;; 行末スペースの色付け
 (when (boundp 'show-trailing-whitespace)
   (setq-default show-trailing-whitespace t))
@@ -48,6 +51,9 @@
 
 ;; 問い合せには y か n で返答
 (fset 'yes-or-no-p 'y-or-n-p)
+
+;; diredの表示オプション
+(setq dired-listing-switches "-Alr --si --time-style long-iso")
 
 ;; emacs permission
 ;; (setq wdired-allow-to-change-permissions t)

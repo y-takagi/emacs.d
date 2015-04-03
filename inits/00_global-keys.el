@@ -5,3 +5,5 @@
 (global-set-key "\C-cc" 'comment-or-uncomment-region)
 (global-set-key "\C-h" 'backward-delete-char)
 (global-set-key "\C-x\C-i" 'indent-region)
+
+(global-unset-key "\C-o")
