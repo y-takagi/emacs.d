@@ -1,4 +1,4 @@
-b(source gnu)
+(source gnu)
 (source melpa)
 
 (depends-on "ac-helm")
