@@ -1,8 +1,8 @@
 ;; language and coding
-(set-language-environment "Japanese")
-(prefer-coding-system 'utf-8)
-(setq file-name-coding-system 'utf-8)
-(setq locale-coding-system 'utf-8)
+(prefer-coding-system 'utf-8-unix)
+;; (set-language-environment "Japanese")
+;; (setq file-name-coding-system 'utf-8)
+;; (setq locale-coding-system 'utf-8)
 
 (menu-bar-mode 0)
 (line-number-mode t)
@@ -46,8 +46,6 @@
 (setq mode-require-final-newline t)
 (setq backup-inhibited t)
 (setq delete-auto-save-files t)
-
-(setq browse-url-browser-function 'eww)
 
 ;; 問い合せには y か n で返答
 (fset 'yes-or-no-p 'y-or-n-p)

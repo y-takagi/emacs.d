@@ -5,6 +5,7 @@
 ;; use pallet
 (pallet-mode t)
 
+;; use-package option
 (unless (require 'use-package nil t)
   (defmacro use-package (&rest args)))
 
