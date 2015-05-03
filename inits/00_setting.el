@@ -4,6 +4,18 @@
 ;; (setq file-name-coding-system 'utf-8)
 ;; (setq locale-coding-system 'utf-8)
 
+;; (defun copy-from-osx ()
+;;  (shell-command-to-string "pbpaste"))
+
+;; (defun paste-to-osx (text &optional push)
+;;  (let ((process-connection-type nil))
+;;      (let ((proc (start-process "pbcopy" "*Messages*" "pbcopy")))
+;;        (process-send-string proc text)
+;;        (process-send-eof proc))))
+
+;; (setq interprogram-cut-function 'paste-to-osx)
+;; (setq interprogram-paste-function 'copy-from-osx)
+
 (menu-bar-mode 0)
 (line-number-mode t)
 (column-number-mode t)
@@ -11,6 +23,7 @@
 (show-paren-mode 1) ;; highlight corresponding bracket
 (setq inhibit-startup-message t)
 (setq ring-bell-function 'ignore)
+;;(setq x-select-enable-clipboard t)
 
 ;; disable auto indent
 (electric-indent-mode -1)

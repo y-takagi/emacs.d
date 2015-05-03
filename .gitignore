@@ -37,3 +37,8 @@ undohist/
 
 # eww
 url/
+
+# orgmode
+bookmarks
+
+var/
