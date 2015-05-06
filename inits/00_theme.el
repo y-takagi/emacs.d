@@ -1,6 +1,4 @@
-;; (load-theme 'zenburn t)
-
-(load-theme 'solarized-light t)
+(load-theme 'solarized t)
 
 ;; (add-hook 'after-make-frame-functions
 ;;           (lambda (frame)

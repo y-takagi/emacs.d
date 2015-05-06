@@ -8,6 +8,8 @@ auto-save-list
 tramp
 .\#*
 ac-comphist.dat
+var/
+recentf
 
 # Org-mode
 .org-id-locations
@@ -40,5 +42,3 @@ url/
 
 # orgmode
 bookmarks
-
-var/

@@ -1,4 +1,4 @@
-;; language and coding
+;;; language and coding
 (prefer-coding-system 'utf-8-unix)
 ;; (set-language-environment "Japanese")
 ;; (setq file-name-coding-system 'utf-8)
@@ -25,46 +25,43 @@
 (setq ring-bell-function 'ignore)
 ;;(setq x-select-enable-clipboard t)
 
-;; disable auto indent
+;;; disable auto indent
 (electric-indent-mode -1)
 
-;; 行末スペースの色付け
+;;; 行末スペースの色付け
 (when (boundp 'show-trailing-whitespace)
   (setq-default show-trailing-whitespace t))
 
-;; 行末のスペースを強調表示しないモードを列挙
+;;; 行末のスペースを強調表示しないモードを列挙
 (defconst ignore-show-trailing-whitespace-mode-alist
   '(eww-mode
     term-mode
     eshell-mode))
 
-;; 行末のスペースの強調表示を無効化
+;;; 行末のスペースの強調表示を無効化
 (--each ignore-show-trailing-whitespace-mode-alist
   (add-hook (intern (concat (symbol-name it) "-hook"))
             '(lambda ()
                (setq show-trailing-whitespace nil))))
 
-;; 画像ファイルを表示
+;;; 画像ファイルを表示
 (auto-image-file-mode)
 
-;; 変更されたファイルを自動的に再読み込み
+;;; 変更されたファイルを自動的に再読み込み
 (global-auto-revert-mode 1)
 
-;; tab
+;;; tab
 (setq-default tab-width 2 indent-tabs-mode nil)
 (setq-default basic-offset 2)
 (setq-default c-basic-offset 2)
 
-;; file
+;;; file
 (setq mode-require-final-newline t)
 (setq backup-inhibited t)
 (setq delete-auto-save-files t)
 
-;; 問い合せには y か n で返答
+;;; 問い合せには y か n で返答
 (fset 'yes-or-no-p 'y-or-n-p)
 
-;; diredの表示オプション
-(setq dired-listing-switches "-Alr --si --time-style long-iso")
-
-;; emacs permission
+;;; emacs permission
 ;; (setq wdired-allow-to-change-permissions t)

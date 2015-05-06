@@ -52,4 +52,3 @@
 (depends-on "wgrep")
 (depends-on "wgrep-helm")
 (depends-on "yaml-mode")
-(depends-on "zenburn-theme")
