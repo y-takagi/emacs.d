@@ -1,4 +1,6 @@
-(when (require 'search-web nil t)
+(use-package search-web
+  :disabled t
+  :config
   (defun search-web-dwim (&optional arg-engine)
     "transient-mark-mode がオンの時はリージョンを，オフの時はカーソル位置の単語を検索する．"
     (interactive)

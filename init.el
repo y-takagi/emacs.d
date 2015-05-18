@@ -1,15 +1,15 @@
-;;; cask setting
+;; cask setting
 (require 'cask)
 (cask-initialize)
 
-;;; use pallet
+;; use pallet
 (pallet-mode t)
 
-;;; use-package option
+;; use-package option
 (unless (require 'use-package nil t)
   (defmacro use-package (&rest args)))
 
-;;; init-loader setting
+;; init-loader setting
 (setq init-loader-show-log-after-init 'error-only)
 (init-loader-load "~/.emacs.d/inits")
 

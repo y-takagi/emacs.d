@@ -36,6 +36,8 @@
 (defconst ignore-show-trailing-whitespace-mode-alist
   '(eww-mode
     term-mode
+    org-agenda-mode
+    calendar-mode
     eshell-mode))
 
 ;;; 行末のスペースの強調表示を無効化

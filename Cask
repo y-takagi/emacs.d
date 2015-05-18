@@ -34,6 +34,7 @@
 (depends-on "markdown-mode")
 (depends-on "migemo")
 (depends-on "open-junk-file")
+(depends-on "org")
 (depends-on "orgit")
 (depends-on "package-build")
 (depends-on "pallet")
