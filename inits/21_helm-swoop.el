@@ -1,5 +1,6 @@
 (when (require 'helm-swoop nil t)
   ;; isearchからの連携を考えるとC-r/C-sにも割り当て推奨
+  (global-set-key (kbd "M-i") 'helm-swoop)
   (define-key helm-swoop-map (kbd "C-r") 'helm-previous-line)
   (define-key helm-swoop-map (kbd "C-s") 'helm-next-line)
 
