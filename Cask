@@ -19,6 +19,7 @@
 (depends-on "git-link")
 (depends-on "helm")
 (depends-on "helm-ag")
+(depends-on "helm-bundle-show")
 (depends-on "helm-dash")
 (depends-on "helm-ghq")
 (depends-on "helm-git-grep")

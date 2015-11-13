@@ -41,16 +41,15 @@
   :config
   (setq org-capture-templates
         '(("d" "Diary" plain (file+datetree (concat org-directory "diary.org"))
-           "%U\n%?"
+           "%t 日報\n%?"
            :kill-buffer t)
           ("t" "Timeline" entry (file+datetree (concat org-directory "timeline.org"))
            "* %T %?"
            :kill-buffer t)
           ("q" "Quick Memo" entry (file+headline nil "Inbox")
-           "* %U %?\n%a\n%i\n"
-           :prepend t
-           :kill-buffer t)
-          ("k" "KPT" item (file+headline nil "KPT")
+           "* %?\n%T\n"
+           :prepend t)
+          ("k" "KPT" entry (file+headline nil "KPT")
            "* %T %?\n"
            :prepend t)
           ("m" "Meeting" entry (file+headline nil "Meeting")
