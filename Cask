@@ -2,7 +2,6 @@
 (source melpa)
 
 (depends-on "ac-helm")
-(depends-on "ace-isearch")
 (depends-on "async")
 (depends-on "auto-complete")
 (depends-on "cask")
