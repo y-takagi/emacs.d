@@ -14,7 +14,6 @@
 (depends-on "elscreen" :git "https://github.com/emacs-jp/elscreen.git")
 (depends-on "elscreen-separate-buffer-list")
 (depends-on "epl")
-(depends-on "git-commit-mode")
 (depends-on "git-gutter")
 (depends-on "git-link")
 (depends-on "helm")
