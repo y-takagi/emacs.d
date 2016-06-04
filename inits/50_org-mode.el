@@ -1,6 +1,7 @@
 (setq org-directory "~/Dropbox/Note/org/")
-(setq org-default-notes-file (concat org-directory "projects.org"))
+(setq org-default-notes-file (concat org-directory "default.org"))
 (setq org-agenda-files (list org-directory))
+(setq org-project-file (concat org-directory "project-tab.org"))
 
 ;; keybind
 (global-set-key "\C-ca" 'org-agenda)
@@ -49,10 +50,10 @@
           ("q" "Quick Memo" entry (file+headline nil "Inbox")
            "* %?\n%T\n"
            :prepend t)
-          ("k" "KPT" entry (file+headline nil "KPT")
+          ("k" "KPT" entry (file+headline org-project-file "KPT")
            "* %T %?\n"
            :prepend t)
-          ("m" "Meeting" entry (file+headline nil "Meeting")
+          ("m" "Meeting" entry (file+headline org-project-file "Meeting")
            "* %T %?\n"
            :prepend t)
           ))

@@ -7,16 +7,16 @@
   ;; 検索結果をcycleしない、お好みで
   (setq helm-swoop-move-to-line-cycle nil)
 
-  (cl-defun helm-swoop-nomigemo (&key $query ($multiline current-prefix-arg))
-    "シンボル検索用Migemo無効版helm-swoop"
-    (interactive)
-    (let ((helm-swoop-pre-input-function
-           (lambda () (format "\\_<%s\\_> " (thing-at-point 'symbol)))))
-      (helm-swoop :$source (delete '(migemo) (copy-sequence (helm-c-source-swoop)))
-                  :$query $query :$multiline $multiline)))
+  ;; (cl-defun helm-swoop-nomigemo (&key $query ($multiline current-prefix-arg))
+  ;;   "シンボル検索用Migemo無効版helm-swoop"
+  ;;   (interactive)
+  ;;   (let ((helm-swoop-pre-input-function
+  ;;          (lambda () (format "\\_<%s\\_> " (thing-at-point 'symbol)))))
+  ;;     (helm-swoop :$source (delete '(migemo) (copy-sequence (helm-c-source-swoop)))
+  ;;                 :$query $query :$multiline $multiline)))
 
-  ;; C-M-:に割り当て
-  (global-set-key (kbd "C-M-:") 'helm-swoop-nomigemo)
+  ;; ;; C-M-:に割り当て
+  ;; (global-set-key (kbd "C-M-:") 'helm-swoop-nomigemo)
 
   ;; [2014-11-25 Tue]
   (when (featurep 'helm-anything)

@@ -23,6 +23,7 @@
 (show-paren-mode 1) ;; highlight corresponding bracket
 (setq inhibit-startup-message t)
 (setq ring-bell-function 'ignore)
+(setq vc-follow-symlinks t)
 ;;(setq x-select-enable-clipboard t)
 
 ;;; disable auto indent
