@@ -2,5 +2,6 @@
   :mode (("\\.erb$" . ruby-mode)
          ("\\.rake$" . ruby-mode)
          ("\\.jbuilder$" . ruby-mode)
-         ("\\.builder$" . ruby-mode))
+         ("\\.builder$" . ruby-mode)
+         ("Fastfile". ruby-mode))
   )

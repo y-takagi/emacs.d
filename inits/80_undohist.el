@@ -1,4 +1,5 @@
 (use-package undohist
+  :disabled t
   :config
   (undohist-initialize)
 

@@ -4,7 +4,7 @@
 (when (require 'helm-config nil t)
   (helm-mode 1)
 
-  (define-key global-map (kbd "C-q")     'helm-mini)
+  (define-key global-map (kbd "C-c m")   'helm-mini)
   (define-key global-map (kbd "M-x")     'helm-M-x)
   (define-key global-map (kbd "C-x C-f") 'helm-find-files)
   (define-key global-map (kbd "C-x C-r") 'helm-recentf)

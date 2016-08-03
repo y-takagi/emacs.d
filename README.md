@@ -9,9 +9,11 @@ My emacs setting
 
 ## Setup
 
-```
-$ git clone git@github.com:y-takagi/emacs.d.git .emacs.d
-$ cd .emacs.d/
-$ cask
-```
+```bash
+# Cask
+git clone https://github.com/cask/cask.git ~/.cask
 
+# Emacs
+git clone git@github.com:y-takagi/emacs.d.git ~/.emacs.d
+cd .emacs.d/ && cask install
+```

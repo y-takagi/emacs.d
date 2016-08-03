@@ -11,12 +11,21 @@
 ;; 曜日を英語表記
 (setq system-time-locale "C")
 
+;; 画像をインライン表示
+(setq org-startup-with-inline-images t)
+
+;; Show preview at save
+(add-hook 'org-mode-hook 'org-eww-mode)
+
 ;; コードブロックをハイライトする
 (setq org-src-fontify-natively t)
 
 ;; アジェンダ表示で下線を用いる
 (add-hook 'org-agenda-mode-hook '(lambda () (hl-line-mode 1)))
 (setq hl-line-face 'underline)
+
+;; diaryを
+(setq org-agenda-include-diary t)
 
 ;; TODO状態
 (setq org-todo-keywords
@@ -41,14 +50,11 @@
   :bind (("C-o c" . org-capture))
   :config
   (setq org-capture-templates
-        '(("d" "Diary" plain (file+datetree (concat org-directory "diary.org"))
-           "%t 日報\n%?"
-           :kill-buffer t)
-          ("t" "Timeline" entry (file+datetree (concat org-directory "timeline.org"))
-           "* %T %?"
-           :kill-buffer t)
-          ("q" "Quick Memo" entry (file+headline nil "Inbox")
-           "* %?\n%T\n"
+        '(("d" "Daily Log" plain (file+datetree (concat org-directory "daily.org"))
+           "%t\n%?"
+           :immediate-finish t)
+          ("n" "Note" entry (file (concat org-directory "note.org"))
+           "* %?"
            :prepend t)
           ("k" "KPT" entry (file+headline org-project-file "KPT")
            "* %T %?\n"
@@ -58,3 +64,20 @@
            :prepend t)
           ))
   )
+
+;; Org Mode LaTeX Export
+(unless (boundp 'org-latex-classes)
+  (setq org-latex-classes nil))
+(setq org-latex-pdf-process '("latexmk %f"))
+(setq org-latex-default-class "jsarticle")
+
+(add-to-list 'org-latex-classes
+             '("jsarticle"
+               "\\documentclass[11pt,a4paper,uplatex]{jsarticle}
+                [NO-DEFAULT-PACKAGES] [PACKAGES] [EXTRA]"
+               ("\\section{%s}" . "\\section*{%s}")
+               ("\\subsection{%s}" . "\\subsection*{%s}")
+               ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+               ("\\paragraph{%s}" . "\\paragraph*{%s}")
+               ("\\subparagraph{%s}" . "\\subparagraph*{%s}")
+               ))
