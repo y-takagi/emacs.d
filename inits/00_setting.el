@@ -32,7 +32,7 @@
 (electric-indent-mode -1)
 
 ;;; exitコマンド
-(defalias 'exit 'save-buffers-kill-emacs)
+(defalias 'exit 'save-buffers-kill-terminal)
 
 ;;; 行末スペースとtabの色付け
 (setq whitespace-style '(face
