@@ -1,5 +1,4 @@
 (use-package auto-complete
-  :disabled t
   :config
   (require 'auto-complete-config)
   (ac-config-default)

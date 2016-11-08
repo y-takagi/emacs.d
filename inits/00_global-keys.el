@@ -10,5 +10,3 @@
 
 (global-unset-key "\C-x\C-z")
 (global-unset-key "\C-o")
-
-

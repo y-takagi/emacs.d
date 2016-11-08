@@ -19,8 +19,11 @@
   (global-set-key (kbd "s-0") (lambda () (interactive) (text-scale-increase 0)))
   )
 
+(load-file (concat (concat user-emacs-directory "inits/") "org-mode.el"))
+
 ;; Completion for Swift projects via SourceKit
 (use-package company-sourcekit
+  :disabled t
   :config
   (add-to-list 'company-backends 'company-sourcekit)
   )

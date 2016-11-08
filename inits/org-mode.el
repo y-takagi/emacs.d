@@ -1,7 +1,7 @@
 (setq org-directory "~/Dropbox/Note/org/")
 (setq org-default-notes-file (concat org-directory "default.org"))
 (setq org-agenda-files (list org-directory))
-(setq org-project-file (concat org-directory "project-tab.org"))
+(setq org-project-file (concat org-directory "project-wtvr.org"))
 
 ;; keybind
 (global-set-key "\C-ca" 'org-agenda)
@@ -13,9 +13,6 @@
 
 ;; 画像をインライン表示
 (setq org-startup-with-inline-images t)
-
-;; Show preview at save
-(add-hook 'org-mode-hook 'org-eww-mode)
 
 ;; コードブロックをハイライトする
 (setq org-src-fontify-natively t)
@@ -57,27 +54,10 @@
            "* %?"
            :prepend t)
           ("k" "KPT" entry (file+headline org-project-file "KPT")
-           "* %T %?\n"
+           "* %T %?振り返り\n\n\t| Fact | Keep | Problem | Try |\n"
            :prepend t)
           ("m" "Meeting" entry (file+headline org-project-file "Meeting")
            "* %T %?\n"
            :prepend t)
           ))
   )
-
-;; Org Mode LaTeX Export
-(unless (boundp 'org-latex-classes)
-  (setq org-latex-classes nil))
-(setq org-latex-pdf-process '("latexmk %f"))
-(setq org-latex-default-class "jsarticle")
-
-(add-to-list 'org-latex-classes
-             '("jsarticle"
-               "\\documentclass[11pt,a4paper,uplatex]{jsarticle}
-                [NO-DEFAULT-PACKAGES] [PACKAGES] [EXTRA]"
-               ("\\section{%s}" . "\\section*{%s}")
-               ("\\subsection{%s}" . "\\subsection*{%s}")
-               ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
-               ("\\paragraph{%s}" . "\\paragraph*{%s}")
-               ("\\subparagraph{%s}" . "\\subparagraph*{%s}")
-               ))
