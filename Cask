@@ -8,6 +8,7 @@
 (depends-on "csharp-mode")
 (depends-on "csv-mode")
 (depends-on "dash")
+(depends-on "dashboard")
 (depends-on "dockerfile-mode")
 (depends-on "elscreen" :git "https://github.com/emacs-jp/elscreen.git")
 (depends-on "elscreen-separate-buffer-list")
