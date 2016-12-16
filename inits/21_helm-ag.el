@@ -1,3 +1,5 @@
-(global-set-key (kbd "M-g .") 'helm-ag)
-(global-set-key (kbd "M-g ,") 'helm-ag-pop-stack)
-(global-set-key (kbd "C-M-s") 'helm-ag-this-file)
+(use-package helm-ag
+  :bind (("M-g ." . helm-ag)
+         ("M-g ," . helm-ag-pop-stack)
+         ("C-M-s" . helm-ag-this-file))
+  )

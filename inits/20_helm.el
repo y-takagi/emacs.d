@@ -1,4 +1,7 @@
 (use-package helm
+  :init
+  (require 'helm-config)
+  (helm-mode)
   :bind (("C-c m" . helm-mini)
          ("C-x C-c" . helm-M-x)
          ("C-x C-f" . helm-find-files)
@@ -7,8 +10,8 @@
          ("C-c i" . helm-imenu)
          ("C-x b" . helm-buffers-list))
   :config
-  (require 'helm-config)
-  (helm-mode)
+  (use-package helm-ls-git
+    :bind (("<f6>" . helm-ls-git-ls)))
 
   (define-key helm-map (kbd "C-h") 'delete-backward-char)
   (define-key helm-find-files-map (kbd "C-h") 'delete-backward-char)
@@ -43,5 +46,3 @@
                         (substring input-pattern 1)
                       (concat ".*" input-pattern))))))
   )
-
-(use-package helm-ls-git)
