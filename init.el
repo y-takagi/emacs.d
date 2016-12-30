@@ -2,7 +2,8 @@
 ;; emacs -l init.el等で直接ロードしたときに, user-emacs-directoryが書き換わる
 (when load-file-name
   (setq user-emacs-directory (file-name-directory load-file-name)))
-(add-to-list 'load-path (concat user-emacs-directory "site-lisp"))
+
+;;(add-to-list 'load-path (concat user-emacs-directory "site-lisp"))
 
 ;; package.el settings
 (require 'package)
