@@ -1,16 +1,17 @@
-(require 'helm)
-(require 'helm-ls-git)
-
-(when (require 'helm-config nil t)
-  (helm-mode 1)
-
-  (define-key global-map (kbd "C-c m")   'helm-mini)
-  (define-key global-map (kbd "M-x")     'helm-M-x)
-  (define-key global-map (kbd "C-x C-f") 'helm-find-files)
-  (define-key global-map (kbd "C-x C-r") 'helm-recentf)
-  (define-key global-map (kbd "M-y")     'helm-show-kill-ring)
-  (define-key global-map (kbd "C-c i")   'helm-imenu)
-  (define-key global-map (kbd "C-x b")   'helm-buffers-list)
+(use-package helm
+  :init
+  (require 'helm-config)
+  (helm-mode)
+  :bind (("C-c m" . helm-mini)
+         ("C-x C-c" . helm-M-x)
+         ("C-x C-f" . helm-find-files)
+         ("C-x C-r" . helm-recentf)
+         ("M-y" . helm-show-kill-ring)
+         ("C-c i" . helm-imenu)
+         ("C-x b" . helm-buffers-list))
+  :config
+  (use-package helm-ls-git
+    :bind (("<f6>" . helm-ls-git-ls)))
 
   (define-key helm-map (kbd "C-h") 'delete-backward-char)
   (define-key helm-find-files-map (kbd "C-h") 'delete-backward-char)
@@ -43,4 +44,5 @@
                         ;; '^' is a pattern for basename
                         ;; and not required because the directory name is prepended
                         (substring input-pattern 1)
-                      (concat ".*" input-pattern)))))))
+                      (concat ".*" input-pattern))))))
+  )

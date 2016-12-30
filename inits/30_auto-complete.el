@@ -1,4 +1,5 @@
 (use-package auto-complete
+  :bind (("\M-/" . ac-start))
   :config
   (require 'auto-complete-config)
   (ac-config-default)
@@ -7,7 +8,6 @@
 
   ;; C-n/C-p で候補を選択
   (setq ac-use-menu-map t)
-  (global-set-key "\M-/" 'ac-start)
 
   ;; パス入力用の情報源を追加
   (defun ac-common-setup ()
