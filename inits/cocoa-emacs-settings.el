@@ -21,6 +21,11 @@
 
 (load-file (concat (concat user-emacs-directory "inits/") "org-mode.el"))
 
+(when (executable-find "gls")
+  (setq insert-directory-program "gls")
+  ;;; diredの表示オプション
+  (setq dired-listing-switches "-ahl --time-style long-iso --group-directories-first"))
+
 ;; Completion for Swift projects via SourceKit
 (use-package company-sourcekit
   :disabled t
