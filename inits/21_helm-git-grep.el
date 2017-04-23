@@ -1,4 +1,5 @@
 (use-package helm-git-grep
+  :disabled t
   :bind (("C-c g" . helm-git-grep)
          ("C-c p" . helm-git-grep-at-point))
   :config
