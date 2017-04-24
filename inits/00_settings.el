@@ -69,3 +69,10 @@
 
 ;;; emacs permission
 ;; (setq wdired-allow-to-change-permissions t)
+
+;;; diredの表示オプション
+(if (executable-find "gls")
+    (progn
+      (setq insert-directory-program "gls")
+      (setq dired-listing-switches "-ahl --time-style long-iso --group-directories-first"))
+  (setq dired-listing-switches "-ahl --time-style long-iso --group-directories-first"))
