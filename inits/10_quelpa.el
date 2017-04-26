@@ -1,6 +1,7 @@
 (quelpa 'auto-complete)
 (quelpa 'color-theme-solarized)
 (quelpa 'coffee-mode)
+(quelpa 'company)
 (quelpa 'csharp-mode)
 (quelpa 'csv-mode)
 (quelpa 'dash)

@@ -1,5 +1,4 @@
 (use-package company
-  :disabled t
   :config
   (global-company-mode +1)
   (setq company-idle-delay 0)

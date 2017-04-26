@@ -1,4 +1,5 @@
 (use-package auto-complete
+  :disabled t
   :bind (("\M-/" . ac-start))
   :config
   (require 'auto-complete-config)
