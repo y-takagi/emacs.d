@@ -51,6 +51,9 @@
                                 calendar-mode))
 (global-whitespace-mode 1)
 
+;; css-mode
+(setq css-indent-offset 2)
+
 ;;; 変更されたファイルを自動的に再読み込み
 (global-auto-revert-mode 1)
 

@@ -25,6 +25,7 @@
 (quelpa 'helm-swoop)
 (quelpa 'js2-mode)
 (quelpa 'json-mode)
+(quelpa 'less-css-mode)
 (quelpa 'magit)
 (quelpa 'magit-popup)
 (quelpa 'markdown-mode)
