@@ -29,6 +29,7 @@
 (quelpa 'magit)
 (quelpa 'magit-popup)
 (quelpa 'markdown-mode)
+(quelpa 'ng2-mode)
 (quelpa 'open-junk-file)
 (quelpa 'org)
 (quelpa '(pokemon-emacs-mode :repo "gongo/pokemon-emacs" :fetcher github))
