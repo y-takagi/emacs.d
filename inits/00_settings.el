@@ -51,9 +51,6 @@
                                 calendar-mode))
 (global-whitespace-mode 1)
 
-;; css-mode
-(setq css-indent-offset 2)
-
 ;;; 変更されたファイルを自動的に再読み込み
 (global-auto-revert-mode 1)
 
@@ -61,6 +58,10 @@
 (setq-default tab-width 4 indent-tabs-mode nil)
 (setq-default basic-offset 2)
 (setq-default c-basic-offset 2)
+
+;; indent
+(setq css-indent-offset 2)
+(setq js-indent-level 2)
 
 ;;; file
 (setq mode-require-final-newline t)
