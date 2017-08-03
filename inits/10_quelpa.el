@@ -22,6 +22,7 @@
 (quelpa 'helm-bundle-show)
 (quelpa 'helm-core)
 (quelpa 'helm-dash)
+(quelpa 'helm-elscreen)
 (quelpa 'helm-ghq)
 (quelpa 'helm-gtags)
 (quelpa 'helm-swoop)
