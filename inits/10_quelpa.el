@@ -36,7 +36,6 @@
 (quelpa 'markdown-mode)
 (quelpa 'open-junk-file)
 (quelpa 'org)
-(quelpa '(pokemon-emacs-mode :repo "gongo/pokemon-emacs" :fetcher github))
 (quelpa 'popup)
 (quelpa 'rainbow-mode)
 (quelpa 'rhtml-mode)
