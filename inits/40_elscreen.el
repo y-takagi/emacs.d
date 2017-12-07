@@ -1,7 +1,10 @@
 (use-package elscreen
   :config
   (elscreen-start)
-  (setq elscreen-display-tab nil)
+  ;; タブの先頭に[X]を表示しない
+  (setq elscreen-tab-display-kill-screen nil)
+  ;; header-lineの先頭に[<->]を表示しない
+  (setq elscreen-tab-display-control nil)
   (define-key global-map (kbd "C-z b") 'helm-elscreen)
   )
 
