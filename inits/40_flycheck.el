@@ -20,6 +20,18 @@
       (when (and tslint (file-executable-p tslint))
         (setq-local flycheck-typescript-tslint-executable tslint))))
 
+  (defun my/use-sass-lint-from-node-modules ()
+    (let* ((root (locate-dominating-file
+                  (or (buffer-file-name) default-directory)
+                  "node_modules"))
+           (sass-lint (and root
+                           (expand-file-name "node_modules/.bin/sass-lint"
+                                             root))))
+      (when (and sass-lint (file-executable-p sass-lint))
+        (setq-local flycheck-sass/scss-sass-lint-executable sass-lint))))
+
   (add-hook 'flycheck-mode-hook #'my/use-eslint-from-node-modules)
   (add-hook 'flycheck-mode-hook #'my/use-tslint-from-node-modules)
+  (add-hook 'flycheck-mode-hook #'my/use-sass-lint-from-node-modules)
+  (add-hook 'scss-mode-hook 'flycheck-mode)
   )
