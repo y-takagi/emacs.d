@@ -17,7 +17,7 @@
 ;; (setq interprogram-paste-function 'copy-from-osx)
 
 (menu-bar-mode 0)
-(tool-bar-mode 0)
+;;(tool-bar-mode 0)
 (line-number-mode t)
 (column-number-mode t)
 (blink-cursor-mode 1)
