@@ -52,7 +52,7 @@
 (quelpa 'swift-mode)
 (quelpa 'tide)
 (quelpa 'typescript-mode)
-(quelpa 'undo-tree)
+(quelpa '(undo-tree :url "http://www.dr-qubit.org/undo-tree/undo-tree.el" :fetcher url))
 (quelpa 'undohist)
 (quelpa 'wgrep)
 (quelpa 'wgrep-helm)
