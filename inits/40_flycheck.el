@@ -34,4 +34,5 @@
   (add-hook 'flycheck-mode-hook #'my/use-tslint-from-node-modules)
   (add-hook 'flycheck-mode-hook #'my/use-sass-lint-from-node-modules)
   (add-hook 'scss-mode-hook 'flycheck-mode)
+  (add-hook 'go-mode-hook 'flycheck-mode)
   )
