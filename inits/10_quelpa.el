@@ -1,3 +1,4 @@
+(quelpa 'add-node-modules-path)
 (quelpa 'auto-complete)
 (quelpa 'color-theme-solarized)
 (quelpa 'coffee-mode)
@@ -41,6 +42,7 @@
 (quelpa 'open-junk-file)
 (quelpa 'org)
 (quelpa 'popup)
+(quelpa 'prettier-js)
 (quelpa 'rhtml-mode)
 (quelpa 'rjsx-mode)
 (quelpa 'rspec-mode)

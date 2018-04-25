@@ -1,4 +1,5 @@
 (use-package js2-mode
+  :disabled t
   :mode (("\\.js$" . js2-mode))
   :config
   (setq js2-include-browser-externs nil)

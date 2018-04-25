@@ -30,9 +30,10 @@
       (when (and sass-lint (file-executable-p sass-lint))
         (setq-local flycheck-sass/scss-sass-lint-executable sass-lint))))
 
-  (add-hook 'flycheck-mode-hook #'my/use-eslint-from-node-modules)
-  (add-hook 'flycheck-mode-hook #'my/use-tslint-from-node-modules)
-  (add-hook 'flycheck-mode-hook #'my/use-sass-lint-from-node-modules)
+  ;; (add-hook 'flycheck-mode-hook #'my/use-eslint-from-node-modules)
+  ;; (add-hook 'flycheck-mode-hook #'my/use-tslint-from-node-modules)
+  ;; (add-hook 'flycheck-mode-hook #'my/use-sass-lint-from-node-modules)
+  (add-hook 'typescript-mode 'flycheck-mode)
   (add-hook 'scss-mode-hook 'flycheck-mode)
   (add-hook 'go-mode-hook 'flycheck-mode)
   )
