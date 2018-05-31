@@ -1,4 +1,5 @@
 (use-package company-jedi
+  :disabled t
   :config
   (add-hook 'python-mode-hook
             '(lambda ()

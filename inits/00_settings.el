@@ -62,6 +62,7 @@
 ;; indent
 (setq css-indent-offset 2)
 (setq js-indent-level 2)
+(setq python-indent-guess-indent-offset nil)
 
 ;;; file
 (setq mode-require-final-newline t)

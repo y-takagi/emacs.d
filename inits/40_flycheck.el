@@ -36,4 +36,8 @@
   (add-hook 'typescript-mode 'flycheck-mode)
   (add-hook 'scss-mode-hook 'flycheck-mode)
   (add-hook 'go-mode-hook 'flycheck-mode)
+
+  ;; elpy
+  ;;(remove-hook 'elpy-modules 'elpy-module-flymake)
+  ;;(add-hook 'elpy-mode-hook 'flycheck-mode)
   )
