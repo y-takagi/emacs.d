@@ -36,6 +36,7 @@
 (quelpa 'hgignore-mode)
 (quelpa 'js2-mode)
 (quelpa 'json-mode)
+(quelpa 'kotlin-mode)
 (quelpa 'less-css-mode)
 (quelpa 'magit)
 (quelpa 'magit-popup)
