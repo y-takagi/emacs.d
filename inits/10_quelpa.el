@@ -58,6 +58,7 @@
 (quelpa 'typescript-mode)
 (quelpa '(undo-tree :url "http://www.dr-qubit.org/undo-tree/undo-tree.el" :fetcher url))
 (quelpa 'undohist)
+(quelpa 'web-mode)
 (quelpa 'wgrep)
 (quelpa 'wgrep-helm)
 (quelpa 'yagist)
