@@ -10,9 +10,6 @@
          ("C-c i" . helm-imenu)
          ("C-x b" . helm-buffers-list))
   :config
-  (use-package helm-ls-git
-    :bind (("<f6>" . helm-ls-git-ls)))
-
   (define-key helm-map (kbd "C-h") 'delete-backward-char)
   (define-key helm-find-files-map (kbd "C-h") 'delete-backward-char)
   (define-key helm-find-files-map (kbd "TAB") 'helm-execute-persistent-action)

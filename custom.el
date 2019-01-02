@@ -15,7 +15,7 @@
  '(helm-truncate-lines t t)
  '(package-selected-packages
    (quote
-    (company-go go-mode yagist wgrep-helm undohist undo-tree tide swift-mode smooth-scrolling smart-newline slim-mode ruby-end rspec-mode rjsx-mode rhtml-mode quelpa-use-package open-junk-file nlinum magit lsp-ui lsp-python less-css-mode kotlin-mode json-mode init-loader hgrc-mode hgignore-mode helm-swoop helm-gtags helm-ghq helm-elscreen helm-dash helm-bundle-show helm-ag gitignore-mode gitconfig-mode git-gutter gist find-file-in-repository exec-path-from-shell elscreen-separate-buffer-list dockerfile-mode direnv digdag-mode dashboard csharp-mode company-jedi color-theme-solarized coffee-mode auto-complete)))
+    (yagist wgrep-helm wgrep web-mode undohist undo-tree tide typescript-mode swift-mode smooth-scrolling smart-newline slim-mode ruby-end rspec-mode rjsx-mode rhtml-mode prettier-js open-junk-file markdown-mode magit magit-popup git-commit less-css-mode kotlin-mode json-mode json-snatcher json-reformat js2-mode hgignore-mode hgrc-mode helm-swoop helm-gtags helm-ghq helm-elscreen helm-dash helm-bundle-show helm-ag helm helm-core popup gitignore-mode gitconfig-mode git-gutter gist gh marshal ht logito pcache flycheck pkg-info epl find-file-in-repository exec-path-from-shell elscreen-separate-buffer-list elscreen elpy yasnippet pyvenv highlight-indentation find-file-in-project ivy dockerfile-mode s direnv with-editor async digdag-mode yaml-mode dashboard page-break-lines dash company-go go-mode company color-theme-solarized color-theme add-node-modules-path init-loader quelpa-use-package use-package bind-key quelpa)))
  '(rainbow-html-colors-major-mode-list
    (quote
     (scss-mode html-mode css-mode php-mode nxml-mode xml-mode))))

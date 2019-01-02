@@ -1,7 +1,5 @@
 (quelpa 'add-node-modules-path)
-;;(quelpa 'auto-complete)
 (quelpa 'color-theme-solarized)
-;;(quelpa 'coffee-mode)
 (quelpa 'company)
 (quelpa 'company-go)
 ;;(quelpa 'company-jedi)

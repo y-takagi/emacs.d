@@ -4,29 +4,16 @@
 ;; (setq file-name-coding-system 'utf-8)
 ;; (setq locale-coding-system 'utf-8)
 
-;; (defun copy-from-osx ()
-;;  (shell-command-to-string "pbpaste"))
-
-;; (defun paste-to-osx (text &optional push)
-;;  (let ((process-connection-type nil))
-;;      (let ((proc (start-process "pbcopy" "*Messages*" "pbcopy")))
-;;        (process-send-string proc text)
-;;        (process-send-eof proc))))
-
-;; (setq interprogram-cut-function 'paste-to-osx)
-;; (setq interprogram-paste-function 'copy-from-osx)
-
 (menu-bar-mode 0)
-;;(tool-bar-mode 0)
-(line-number-mode t)
-(column-number-mode t)
 (blink-cursor-mode 1)
 (show-paren-mode 1) ;; highlight corresponding bracket
 (setq inhibit-startup-message t)
 (setq ring-bell-function 'ignore)
 (setq vc-follow-symlinks t)
 (setq-default cursor-in-non-selected-windows nil)
-;;(setq x-select-enable-clipboard t)
+
+;; line number
+(add-hook 'prog-mode-hook #'display-line-numbers-mode)
 
 ;;; disable auto indent
 (electric-indent-mode -1)
@@ -81,3 +68,22 @@
       (setq insert-directory-program "gls")
       (setq dired-listing-switches "-ahl --time-style long-iso --group-directories-first"))
   (setq dired-listing-switches "-ahl --time-style long-iso --group-directories-first"))
+
+;;; emacs のデフォルトブラウザを eww に変更
+(setq browse-url-browser-function 'eww-browse-url)
+
+;; Theme settings
+(load-theme 'solarized t)
+
+;;; Global Key
+;; copy & paste
+(global-set-key "\M-w" 'clipboard-kill-ring-save)
+(global-set-key "\C-w" 'clipboard-kill-region)
+
+(global-set-key "\C-cc"    'comment-or-uncomment-region)
+(global-set-key "\C-h"     'backward-delete-char)
+(global-set-key "\C-x\C-i" 'indent-region)
+(global-set-key [C-tab]    'indent-for-tab-command)
+
+(global-unset-key "\C-x\C-z")
+(global-unset-key "\C-o")
