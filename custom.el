@@ -15,7 +15,7 @@
  '(helm-truncate-lines t t)
  '(package-selected-packages
    (quote
-    (eglot yagist wgrep-helm wgrep web-mode undohist undo-tree tide typescript-mode swift-mode smooth-scrolling smart-newline slim-mode ruby-end rspec-mode rjsx-mode rhtml-mode prettier-js open-junk-file markdown-mode magit magit-popup git-commit less-css-mode kotlin-mode json-mode json-snatcher json-reformat js2-mode hgignore-mode hgrc-mode helm-swoop helm-gtags helm-ghq helm-elscreen helm-dash helm-bundle-show helm-ag helm helm-core popup gitignore-mode gitconfig-mode git-gutter gist gh marshal ht logito pcache flycheck pkg-info epl find-file-in-repository exec-path-from-shell elscreen-separate-buffer-list elscreen elpy yasnippet pyvenv highlight-indentation find-file-in-project ivy dockerfile-mode s direnv with-editor async digdag-mode yaml-mode dashboard page-break-lines dash company-go go-mode company color-theme-solarized color-theme add-node-modules-path init-loader quelpa-use-package use-package bind-key quelpa)))
+    (web-mode swift-mode rjsx-mode markdown-mode go-mode undohist undo-tree tide smooth-scrolling smart-newline open-junk-file find-file-in-repository prettier-js magit git-gutter dashboard flycheck elscreen-separate-buffer-list direnv company helm-swoop helm-gtags helm-ghq helm-dash helm-ag yasnippet yaml-mode yagist wgrep-helm wgrep slim-mode ruby-end rspec-mode rhtml-mode magit-popup kotlin-mode json-mode hgignore-mode hgrc-mode helm-elscreen helm-bundle-show gitignore-mode gitconfig-mode exec-path-from-shell dockerfile-mode diminish dash csv-mode color-theme-solarized add-node-modules-path init-loader use-package)))
  '(rainbow-html-colors-major-mode-list
    (quote
     (scss-mode html-mode css-mode php-mode nxml-mode xml-mode))))
