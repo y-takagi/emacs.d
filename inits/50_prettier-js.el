@@ -1,4 +1,5 @@
 (use-package prettier-js
+  :ensure t
   :config
   (setq prettier-js-args
         '("--find-config-path" "--write" "src/**/*.tsx"))

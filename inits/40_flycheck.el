@@ -1,4 +1,5 @@
 (use-package flycheck
+  :ensure t
   :init
   (defun my/use-eslint-from-node-modules ()
     (let* ((root (locate-dominating-file

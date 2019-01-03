@@ -1,4 +1,5 @@
 (use-package web-mode
+  :ensure t
   :mode (("\\.tag$" . web-mode))
   :config
   (setq web-mode-engines-alist

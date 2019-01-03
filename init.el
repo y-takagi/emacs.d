@@ -7,22 +7,17 @@
 
 ;; package.el settings
 (require 'package)
-(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
-(package-refresh-contents)
 (package-initialize)
+(setq package-archives
+      '(("gnu" . "http://elpa.gnu.org/packages/")
+        ("melpa" . "http://melpa.org/packages/")
+        ("org" . "http://orgmode.org/elpa/")))
+(package-refresh-contents)
 
-;; Setup quelpa
-(unless (require 'quelpa nil t)
-  (with-temp-buffer
-    (url-insert-file-contents "https://raw.github.com/quelpa/quelpa/master/bootstrap.el")
-    (eval-buffer)))
-
-;; Setup quelpa-use-package
-(quelpa
- '(quelpa-use-package
-   :fetcher github
-   :repo "quelpa/quelpa-use-package"))
-(require 'quelpa-use-package)
+;; ensure to use use-package
+(when (not (package-installed-p 'use-package))
+  (package-install 'use-package))
+(require 'use-package)
 
 ;; Do nothing if use-package.el doesn't exist
 (unless (require 'use-package nil t)
@@ -30,7 +25,7 @@
 
 ;; init-loader setting
 (use-package init-loader
-  :quelpa
+  :ensure t
   :config
   (setq init-loader-show-log-after-init 'error-only)
   (init-loader-load (concat user-emacs-directory "inits")))

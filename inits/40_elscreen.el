@@ -1,4 +1,5 @@
 (use-package elscreen
+  :ensure t
   :config
   (elscreen-start)
   ;; タブの先頭に[X]を表示しない
@@ -9,6 +10,7 @@
   )
 
 (use-package elscreen-separate-buffer-list
+  :ensure t
   :config
   (setq esbl-separate-buffer-list-default '("*dashboard*" "*scratch*" "*Messages*"))
   (elscreen-separate-buffer-list-mode 1)

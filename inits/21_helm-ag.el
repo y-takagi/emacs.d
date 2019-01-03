@@ -1,4 +1,5 @@
 (use-package helm-ag
+  :ensure t
   :bind (("C-c g" . helm-ag)
          ("C-c p" . helm-do-ag-project-root))
   :config
