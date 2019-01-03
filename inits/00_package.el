@@ -1,9 +1,12 @@
 (use-package add-node-modules-path :ensure t)
 (use-package color-theme-solarized :ensure t)
-;;(quelpa 'company-jedi)
-;;(quelpa 'csharp-mode)
 (use-package csv-mode :ensure t)
 (use-package dash :ensure t)
+(use-package diminish
+  :ensure t
+  :config
+  (diminish 'eldoc-mode)
+  )
 (use-package dockerfile-mode :ensure t)
 (use-package exec-path-from-shell :ensure t)
 (use-package gitconfig-mode :ensure t)
@@ -22,7 +25,6 @@
 (use-package ruby-end :ensure t)
 (use-package s :ensure t)
 (use-package slim-mode :ensure t)
-;;(quelpa '(undo-tree :url "http://www.dr-qubit.org/undo-tree/undo-tree.el" :fetcher url))
 (use-package wgrep :ensure t)
 (use-package wgrep-helm :ensure t)
 (use-package yagist :ensure t)
