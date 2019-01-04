@@ -1,4 +1,5 @@
 (use-package elpy
+  :disabled t
   :config
   (elpy-enable)
   (add-hook 'elpy-mode-hook

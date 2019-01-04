@@ -1,4 +1,5 @@
 (use-package js2-mode
+  :ensure t
   :disabled t
   :mode (("\\.js$" . js2-mode))
   :config

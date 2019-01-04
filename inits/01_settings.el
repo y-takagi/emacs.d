@@ -4,7 +4,9 @@
 ;; (setq file-name-coding-system 'utf-8)
 ;; (setq locale-coding-system 'utf-8)
 
-(menu-bar-mode 0)
+(when (fboundp 'menu-bar-mode) (menu-bar-mode -1))
+(when (fboundp 'tool-bar-mode) (tool-bar-mode -1))
+(when (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
 (blink-cursor-mode 1)
 (show-paren-mode 1) ;; highlight corresponding bracket
 (setq inhibit-startup-message t)
@@ -14,29 +16,13 @@
 
 ;; line number
 (add-hook 'prog-mode-hook #'display-line-numbers-mode)
+(add-hook 'text-mode-hook #'display-line-numbers-mode)
 
 ;;; disable auto indent
 (electric-indent-mode -1)
 
 ;;; exitコマンド
 (defalias 'exit 'save-buffers-kill-terminal)
-
-;;; 行末スペースとtabの色付け
-(setq whitespace-style '(face
-                         trailing
-                         tabs
-                         space-mark
-                         tab-mark
-                         ))
-(setq whitespace-display-mappings
-      '((tab-mark ?\t [?\u00BB ?\t] [?\\ ?\t])))
-(setq whitespace-global-modes '(not
-                                eww-mode
-                                term-mode
-                                eshell-mode
-                                org-agenda-mode
-                                calendar-mode))
-(global-whitespace-mode 1)
 
 ;;; 変更されたファイルを自動的に再読み込み
 (global-auto-revert-mode 1)

@@ -1,4 +1,5 @@
 (use-package helm-dash
+  :ensure t
   :config
   (defun ruby-doc ()
     (interactive)

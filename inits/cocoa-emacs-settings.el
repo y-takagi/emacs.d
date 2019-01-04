@@ -1,9 +1,4 @@
 (when window-system
-  ;; Load $PATH set up by the user's shell
-  (exec-path-from-shell-initialize)
-
-  (scroll-bar-mode 0)
-
   ;; Fonts
   (add-to-list 'default-frame-alist '(font . "ricty-18"))
 
