@@ -26,19 +26,4 @@
 
   ;; 各種メジャーモードでも C-M-iで company-modeの補完を使う
   (define-key emacs-lisp-mode-map (kbd "M-/") 'company-complete)
-
-  (set-face-attribute 'company-tooltip nil
-                      :foreground "black" :background "white")
-  (set-face-attribute 'company-tooltip-common nil
-                      :foreground "black" :background "white")
-  (set-face-attribute 'company-tooltip-common-selection nil
-                      :foreground "white" :background "cyan")
-  (set-face-attribute 'company-tooltip-selection nil
-                      :foreground "black" :background "cyan")
-  (set-face-attribute 'company-preview-common nil
-                      :background "yellow" :foreground "white" :underline t)
-  (set-face-attribute 'company-scrollbar-fg nil
-                      :background "orange")
-  (set-face-attribute 'company-scrollbar-bg nil
-                      :background "black")
   )

@@ -8,7 +8,12 @@
   (diminish 'eldoc-mode)
   )
 (use-package dockerfile-mode :ensure t)
-(use-package exec-path-from-shell :ensure t)
+(use-package exec-path-from-shell
+  :ensure t
+  :config
+  (when (memq window-system '(mac ns x))
+    (exec-path-from-shell-initialize))
+  )
 (use-package gitconfig-mode :ensure t)
 (use-package gitignore-mode :ensure t)
 (use-package helm-bundle-show :ensure t)

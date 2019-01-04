@@ -1,5 +1,6 @@
 (use-package tide
   :ensure t
+  :diminish tide-mode
   :config
   (add-hook 'typescript-mode-hook
             (lambda ()
