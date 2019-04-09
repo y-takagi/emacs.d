@@ -1,5 +1,5 @@
 (use-package add-node-modules-path :ensure t)
-(use-package color-theme-solarized :ensure t)
+(use-package all-the-icons)
 (use-package csv-mode :ensure t)
 (use-package dash :ensure t)
 (use-package dashboard
@@ -17,6 +17,26 @@
   :config
   (direnv-mode))
 (use-package dockerfile-mode :ensure t)
+(use-package doom-modeline
+  :ensure t
+  :custom
+  (doom-modeline-buffer-file-name-style 'truncate-with-project)
+  (doom-modeline-icon t)
+  (doom-modeline-major-mode-icon nil)
+  (doom-modeline-minor-modes nil)
+  :hook
+  (after-init . doom-modeline-mode)
+  :config
+  (line-number-mode 0)
+  (column-number-mode 0))
+(use-package doom-themes
+  :ensure t
+  :custom-face
+  (doom-modeline-bar ((t (:background "#6272a4"))))
+  :config
+  (load-theme 'doom-dracula t)
+  (doom-themes-neotree-config)
+  (doom-themes-org-config))
 (use-package elscreen
   :ensure t
   :config

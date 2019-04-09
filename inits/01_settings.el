@@ -17,6 +17,9 @@
 ;; line number
 (add-hook 'prog-mode-hook #'display-line-numbers-mode)
 (add-hook 'text-mode-hook #'display-line-numbers-mode)
+(add-hook 'conf-space-mode-hook #'display-line-numbers-mode)
+(add-hook 'conf-unix-mode-hook #'display-line-numbers-mode)
+(add-hook 'conf-toml-mode-hook #'display-line-numbers-mode)
 
 ;;; disable auto indent
 (electric-indent-mode -1)
@@ -57,9 +60,6 @@
 
 ;;; emacs のデフォルトブラウザを eww に変更
 (setq browse-url-browser-function 'eww-browse-url)
-
-;; Theme settings
-(load-theme 'solarized t)
 
 ;;; Global Key
 ;; copy & paste
