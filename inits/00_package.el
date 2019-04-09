@@ -73,6 +73,11 @@
 (use-package json-mode :ensure t)
 (use-package kotlin-mode :ensure t)
 (use-package less-css-mode :ensure t)
+(use-package magit
+  :ensure t
+  :bind (("C-x g" . magit-status))
+  :config
+  (setq magit-last-seen-setup-instructions "1.4.0"))
 (use-package magit-popup :ensure t)
 (use-package open-junk-file
   :ensure t
@@ -81,8 +86,21 @@
   (setq open-junk-file-format "~/Dropbox/Note/junk/%Y-%m%d-%H%M%S."))
 (use-package popup :ensure t)
 (use-package rhtml-mode :ensure t)
+(use-package rjsx-mode
+  :ensure t
+  :mode (("\\.js$" . rjsx-mode))
+  :config
+  (add-hook 'rjsx-mode-hook #'flycheck-mode)
+  (flycheck-add-mode 'javascript-eslint 'rjsx-mode))
 (use-package rspec-mode :ensure t)
 (use-package ruby-end :ensure t)
+(use-package ruby-mode
+  :ensure t
+  :mode (("\\.erb$" . ruby-mode)
+         ("\\.rake$" . ruby-mode)
+         ("\\.jbuilder$" . ruby-mode)
+         ("\\.builder$" . ruby-mode)
+         ("Fastfile". ruby-mode)))
 (use-package s :ensure t)
 (use-package slim-mode :ensure t)
 (use-package smart-newline
@@ -92,6 +110,29 @@
   :ensure t
   :config
   (smooth-scrolling-mode 1))
+(use-package swift-mode
+  :ensure t
+  :config
+  (setq swift-mode:basic-offset 2))
+(use-package tide
+  :ensure t
+  :diminish tide-mode
+  :config
+  (add-hook 'typescript-mode-hook
+            (lambda ()
+              (tide-setup)
+              (flycheck-mode t)
+              (setq flycheck-check-syntax-automatically '(save mode-enabled))
+              (eldoc-mode t))))
+(use-package typescript-mode
+  :ensure t
+  :mode (("\\.ts$" . typescript-mode)
+         ("\\.tsx$" . typescript-mode))
+  :config
+  (setq typescript-indent-level 2)
+  (with-eval-after-load 'typescript-mode
+    (add-hook 'typescript-mode-hook #'add-node-modules-path)
+    (add-hook 'typescript-mode-hook #'prettier-js-mode)))
 (use-package undohist
   :ensure t
   :config
