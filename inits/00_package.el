@@ -88,6 +88,7 @@
 (use-package exec-path-from-shell
   :ensure t
   :config
+  (setq exec-path-from-shell-arguments '("-l"))
   (when (memq window-system '(mac ns x))
     (exec-path-from-shell-initialize)))
 (use-package find-file-in-repository
@@ -100,8 +101,87 @@
   :config
   (global-git-gutter-mode +1))
 (use-package gitignore-mode :ensure t)
+(use-package helm
+  :ensure t
+  :diminish helm-mode
+  :init
+  (require 'helm-config)
+  (helm-mode)
+  :bind (("C-c m" . helm-mini)
+         ("C-x C-c" . helm-M-x)
+         ("C-x C-f" . helm-find-files)
+         ("C-x C-r" . helm-recentf)
+         ("M-y" . helm-show-kill-ring)
+         ("C-c i" . helm-imenu)
+         ("C-x b" . helm-buffers-list))
+  :config
+  (define-key helm-map (kbd "C-h") 'delete-backward-char)
+  (define-key helm-find-files-map (kbd "C-h") 'delete-backward-char)
+  (define-key helm-find-files-map (kbd "TAB") 'helm-execute-persistent-action)
+  (define-key helm-read-file-map (kbd "TAB") 'helm-execute-persistent-action)
+
+  ;; Disable helm in some functions
+  (add-to-list 'helm-completing-read-handlers-alist '(find-alternate-file . nil))
+
+  ;; Emulate `kill-line' in helm minibuffer
+  ;; (setq helm-delete-minibuffer-contents-from-point t)
+  (defadvice helm-delete-minibuffer-contents (before helm-emulate-kill-line activate)
+    "Emulate `kill-line' in helm minibuffer"
+    (kill-new (buffer-substring (point) (field-end))))
+
+  (defadvice helm-ff-kill-or-find-buffer-fname (around execute-only-if-exist activate)
+    "Execute command only if CANDIDATE exists"
+    (when (file-exists-p candidate)
+      ad-do-it))
+
+  (defadvice helm-ff-transform-fname-for-completion (around my-transform activate)
+    "Transform the pattern to reflect my intention"
+    (let* ((pattern (ad-get-arg 0))
+           (input-pattern (file-name-nondirectory pattern))
+           (dirname (file-name-directory pattern)))
+      (setq input-pattern (replace-regexp-in-string "\\." "\\\\." input-pattern))
+      (setq ad-return-value
+            (concat dirname
+                    (if (string-match "^\\^" input-pattern)
+                        ;; '^' is a pattern for basename
+                        ;; and not required because the directory name is prepended
+                        (substring input-pattern 1)
+                      (concat ".*" input-pattern)))))))
+(use-package helm-ag
+  :ensure t
+  :bind (("C-c g" . helm-ag)
+         ("C-c p" . helm-do-ag-project-root))
+  :config
+  (setq helm-ag-insert-at-point 'symbol)
+  (setq helm-ag-base-command "rg --no-heading"))
 (use-package helm-bundle-show :ensure t)
+(use-package helm-dash
+  :ensure t
+  :config
+  (defun ruby-doc ()
+    (interactive)
+    (setq-local helm-dash-docsets '("Ruby" "Ruby on Rails" "PostgreSQL")))
+  (add-hook 'ruby-mode-hook 'ruby-doc))
 (use-package helm-elscreen :ensure t)
+(use-package helm-ghq
+  :ensure t
+  :bind (("C-c q" . helm-ghq)))
+(use-package helm-gtags
+  :ensure t
+  :bind (("M-t" . helm-gtags-find-tag)
+         ("M-r" . helm-gtags-find-rtag)
+         ("M-s" . helm-gtags-find-symbol)
+         ("M-l" . helm-gtags-select)
+         ("C-t" . helm-gtags-pop-stack))
+  :config
+  (setq helm-gtags-auto-update t)
+  (add-hook 'ruby-mode-hook 'helm-gtags-mode))
+(use-package helm-swoop
+  :ensure t
+  :bind (("C-s" . helm-swoop))
+  :config
+  ;; 検索結果をcycleしない、お好みで
+  (setq helm-swoop-move-to-line-cycle nil))
 (use-package hgrc-mode :ensure t)
 (use-package hgignore-mode :ensure t)
 (use-package json-mode :ensure t)
