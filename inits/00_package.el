@@ -31,7 +31,11 @@
 (use-package company-box
   :ensure t
   :hook (company-mode . company-box-mode))
+(use-package company-lsp
+  :ensure t
+  :init (setq company-lsp-cache-candidates 'auto))
 (use-package company-quickhelp
+  :disabled t
   :ensure t
   :config (company-quickhelp-mode))
 (use-package csv-mode :ensure t)
@@ -187,6 +191,31 @@
 (use-package json-mode :ensure t)
 (use-package kotlin-mode :ensure t)
 (use-package less-css-mode :ensure t)
+(use-package lsp-mode
+  :ensure t
+  :diminish lsp-mode
+  :hook (prog-mode . lsp)
+  :bind (:map lsp-mode-map
+              ("C-c C-d" . lsp-describe-thing-at-point))
+  :init
+  (setq lsp-auto-guess-root t    ; Detect project root
+        lsp-prefer-flymake nil)) ; Use lsp-ui and flycheck
+(use-package lsp-ui
+  :ensure t
+  :bind (:map lsp-ui-mode-map
+              ([remap xref-find-definitions] . lsp-ui-peek-find-definitions)
+              ([remap xref-find-references] . lsp-ui-peek-find-references)
+              ("C-c u" . lsp-ui-imenu))
+  :init (setq lsp-ui-doc-enable nil
+              lsp-ui-doc-header t
+              lsp-ui-doc-include-signature t
+              lsp-ui-doc-position 'top
+              lsp-ui-doc-use-webkit t
+              lsp-ui-sideline-enable nil
+              lsp-ui-sideline-ignore-duplicate t
+              lsp-ui-imenu-enable nil
+              lsp-ui-imenu-kind-position 'top)
+  :hook (lsp-mode . lsp-ui-mode))
 (use-package magit
   :ensure t
   :bind (("C-x g" . magit-status))

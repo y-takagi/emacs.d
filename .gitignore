@@ -45,3 +45,6 @@ url/
 
 # orgmode
 bookmarks
+
+# lsp-mode
+.lsp-session-v1
