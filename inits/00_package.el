@@ -1,5 +1,5 @@
 (use-package add-node-modules-path :ensure t)
-(use-package all-the-icons)
+(use-package all-the-icons :ensure t)
 (use-package company
   :ensure t
   :diminish company-mode
@@ -257,16 +257,6 @@
   :ensure t
   :config
   (setq swift-mode:basic-offset 2))
-(use-package tide
-  :ensure t
-  :diminish tide-mode
-  :config
-  (add-hook 'typescript-mode-hook
-            (lambda ()
-              (tide-setup)
-              (flycheck-mode t)
-              (setq flycheck-check-syntax-automatically '(save mode-enabled))
-              (eldoc-mode t))))
 (use-package typescript-mode
   :ensure t
   :mode (("\\.ts$" . typescript-mode)
