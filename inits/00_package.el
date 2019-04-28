@@ -31,9 +31,7 @@
 (use-package company-box
   :ensure t
   :hook (company-mode . company-box-mode))
-(use-package company-lsp
-  :ensure t
-  :init (setq company-lsp-cache-candidates 'auto))
+(use-package company-lsp :ensure t)
 (use-package company-quickhelp
   :disabled t
   :ensure t
