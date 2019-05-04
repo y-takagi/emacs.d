@@ -1,5 +1,5 @@
 (use-package add-node-modules-path :ensure t)
-(use-package all-the-icons)
+(use-package all-the-icons :ensure t)
 (use-package company
   :ensure t
   :diminish company-mode
@@ -29,9 +29,12 @@
   ;; 各種メジャーモードでも C-M-iで company-modeの補完を使う
   (define-key emacs-lisp-mode-map (kbd "M-/") 'company-complete))
 (use-package company-box
+  :disabled t
   :ensure t
   :hook (company-mode . company-box-mode))
+(use-package company-lsp :ensure t)
 (use-package company-quickhelp
+  :disabled t
   :ensure t
   :config (company-quickhelp-mode))
 (use-package csv-mode :ensure t)
@@ -187,18 +190,39 @@
 (use-package json-mode :ensure t)
 (use-package kotlin-mode :ensure t)
 (use-package less-css-mode :ensure t)
+(use-package lsp-mode
+  :ensure t
+  :diminish lsp-mode
+  :hook (prog-mode . lsp)
+  :bind (:map lsp-mode-map
+              ("C-c C-d" . lsp-describe-thing-at-point))
+  :init
+  (setq lsp-auto-guess-root t    ; Detect project root
+        lsp-prefer-flymake nil)) ; Use flycheck
+(use-package lsp-ui
+  :ensure t
+  :bind (:map lsp-ui-mode-map
+              ([remap xref-find-definitions] . lsp-ui-peek-find-definitions)
+              ([remap xref-find-references] . lsp-ui-peek-find-references)
+              ("C-c u" . lsp-ui-imenu))
+  :init (setq lsp-ui-doc-enable nil
+              lsp-ui-doc-header t
+              lsp-ui-doc-include-signature t
+              lsp-ui-doc-position 'top
+              lsp-ui-doc-use-webkit t
+              lsp-ui-sideline-enable nil
+              lsp-ui-sideline-ignore-duplicate t
+              lsp-ui-imenu-enable nil
+              lsp-ui-imenu-kind-position 'top)
+  :hook (lsp-mode . lsp-ui-mode))
 (use-package magit
   :ensure t
-  :bind (("C-x g" . magit-status))
-  :config
-  (setq magit-last-seen-setup-instructions "1.4.0"))
-(use-package magit-popup :ensure t)
+  :bind (("C-x g" . magit-status)))
 (use-package open-junk-file
   :ensure t
   :bind (("C-x j" . open-junk-file))
   :config
   (setq open-junk-file-format "~/Dropbox/Note/junk/%Y-%m%d-%H%M%S."))
-(use-package popup :ensure t)
 (use-package rhtml-mode :ensure t)
 (use-package rjsx-mode
   :ensure t
@@ -228,16 +252,6 @@
   :ensure t
   :config
   (setq swift-mode:basic-offset 2))
-(use-package tide
-  :ensure t
-  :diminish tide-mode
-  :config
-  (add-hook 'typescript-mode-hook
-            (lambda ()
-              (tide-setup)
-              (flycheck-mode t)
-              (setq flycheck-check-syntax-automatically '(save mode-enabled))
-              (eldoc-mode t))))
 (use-package typescript-mode
   :ensure t
   :mode (("\\.ts$" . typescript-mode)
