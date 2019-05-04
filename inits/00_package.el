@@ -29,6 +29,7 @@
   ;; 各種メジャーモードでも C-M-iで company-modeの補完を使う
   (define-key emacs-lisp-mode-map (kbd "M-/") 'company-complete))
 (use-package company-box
+  :disabled t
   :ensure t
   :hook (company-mode . company-box-mode))
 (use-package company-lsp :ensure t)
@@ -197,7 +198,7 @@
               ("C-c C-d" . lsp-describe-thing-at-point))
   :init
   (setq lsp-auto-guess-root t    ; Detect project root
-        lsp-prefer-flymake nil)) ; Use lsp-ui and flycheck
+        lsp-prefer-flymake nil)) ; Use flycheck
 (use-package lsp-ui
   :ensure t
   :bind (:map lsp-ui-mode-map
@@ -216,16 +217,12 @@
   :hook (lsp-mode . lsp-ui-mode))
 (use-package magit
   :ensure t
-  :bind (("C-x g" . magit-status))
-  :config
-  (setq magit-last-seen-setup-instructions "1.4.0"))
-(use-package magit-popup :ensure t)
+  :bind (("C-x g" . magit-status)))
 (use-package open-junk-file
   :ensure t
   :bind (("C-x j" . open-junk-file))
   :config
   (setq open-junk-file-format "~/Dropbox/Note/junk/%Y-%m%d-%H%M%S."))
-(use-package popup :ensure t)
 (use-package rhtml-mode :ensure t)
 (use-package rjsx-mode
   :ensure t

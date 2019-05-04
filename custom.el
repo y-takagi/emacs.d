@@ -9,7 +9,7 @@
  '(doom-modeline-minor-modes nil t)
  '(package-selected-packages
    (quote
-    (web-mode go-mode prettier-js flycheck kotlin-mode json-mode hgignore-mode hgrc-mode helm-swoop helm-gtags helm-ghq helm-elscreen helm-dash helm-bundle-show helm-ag helm gitignore-mode git-gutter gitconfig-mode find-file-in-repository exec-path-from-shell elscreen-separate-buffer-list elscreen doom-themes doom-modeline dockerfile-mode direnv diminish dashboard csv-mode company-quickhelp company-lsp company-box company add-node-modules-path init-loader use-package))))
+    (web-mode go-mode prettier-js flycheck yasnippet yaml-mode yagist wgrep-helm wgrep undo-tree undohist typescript-mode swift-mode smooth-scrolling smart-newline slim-mode ruby-end rspec-mode rjsx-mode rhtml-mode open-junk-file magit lsp-ui kotlin-mode json-mode hgignore-mode hgrc-mode helm-swoop helm-gtags helm-ghq helm-elscreen helm-dash helm-bundle-show helm-ag helm gitignore-mode git-gutter gitconfig-mode find-file-in-repository exec-path-from-shell elscreen-separate-buffer-list elscreen doom-themes doom-modeline dockerfile-mode direnv diminish dashboard csv-mode company-lsp company all-the-icons add-node-modules-path init-loader use-package))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
