@@ -1,10 +1,8 @@
 # emacs.d
-
-## About
-My emacs setting
+My emacs settings.
 
 ## Requirement
-- emacs24 or later
+- emacs26 or later
 
 ## Setup
 
