@@ -234,16 +234,15 @@
   (setq open-junk-file-format "~/Dropbox/Note/junk/%Y-%m%d-%H%M%S."))
 (use-package prettier-js
   :ensure t
-  :diminish prettier-js-mode
   :config
-  (setq prettier-js-args
-        '("--find-config-path" "--write" "src/**/*.tsx"))
-  (with-eval-after-load 'mhtml-mode
-    (add-hook 'mhtml-mode-hook #'add-node-modules-path)
-    (add-hook 'mhtml-mode-hook #'prettier-js-mode))
-  (with-eval-after-load 'json-mode
-    (add-hook 'json-mode-hook #'add-node-modules-path)
-    (add-hook 'json-mode-hook #'prettier-js-mode)))
+  ;; (setq prettier-js-args
+  ;;       '("--find-config-path" "--write" "src/**/*.tsx"))
+  (add-hook 'mhtml-mode-hook #'add-node-modules-path)
+  (add-hook 'mhtml-mode-hook #'prettier-js-mode)
+  (add-hook 'scss-mode-hook #'add-node-modules-path)
+  (add-hook 'scss-mode-hook #'prettier-js-mode)
+  (add-hook 'json-mode-hook #'add-node-modules-path)
+  (add-hook 'json-mode-hook #'prettier-js-mode))
 (use-package rhtml-mode :ensure t)
 (use-package rjsx-mode
   :ensure t
@@ -277,11 +276,10 @@
   :ensure t
   :mode (("\\.ts$" . typescript-mode)
          ("\\.tsx$" . typescript-mode))
+  :hook ((typescript-mode . add-node-modules-path)
+         (typescript-mode . prettier-js-mode))
   :config
-  (setq typescript-indent-level 2)
-  (with-eval-after-load 'typescript-mode
-    (add-hook 'typescript-mode-hook #'add-node-modules-path)
-    (add-hook 'typescript-mode-hook #'prettier-js-mode)))
+  (setq typescript-indent-level 2))
 (use-package undohist
   :ensure t
   :config

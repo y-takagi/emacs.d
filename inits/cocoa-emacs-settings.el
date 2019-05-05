@@ -3,8 +3,7 @@
   (add-to-list 'default-frame-alist '(font . "ricty-18"))
 
   ;; フルスクリーン
-  ;; posframeと相性悪いので、一旦外す
-  ;;(set-frame-parameter nil 'fullscreen 'fullboth)
+  (set-frame-parameter nil 'fullscreen 'fullboth)
 
   ;; Modify right command to super
   (setq mac-right-command-modifier 'super)
