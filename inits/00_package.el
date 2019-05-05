@@ -97,6 +97,7 @@
 (use-package find-file-in-repository
   :ensure t
   :bind (("C-c f" . find-file-in-repository)))
+(use-package flycheck :ensure t)
 (use-package gitconfig-mode :ensure t)
 (use-package git-gutter
   :ensure t
@@ -104,6 +105,14 @@
   :config
   (global-git-gutter-mode +1))
 (use-package gitignore-mode :ensure t)
+(use-package go-mode
+  :ensure t
+  :config
+  (add-hook 'go-mode-hook
+            '(lambda ()
+               (add-hook 'before-save-hook 'gofmt-before-save)
+               (local-set-key (kbd "M-.") 'godef-jump)
+               (add-to-list 'company-backends 'company-go))))
 (use-package helm
   :ensure t
   :diminish helm-mode
@@ -223,6 +232,18 @@
   :bind (("C-x j" . open-junk-file))
   :config
   (setq open-junk-file-format "~/Dropbox/Note/junk/%Y-%m%d-%H%M%S."))
+(use-package prettier-js
+  :ensure t
+  :diminish prettier-js-mode
+  :config
+  (setq prettier-js-args
+        '("--find-config-path" "--write" "src/**/*.tsx"))
+  (with-eval-after-load 'mhtml-mode
+    (add-hook 'mhtml-mode-hook #'add-node-modules-path)
+    (add-hook 'mhtml-mode-hook #'prettier-js-mode))
+  (with-eval-after-load 'json-mode
+    (add-hook 'json-mode-hook #'add-node-modules-path)
+    (add-hook 'json-mode-hook #'prettier-js-mode)))
 (use-package rhtml-mode :ensure t)
 (use-package rjsx-mode
   :ensure t
@@ -273,6 +294,15 @@
   :diminish undo-tree-mode
   :config
   (global-undo-tree-mode t))
+(use-package web-mode
+  :ensure t
+  :mode (("\\.tag$" . web-mode))
+  :config
+  (setq web-mode-engines-alist
+        '(("riot" . "\\.tag\\'")))
+  (set-face-foreground 'web-mode-html-tag-face "blue")
+  (set-face-foreground 'web-mode-html-tag-bracket-face "brightyellow")
+  (set-face-foreground 'web-mode-html-attr-name-face "brightyellow"))
 (use-package wgrep :ensure t)
 (use-package wgrep-helm :ensure t)
 (use-package whitespace
