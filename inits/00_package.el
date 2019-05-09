@@ -196,6 +196,13 @@
   (setq helm-swoop-move-to-line-cycle nil))
 (use-package hgrc-mode :ensure t)
 (use-package hgignore-mode :ensure t)
+(use-package highlight-indent-guides
+  :ensure t
+  :hook (prog-mode . highlight-indent-guides-mode)
+  :config
+  (setq highlight-indent-guides-method 'character
+        highlight-indent-guides-auto-enabled t
+        highlight-indent-guides-responsive t))
 (use-package json-mode :ensure t)
 (use-package kotlin-mode :ensure t)
 (use-package less-css-mode :ensure t)
