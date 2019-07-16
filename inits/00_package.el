@@ -197,6 +197,7 @@
 (use-package hgrc-mode :ensure t)
 (use-package hgignore-mode :ensure t)
 (use-package highlight-indent-guides
+  :disabled t
   :ensure t
   :hook (prog-mode . highlight-indent-guides-mode)
   :config
