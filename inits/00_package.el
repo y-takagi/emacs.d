@@ -1,5 +1,7 @@
 (use-package add-node-modules-path :ensure t)
-(use-package all-the-icons :ensure t)
+(use-package all-the-icons
+  :ensure t
+  :custom (all-the-icons-scale-factor 1.0))
 (use-package company
   :ensure t
   :diminish company-mode
@@ -31,7 +33,10 @@
 (use-package company-box
   :disabled t
   :ensure t
-  :hook (company-mode . company-box-mode))
+  :hook (company-mode . company-box-mode)
+  :custom
+  (company-box-icons-alist 'company-box-icons-all-the-icons)
+  (company-box-doc-enable nil))
 (use-package company-lsp :ensure t)
 (use-package company-quickhelp
   :disabled t

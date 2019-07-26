@@ -1,6 +1,6 @@
 (when window-system
   ;; Fonts
-  (add-to-list 'default-frame-alist '(font . "ricty-18"))
+  (add-to-list 'default-frame-alist '(font . "ricty-14"))
 
   ;; フルスクリーン
   (set-frame-parameter nil 'fullscreen 'fullboth)
