@@ -131,6 +131,7 @@
          ("M-y" . helm-show-kill-ring)
          ("C-c i" . helm-imenu)
          ("C-x b" . helm-buffers-list))
+  :custom (helm-buffer-max-length nil)
   :config
   (define-key helm-map (kbd "C-h") 'delete-backward-char)
   (define-key helm-find-files-map (kbd "C-h") 'delete-backward-char)
