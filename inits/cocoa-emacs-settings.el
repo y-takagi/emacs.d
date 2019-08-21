@@ -3,7 +3,7 @@
   (add-to-list 'default-frame-alist '(font . "ricty-14"))
 
   ;; フルスクリーン
-  (add-hook 'emacs-startup-hook #'toggle-frame-fullscreen)
+  (add-hook 'emacs-startup-hook #'toggle-frame-maximized)
 
   ;; Modify right command to super
   (setq mac-right-command-modifier 'super)
