@@ -27,6 +27,10 @@
 (use-package all-the-icons
   :ensure t
   :custom (all-the-icons-scale-factor 1.0))
+(use-package auto-sudoedit
+  :ensure t
+  :config
+  (auto-sudoedit-mode 1))
 (use-package company
   :ensure t
   :diminish company-mode
