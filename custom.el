@@ -8,9 +8,12 @@
  '(doom-modeline-icon t)
  '(doom-modeline-major-mode-icon nil)
  '(doom-modeline-minor-modes nil)
+ '(enable-recursive-minibuffers t)
+ '(ivy-use-virtual-buffers t)
+ '(ivy-virtual-abbreviate (quote abbreviate))
  '(package-selected-packages
    (quote
-    (yasnippet yaml-mode yagist wgrep-helm wgrep web-mode undo-tree undohist typescript-mode swift-mode smooth-scrolling smart-newline slim-mode ruby-end rspec-mode rjsx-mode rhtml-mode prettier-js open-junk-file magit lsp-ui kotlin-mode json-mode hgignore-mode hgrc-mode helm-swoop helm-gtags helm-ghq helm-elscreen helm-dash helm-bundle-show helm-ag helm go-mode gitignore-mode git-gutter gitconfig-mode flycheck find-file-in-repository exec-path-from-shell elscreen-separate-buffer-list elscreen doom-themes doom-modeline dockerfile-mode direnv diminish dashboard csv-mode company-lsp company all-the-icons add-node-modules-path init-loader use-package))))
+    (yasnippet yaml-mode yagist wgrep web-mode undo-tree undohist typescript-mode swift-mode smooth-scrolling smart-newline slim-mode ruby-end rspec-mode rjsx-mode rhtml-mode prettier-js open-junk-file magit lsp-ui kotlin-mode json-mode ivy-rich hgignore-mode hgrc-mode go-mode gitignore-mode git-gutter gitconfig-mode flycheck find-file-in-repository exec-path-from-shell elscreen-separate-buffer-list elscreen doom-themes doom-modeline dockerfile-mode direnv diminish dashboard csv-mode counsel company-lsp company auto-sudoedit all-the-icons add-node-modules-path use-package))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
