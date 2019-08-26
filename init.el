@@ -23,6 +23,13 @@
 (unless (require 'use-package nil t)
   (defmacro use-package (&rest args)))
 
+(use-package quelpa
+  :ensure t
+  :custom ((quelpa-self-upgrade-p nil)
+           (quelpa-update-melpa-p nil)
+           (quelpa-checkout-melpa-p nil)))
+(use-package quelpa-use-package :ensure t)
+
 (use-package add-node-modules-path :ensure t)
 (use-package all-the-icons
   :ensure t
@@ -85,6 +92,8 @@
          ("C-S-o" . counsel-rhythmbox))
   :custom ((ivy-use-virtual-buffers t)
            (ivy-virtual-abbreviate 'abbreviate)
+           (ivy-height 14)
+           (ivy-fixed-height-minibuffer t)
            (enable-recursive-minibuffers t))
   :hook ((after-init . ivy-mode)
          (ivy-mode . counsel-mode))
@@ -176,6 +185,10 @@
   (setq highlight-indent-guides-method 'character
         highlight-indent-guides-auto-enabled t
         highlight-indent-guides-responsive t))
+(use-package ivy-ghq
+  :quelpa (ivy-ghq :fetcher github :repo "analyticd/ivy-ghq")
+  :bind ("C-c q" . ivy-ghq-open)
+  :custom (ivy-ghq-short-list t))
 (use-package ivy-rich
   :ensure t
   :after (ivy)
@@ -453,6 +466,9 @@
 
 ;;; emacs permission
 ;; (setq wdired-allow-to-change-permissions t)
+
+;;; suppress warning messsage.
+(setq ad-redefinition-action 'accept)
 
 ;;; diredの表示オプション
 (let ((gls (executable-find "gls")))

@@ -10,6 +10,7 @@ tramp
 ac-comphist.dat
 var/
 recentf
+custom.el
 
 # Org-mode
 .org-id-locations
