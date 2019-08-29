@@ -7,6 +7,7 @@
 
 ;; package.el settings
 (require 'package)
+(setq package-enable-at-startup nil)
 (package-initialize)
 (setq package-archives
       '(("gnu" . "http://elpa.gnu.org/packages/")
@@ -23,10 +24,18 @@
 (unless (require 'use-package nil t)
   (defmacro use-package (&rest args)))
 
+(use-package quelpa
+  :ensure t
+  :custom ((quelpa-self-upgrade-p nil)
+           (quelpa-update-melpa-p nil)
+           (quelpa-checkout-melpa-p nil)))
+(use-package quelpa-use-package :ensure t)
+
 (use-package add-node-modules-path :ensure t)
 (use-package all-the-icons
   :ensure t
   :custom (all-the-icons-scale-factor 1.0))
+(use-package amx :ensure t :config (amx-mode))
 (use-package auto-sudoedit
   :ensure t
   :config
@@ -71,6 +80,28 @@
   :disabled t
   :ensure t
   :config (company-quickhelp-mode))
+(use-package counsel
+  :ensure t
+  :diminish ivy-mode counsel-mode
+  :bind (("C-s" . swiper-isearch)
+         ("\C-s" . swiper)
+         ("C-c C-r" . ivy-resume)
+         ("C-x C-c" . counsel-M-x)
+         ("C-x C-f" . counsel-find-file)
+         ("C-c p" . counsel-git-grep)
+         ("C-c g" . counsel-rg))
+  :custom ((ivy-use-virtual-buffers t)
+           (ivy-initial-inputs-alist nil)
+           (ivy-virtual-abbreviate 'abbreviate)
+           (ivy-height 14)
+           (ivy-fixed-height-minibuffer t)
+           (enable-recursive-minibuffers t)
+           (ivy-extra-directories '("./")))
+  :hook ((after-init . ivy-mode)
+         (ivy-mode . counsel-mode))
+  :config
+  (define-key ivy-minibuffer-map (kbd "C-l") 'counsel-up-directory)
+  (define-key ivy-minibuffer-map (kbd "TAB") 'counsel-down-directory))
 (use-package csv-mode :ensure t)
 (use-package dash :ensure t)
 (use-package dashboard
@@ -115,8 +146,7 @@
   ;; タブの先頭に[X]を表示しない
   (setq elscreen-tab-display-kill-screen nil)
   ;; header-lineの先頭に[<->]を表示しない
-  (setq elscreen-tab-display-control nil)
-  (define-key global-map (kbd "C-z b") 'helm-elscreen))
+  (setq elscreen-tab-display-control nil))
 (use-package elscreen-separate-buffer-list
   :ensure t
   :config
@@ -147,88 +177,6 @@
                (add-hook 'before-save-hook 'gofmt-before-save)
                (local-set-key (kbd "M-.") 'godef-jump)
                (add-to-list 'company-backends 'company-go))))
-(use-package helm
-  :ensure t
-  :diminish helm-mode
-  :init
-  (require 'helm-config)
-  (helm-mode)
-  :bind (("C-c m" . helm-mini)
-         ("C-x C-c" . helm-M-x)
-         ("C-x C-f" . helm-find-files)
-         ("C-x C-r" . helm-recentf)
-         ("M-y" . helm-show-kill-ring)
-         ("C-c i" . helm-imenu)
-         ("C-x b" . helm-buffers-list))
-  :custom (helm-buffer-max-length nil)
-  :config
-  (define-key helm-map (kbd "C-h") 'delete-backward-char)
-  (define-key helm-find-files-map (kbd "C-h") 'delete-backward-char)
-  (define-key helm-find-files-map (kbd "TAB") 'helm-execute-persistent-action)
-  (define-key helm-read-file-map (kbd "TAB") 'helm-execute-persistent-action)
-
-  ;; Disable helm in some functions
-  (add-to-list 'helm-completing-read-handlers-alist '(find-alternate-file . nil))
-
-  ;; Emulate `kill-line' in helm minibuffer
-  ;; (setq helm-delete-minibuffer-contents-from-point t)
-  (defadvice helm-delete-minibuffer-contents (before helm-emulate-kill-line activate)
-    "Emulate `kill-line' in helm minibuffer"
-    (kill-new (buffer-substring (point) (field-end))))
-
-  (defadvice helm-ff-kill-or-find-buffer-fname (around execute-only-if-exist activate)
-    "Execute command only if CANDIDATE exists"
-    (when (file-exists-p candidate)
-      ad-do-it))
-
-  (defadvice helm-ff-transform-fname-for-completion (around my-transform activate)
-    "Transform the pattern to reflect my intention"
-    (let* ((pattern (ad-get-arg 0))
-           (input-pattern (file-name-nondirectory pattern))
-           (dirname (file-name-directory pattern)))
-      (setq input-pattern (replace-regexp-in-string "\\." "\\\\." input-pattern))
-      (setq ad-return-value
-            (concat dirname
-                    (if (string-match "^\\^" input-pattern)
-                        ;; '^' is a pattern for basename
-                        ;; and not required because the directory name is prepended
-                        (substring input-pattern 1)
-                      (concat ".*" input-pattern)))))))
-(use-package helm-ag
-  :ensure t
-  :bind (("C-c g" . helm-ag)
-         ("C-c p" . helm-do-ag-project-root))
-  :config
-  (setq helm-ag-insert-at-point 'symbol)
-  (setq helm-ag-base-command "rg --no-heading"))
-(use-package helm-bundle-show :ensure t)
-(use-package helm-dash
-  :ensure t
-  :config
-  (defun ruby-doc ()
-    (interactive)
-    (setq-local helm-dash-docsets '("Ruby" "Ruby on Rails" "PostgreSQL")))
-  (add-hook 'ruby-mode-hook 'ruby-doc))
-(use-package helm-elscreen :ensure t)
-(use-package helm-ghq
-  :ensure t
-  :bind (("C-c q" . helm-ghq)))
-(use-package helm-gtags
-  :ensure t
-  :bind (("M-t" . helm-gtags-find-tag)
-         ("M-r" . helm-gtags-find-rtag)
-         ("M-s" . helm-gtags-find-symbol)
-         ("M-l" . helm-gtags-select)
-         ("C-t" . helm-gtags-pop-stack))
-  :config
-  (setq helm-gtags-auto-update t)
-  (add-hook 'ruby-mode-hook 'helm-gtags-mode))
-(use-package helm-swoop
-  :ensure t
-  :bind (("C-s" . helm-swoop))
-  :config
-  ;; 検索結果をcycleしない、お好みで
-  (setq helm-swoop-move-to-line-cycle nil))
 (use-package hgrc-mode :ensure t)
 (use-package hgignore-mode :ensure t)
 (use-package highlight-indent-guides
@@ -239,6 +187,26 @@
   (setq highlight-indent-guides-method 'character
         highlight-indent-guides-auto-enabled t
         highlight-indent-guides-responsive t))
+(use-package ivy-ghq
+  :quelpa (ivy-ghq :fetcher github :repo "analyticd/ivy-ghq")
+  :bind ("C-c q" . ivy-ghq-open)
+  :custom (ivy-ghq-short-list t))
+(use-package ivy-rich
+  :ensure t
+  :after (ivy)
+  :config
+  (setcdr (assq t ivy-format-functions-alist) #'ivy-format-function-line)
+  (setq ivy-rich--display-transformers-list
+        '(ivy-switch-buffer
+          (:columns
+           ((ivy-rich-candidate (:width 40))
+            (ivy-rich-switch-buffer-project (:width 30 :face success))
+            (ivy-rich-switch-buffer-path (:width (lambda (x) (ivy-rich-switch-buffer-shorten-path x (ivy-rich-minibuffer-width 0.3))))))
+           :predicate
+           (lambda (cand) (get-buffer cand)))))
+
+  (ivy-rich-mode 1)
+  )
 (use-package json-mode :ensure t)
 (use-package kotlin-mode :ensure t)
 (use-package less-css-mode :ensure t)
@@ -423,7 +391,6 @@
   (set-face-foreground 'web-mode-html-tag-bracket-face "brightyellow")
   (set-face-foreground 'web-mode-html-attr-name-face "brightyellow"))
 (use-package wgrep :ensure t)
-(use-package wgrep-helm :ensure t)
 (use-package whitespace
   :defer t
   :diminish whitespace-mode
@@ -501,6 +468,9 @@
 ;;; emacs permission
 ;; (setq wdired-allow-to-change-permissions t)
 
+;;; suppress warning messsage.
+(setq ad-redefinition-action 'accept)
+
 ;;; diredの表示オプション
 (let ((gls (executable-find "gls")))
  (when gls
@@ -524,7 +494,7 @@
 
 (when window-system
   ;; Fonts
-  (add-to-list 'default-frame-alist '(font . "ricty-14"))
+  (add-to-list 'default-frame-alist '(font . "ricty-18"))
 
   ;; フルスクリーン
   (add-hook 'emacs-startup-hook #'toggle-frame-maximized)
