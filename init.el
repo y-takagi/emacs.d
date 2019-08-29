@@ -7,6 +7,7 @@
 
 ;; package.el settings
 (require 'package)
+(setq package-enable-at-startup nil)
 (package-initialize)
 (setq package-archives
       '(("gnu" . "http://elpa.gnu.org/packages/")
@@ -34,6 +35,7 @@
 (use-package all-the-icons
   :ensure t
   :custom (all-the-icons-scale-factor 1.0))
+(use-package amx :ensure t :config (amx-mode))
 (use-package auto-sudoedit
   :ensure t
   :config
@@ -87,14 +89,14 @@
          ("C-x C-c" . counsel-M-x)
          ("C-x C-f" . counsel-find-file)
          ("C-c p" . counsel-git-grep)
-         ("C-c g" . counsel-rg)
-         ("C-x l" . counsel-locate)
-         ("C-S-o" . counsel-rhythmbox))
+         ("C-c g" . counsel-rg))
   :custom ((ivy-use-virtual-buffers t)
+           (ivy-initial-inputs-alist nil)
            (ivy-virtual-abbreviate 'abbreviate)
            (ivy-height 14)
            (ivy-fixed-height-minibuffer t)
-           (enable-recursive-minibuffers t))
+           (enable-recursive-minibuffers t)
+           (ivy-extra-directories '("./")))
   :hook ((after-init . ivy-mode)
          (ivy-mode . counsel-mode))
   :config
@@ -197,8 +199,7 @@
   (setq ivy-rich--display-transformers-list
         '(ivy-switch-buffer
           (:columns
-           ((ivy-rich-candidate (:width 30))
-            (ivy-rich-switch-buffer-indicators (:width 4 :face error :align right))
+           ((ivy-rich-candidate (:width 40))
             (ivy-rich-switch-buffer-project (:width 30 :face success))
             (ivy-rich-switch-buffer-path (:width (lambda (x) (ivy-rich-switch-buffer-shorten-path x (ivy-rich-minibuffer-width 0.3))))))
            :predicate
