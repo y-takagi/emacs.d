@@ -494,7 +494,7 @@
 
 (when window-system
   ;; Fonts
-  (add-to-list 'default-frame-alist '(font . "ricty-18"))
+  (add-to-list 'default-frame-alist '(font . "ricty-16"))
 
   ;; フルスクリーン
   (add-hook 'emacs-startup-hook #'toggle-frame-maximized)
