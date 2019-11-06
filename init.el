@@ -90,16 +90,15 @@
          ("C-x C-f" . counsel-find-file)
          ("C-c p" . counsel-git-grep)
          ("C-c g" . counsel-rg))
-  :custom ((ivy-use-virtual-buffers t)
-           (ivy-initial-inputs-alist nil)
-           (ivy-virtual-abbreviate 'abbreviate)
-           (ivy-height 14)
-           (ivy-fixed-height-minibuffer t)
-           (enable-recursive-minibuffers t)
-           (ivy-extra-directories '("./")))
-  :hook ((after-init . ivy-mode)
-         (ivy-mode . counsel-mode))
   :config
+  (ivy-mode 1)
+  (setq ivy-use-virtual-buffers t
+        ivy-initial-inputs-alist nil
+        ivy-virtual-abbreviate 'abbreviate
+        ivy-height 14
+        ivy-fixed-height-minibuffer t
+        enable-recursive-minibuffers t
+        ivy-extra-directories '("./"))
   (define-key ivy-minibuffer-map (kbd "C-l") 'counsel-up-directory)
   (define-key ivy-minibuffer-map (kbd "TAB") 'counsel-down-directory))
 (use-package csv-mode :ensure t)
