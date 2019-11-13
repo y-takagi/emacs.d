@@ -90,8 +90,9 @@
          ("C-x C-f" . counsel-find-file)
          ("C-c p" . counsel-git-grep)
          ("C-c g" . counsel-rg))
+  :hook ((after-init . ivy-mode)
+          (ivy-mode . counsel-mode))
   :config
-  (ivy-mode 1)
   (setq ivy-use-virtual-buffers t
         ivy-initial-inputs-alist nil
         ivy-virtual-abbreviate 'abbreviate
