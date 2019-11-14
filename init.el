@@ -217,8 +217,10 @@
   :bind (:map lsp-mode-map
               ("C-c C-d" . lsp-describe-thing-at-point))
   :init
-  (setq lsp-auto-guess-root t    ; Detect project root
-        lsp-prefer-flymake nil)) ; Use flycheck
+  (setq lsp-auto-guess-root t         ; Detect project root
+        lsp-prefer-flymake nil        ; Use flycheck
+        lsp-report-if-no-buffer nil
+        lsp-before-save-edits nil))
 (use-package lsp-ui
   :ensure t
   :bind (:map lsp-ui-mode-map
