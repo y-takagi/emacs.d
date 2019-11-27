@@ -83,7 +83,7 @@
 (use-package counsel
   :ensure t
   :diminish ivy-mode counsel-mode
-  :bind (("C-s" . swiper-isearch)
+  :bind (("C-s" . swiper)
          ("C-c C-r" . ivy-resume)
          ("C-x C-c" . counsel-M-x)
          ("C-x C-f" . counsel-find-file)
