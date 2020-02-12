@@ -234,8 +234,7 @@
               lsp-ui-sideline-enable nil
               lsp-ui-sideline-ignore-duplicate t
               lsp-ui-imenu-enable nil
-              lsp-ui-imenu-kind-position 'top)
-  :hook (lsp-mode . lsp-ui-mode))
+              lsp-ui-imenu-kind-position 'top))
 (use-package magit
   :ensure t
   :bind (("C-x g" . magit-status)))
@@ -497,8 +496,8 @@
   ;; Fonts
   (add-to-list 'default-frame-alist '(font . "ricty-16"))
 
-  ;; フルスクリーン
-  (add-hook 'emacs-startup-hook #'toggle-frame-maximized)
+  ;; フルスクリーン (maximized, fullscreen)
+  (add-hook 'emacs-startup-hook #'toggle-frame-fullscreen)
 
   ;; Modify right command to super
   (setq mac-right-command-modifier 'super)
