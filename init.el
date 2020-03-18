@@ -219,6 +219,7 @@
   (setq lsp-auto-guess-root t         ; Detect project root
         lsp-prefer-flymake nil        ; Use flycheck
         lsp-report-if-no-buffer nil
+        lsp-disabled-clients '(angular-ls)
         lsp-before-save-edits nil))
 (use-package lsp-ui
   :ensure t
