@@ -97,6 +97,7 @@
         ivy-virtual-abbreviate 'abbreviate
         ivy-height 14
         ivy-fixed-height-minibuffer t
+        ivy-use-selectable-prompt t
         enable-recursive-minibuffers t
         ivy-extra-directories '("./"))
   (define-key ivy-minibuffer-map (kbd "C-l") 'counsel-up-directory)
