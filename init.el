@@ -31,7 +31,9 @@
            (quelpa-checkout-melpa-p nil)))
 (use-package quelpa-use-package :ensure t)
 
-(use-package add-node-modules-path :ensure t)
+(use-package add-node-modules-path
+  :ensure t
+  :hook (prog-mode gfm-mode markdown-mode))
 (use-package all-the-icons
   :ensure t
   :custom (all-the-icons-scale-factor 1.0))
@@ -325,15 +327,7 @@
   )
 (use-package prettier-js
   :ensure t
-  :config
-  ;; (setq prettier-js-args
-  ;;       '("--find-config-path" "--write" "src/**/*.tsx"))
-  (add-hook 'mhtml-mode-hook #'add-node-modules-path)
-  (add-hook 'mhtml-mode-hook #'prettier-js-mode)
-  (add-hook 'scss-mode-hook #'add-node-modules-path)
-  (add-hook 'scss-mode-hook #'prettier-js-mode)
-  (add-hook 'json-mode-hook #'add-node-modules-path)
-  (add-hook 'json-mode-hook #'prettier-js-mode))
+  :hook ((typescript-mode rjsx-mode scss-mode mhtml-mode json-mode gfm-mode markdown-mode) . prettier-js-mode))
 (use-package rhtml-mode :ensure t)
 (use-package rjsx-mode
   :ensure t
@@ -367,8 +361,6 @@
   :ensure t
   :mode (("\\.ts$" . typescript-mode)
          ("\\.tsx$" . typescript-mode))
-  :hook ((typescript-mode . add-node-modules-path)
-         (typescript-mode . prettier-js-mode))
   :config
   (setq typescript-indent-level 2))
 (use-package undohist
@@ -448,6 +440,8 @@
 
 ;;; 変更されたファイルを自動的に再読み込み
 (global-auto-revert-mode 1)
+
+(setq default-directory "~/")
 
 ;;; tab
 (setq-default tab-width 4 indent-tabs-mode nil)
