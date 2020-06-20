@@ -26,9 +26,10 @@
 
 (use-package quelpa
   :ensure t
-  :custom ((quelpa-self-upgrade-p nil)
-           (quelpa-update-melpa-p nil)
-           (quelpa-checkout-melpa-p nil)))
+  :custom
+  (quelpa-self-upgrade-p nil)
+  (quelpa-update-melpa-p nil)
+  (quelpa-checkout-melpa-p nil))
 (use-package quelpa-use-package :ensure t)
 
 (use-package add-node-modules-path
@@ -77,7 +78,6 @@
   :custom
   (company-box-icons-alist 'company-box-icons-all-the-icons)
   (company-box-doc-enable nil))
-(use-package company-lsp :ensure t)
 (use-package company-quickhelp
   :disabled t
   :ensure t
@@ -149,11 +149,6 @@
   (setq elscreen-tab-display-kill-screen nil)
   ;; header-lineの先頭に[<->]を表示しない
   (setq elscreen-tab-display-control nil))
-(use-package elscreen-separate-buffer-list
-  :ensure t
-  :config
-  (setq esbl-separate-buffer-list-default '("*dashboard*" "*scratch*" "*Messages*"))
-  (elscreen-separate-buffer-list-mode 1))
 (use-package exec-path-from-shell
   :ensure t
   :config
@@ -163,7 +158,12 @@
 (use-package find-file-in-repository
   :ensure t
   :bind (("C-c f" . find-file-in-repository)))
-(use-package flycheck :ensure t)
+(use-package flycheck
+  :ensure t
+  :bind (("M-p" . flycheck-previous-error)
+         ("M-n" . flycheck-next-error))
+  :config
+  (setq flycheck-checker-error-threshold nil))
 (use-package gitconfig-mode :ensure t)
 (use-package git-gutter
   :ensure t
@@ -349,6 +349,11 @@
 (use-package smart-newline
   :ensure t
   :bind (("C-j" . smart-newline)))
+(use-package smartparens
+  :ensure t
+  :config
+  (use-package smartparens-config)
+  (smartparens-global-mode t))
 (use-package smooth-scrolling
   :ensure t
   :config
@@ -456,7 +461,10 @@
 ;;; file
 (setq mode-require-final-newline t)
 (setq backup-inhibited t)
+(setq make-backup-files nil)
+(setq create-lockfiles nil)
 (setq delete-auto-save-files t)
+(setq auto-save-default nil)
 
 ;;; 問い合せには y か n で返答
 (fset 'yes-or-no-p 'y-or-n-p)
@@ -488,12 +496,15 @@
 
 (global-unset-key "\C-x\C-z")
 
+(when (eq system-type 'darwin)
+  (setq ns-command-modifier (quote meta)))
+
 (when window-system
   ;; Fonts
   (add-to-list 'default-frame-alist '(font . "ricty-16"))
 
   ;; フルスクリーン (maximized, fullscreen)
-  (add-hook 'emacs-startup-hook #'toggle-frame-fullscreen)
+  (add-hook 'emacs-startup-hook #'toggle-frame-maximized)
 
   ;; Modify right command to super
   (setq mac-right-command-modifier 'super)
