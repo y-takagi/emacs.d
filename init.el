@@ -49,7 +49,7 @@
   :config
   (global-company-mode +1)
   (setq company-idle-delay 0)
-  (setq company-minimum-prefix-length 2)
+  (setq company-minimum-prefix-length 1)
 
   ;; Keybind settings
   (global-set-key (kbd "M-/") 'company-complete)
@@ -92,7 +92,7 @@
          ("C-c p" . counsel-git-grep)
          ("C-c g" . counsel-rg))
   :hook ((after-init . ivy-mode)
-          (ivy-mode . counsel-mode))
+         (ivy-mode . counsel-mode))
   :config
   (setq ivy-use-virtual-buffers t
         ivy-initial-inputs-alist nil
@@ -164,6 +164,9 @@
          ("M-n" . flycheck-next-error))
   :config
   (setq flycheck-checker-error-threshold nil))
+(use-package format-all
+  :ensure t
+  :hook ((emacs-lisp-mode python-mode) . format-all-mode))
 (use-package gitconfig-mode :ensure t)
 (use-package git-gutter
   :ensure t
@@ -214,18 +217,27 @@
 (use-package less-css-mode :ensure t)
 (use-package lsp-mode
   :ensure t
-  :diminish lsp-mode
+  :commands lsp
   :hook (prog-mode . lsp)
   :bind (:map lsp-mode-map
               ("C-c C-d" . lsp-describe-thing-at-point))
   :init
-  (setq lsp-auto-guess-root t         ; Detect project root
+  (setq gc-cons-threshold 100000000
+        read-process-output-max (* 1024 1024)
+        lsp-idle-delay 0.500
+        lsp-auto-guess-root t         ; Detect project root
         lsp-prefer-flymake nil        ; Use flycheck
         lsp-report-if-no-buffer nil
         lsp-disabled-clients '(angular-ls)
-        lsp-before-save-edits nil))
+        lsp-signature-auto-activate t
+        lsp-signature-doc-lines 1
+        lsp-before-save-edits nil
+        lsp-modeline-diagnostics-mode nil
+        lsp-clients-python-library-directories '("/usr/local/" "/usr/")))
 (use-package lsp-ui
   :ensure t
+  :commands lsp-ui-mode
+  :after (flycheck)
   :bind (:map lsp-ui-mode-map
               ([remap xref-find-definitions] . lsp-ui-peek-find-definitions)
               ([remap xref-find-references] . lsp-ui-peek-find-references)
@@ -234,11 +246,13 @@
               lsp-ui-doc-header t
               lsp-ui-doc-include-signature t
               lsp-ui-doc-position 'top
-              lsp-ui-doc-use-webkit t
               lsp-ui-sideline-enable nil
               lsp-ui-sideline-ignore-duplicate t
               lsp-ui-imenu-enable nil
-              lsp-ui-imenu-kind-position 'top))
+              lsp-ui-imenu-kind-position 'top)
+  :config
+  ;;(flycheck-add-next-checker 'lsp 'typescript-tslint)
+  )
 (use-package magit
   :ensure t
   :bind (("C-x g" . magit-status)))
@@ -477,12 +491,9 @@
 
 ;;; diredの表示オプション
 (let ((gls (executable-find "gls")))
- (when gls
-   (setq insert-directory-program gls
-         dired-listing-switches "-ahl --time-style long-iso --group-directories-first")))
-
-;;; emacs のデフォルトブラウザを eww に変更
-(setq browse-url-browser-function 'eww-browse-url)
+  (when gls
+    (setq insert-directory-program gls
+          dired-listing-switches "-ahl --time-style long-iso --group-directories-first")))
 
 ;;; Global Key
 ;; copy & paste
@@ -496,18 +507,20 @@
 
 (global-unset-key "\C-x\C-z")
 
-(when (eq system-type 'darwin)
-  (setq ns-command-modifier (quote meta)))
+;;; emacs のデフォルトブラウザを eww に変更
+(setq browse-url-browser-function 'eww-browse-url)
 
-(when window-system
+(when (eq system-type 'darwin)
   ;; Fonts
   (add-to-list 'default-frame-alist '(font . "ricty-16"))
+  (set-fontset-font "fontset-default" 'unicode "Apple Color Emoji" nil 'prepend)
 
   ;; フルスクリーン (maximized, fullscreen)
-  (add-hook 'emacs-startup-hook #'toggle-frame-maximized)
+  ;;(add-hook 'emacs-startup-hook #'toggle-frame-maximized)
 
   ;; Modify right command to super
   (setq mac-right-command-modifier 'super)
+  (setq ns-command-modifier (quote meta))
 
   ;; フォントの拡大・縮小
   (global-set-key (kbd "s-=") (lambda () (interactive) (text-scale-increase 1)))
