@@ -51,6 +51,15 @@
   (setq company-idle-delay 0)
   (setq company-minimum-prefix-length 1)
 
+  (defvar company-mode/enable-yas t
+    "Enable yasnippet for all backends.")
+  (defun company-mode/backend-with-yas (backend)
+    (if (or (not company-mode/enable-yas) (and (listp backend) (member 'company-yasnippet backend)))
+        backend
+      (append (if (consp backend) backend (list backend))
+              '(:with company-yasnippet))))
+  (setq company-backends (mapcar #'company-mode/backend-with-yas company-backends))
+
   ;; Keybind settings
   (global-set-key (kbd "M-/") 'company-complete)
 
@@ -273,11 +282,11 @@
   :ensure t
   :bind (("C-x j" . open-junk-file))
   :config
-  (setq open-junk-file-format "~/Dropbox/Note/junk/%Y-%m%d-%H%M%S."))
+  (setq open-junk-file-format "~/Documents/Note/%Y-%m%d-%H%M%S."))
 (use-package org
   :ensure t
   :config
-  (setq org-directory "~/Dropbox/Note/org/")
+  (setq org-directory "~/Documents/Note/")
   (setq org-default-notes-file (concat org-directory "default.org"))
   (setq org-agenda-files (list org-directory))
   (setq org-project-file (concat org-directory "project-wtvr.org"))
@@ -409,12 +418,7 @@
   :diminish whitespace-mode
   :config
   ;;; 行末スペースとtabの色付け
-  (setq whitespace-style '(face
-                           trailing
-                           tabs
-                           space-mark
-                           tab-mark
-                           ))
+  (setq whitespace-style '(face trailing tabs space-mark tab-mark))
   (setq whitespace-display-mappings
         '((tab-mark ?\t [?\u00BB ?\t] [?\\ ?\t])))
   (set-face-attribute 'whitespace-tab nil
@@ -426,11 +430,17 @@
   (add-hook 'text-mode-hook #'whitespace-mode))
 (use-package yagist :ensure t)
 (use-package yaml-mode :ensure t)
-(use-package yasnippet :ensure t)
+(use-package yasnippet
+  :ensure t
+  :config
+  (yas-reload-all)
+  (add-hook 'markdown-mode-hook #'yas-minor-mode)
+  (add-hook 'prog-mode-hook #'yas-minor-mode))
+(use-package yasnippet-snippets :ensure t)
 
 ;;; language and coding
-(prefer-coding-system 'utf-8-unix)
-;; (set-language-environment "Japanese")
+(prefer-coding-system 'utf-8)
+(set-language-environment "Japanese")
 ;; (setq file-name-coding-system 'utf-8)
 ;; (setq locale-coding-system 'utf-8)
 
@@ -512,15 +522,15 @@
 
 (when (eq system-type 'darwin)
   ;; Fonts
-  (add-to-list 'default-frame-alist '(font . "ricty-16"))
+  (add-to-list 'default-frame-alist '(font . "Ricty 16"))
   (set-fontset-font "fontset-default" 'unicode "Apple Color Emoji" nil 'prepend)
 
   ;; フルスクリーン (maximized, fullscreen)
   ;;(add-hook 'emacs-startup-hook #'toggle-frame-maximized)
 
   ;; Modify right command to super
-  (setq mac-right-command-modifier 'super)
-  (setq ns-command-modifier (quote meta))
+  ;; (setq mac-right-command-modifier 'super)
+  ;; (setq ns-command-modifier (quote meta))
 
   ;; フォントの拡大・縮小
   (global-set-key (kbd "s-=") (lambda () (interactive) (text-scale-increase 1)))

@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: list-string-input
+# key: list-string-input
+# --
+list(input())

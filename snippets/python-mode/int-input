@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: int-input
+# key: int-input
+# --
+int(input())

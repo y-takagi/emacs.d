@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: list-int-input
+# key: list-int-input
+# --
+list(map(int, input().split()))

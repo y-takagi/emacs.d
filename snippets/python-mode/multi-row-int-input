@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: multi-row-int-input
+# key: multi-row-int-input
+# --
+[int(input()) for i in range(${1:n})]
