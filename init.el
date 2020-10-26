@@ -243,6 +243,11 @@
         lsp-before-save-edits nil
         lsp-modeline-diagnostics-mode nil
         lsp-clients-python-library-directories '("/usr/local/" "/usr/")))
+(use-package lsp-haskell
+  :ensure t
+  :config
+  (add-hook 'haskell-mode-hook #'lsp)
+  (add-hook 'haskell-literate-mode-hook #'lsp))
 (use-package lsp-ui
   :ensure t
   :commands lsp-ui-mode
