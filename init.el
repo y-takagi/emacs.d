@@ -113,7 +113,6 @@
         ivy-extra-directories '("./"))
   (define-key ivy-minibuffer-map (kbd "C-l") 'counsel-up-directory)
   (define-key ivy-minibuffer-map (kbd "TAB") 'counsel-down-directory))
-(use-package csv-mode :ensure t)
 (use-package dash :ensure t)
 (use-package dashboard
   :ensure t
@@ -129,7 +128,6 @@
   :ensure t
   :config
   (direnv-mode))
-(use-package dockerfile-mode :ensure t)
 (use-package doom-modeline
   :ensure t
   :custom
@@ -176,23 +174,11 @@
 (use-package format-all
   :ensure t
   :hook ((emacs-lisp-mode python-mode) . format-all-mode))
-(use-package gitconfig-mode :ensure t)
 (use-package git-gutter
   :ensure t
   :diminish git-gutter-mode
   :config
   (global-git-gutter-mode +1))
-(use-package gitignore-mode :ensure t)
-(use-package go-mode
-  :ensure t
-  :config
-  (add-hook 'go-mode-hook
-            '(lambda ()
-               (add-hook 'before-save-hook 'gofmt-before-save)
-               (local-set-key (kbd "M-.") 'godef-jump)
-               (add-to-list 'company-backends 'company-go))))
-(use-package hgrc-mode :ensure t)
-(use-package hgignore-mode :ensure t)
 (use-package highlight-indent-guides
   :disabled t
   :ensure t
@@ -219,20 +205,16 @@
            :predicate
            (lambda (cand) (get-buffer cand)))))
 
-  (ivy-rich-mode 1)
-  )
-(use-package json-mode :ensure t)
-(use-package kotlin-mode :ensure t)
-(use-package less-css-mode :ensure t)
+  (ivy-rich-mode 1))
 (use-package lsp-mode
   :ensure t
-  :commands lsp
-  :hook (prog-mode . lsp)
+  :commands (lsp lsp-deferred)
   :bind (:map lsp-mode-map
               ("C-c C-d" . lsp-describe-thing-at-point))
   :init
   (setq gc-cons-threshold 100000000
         read-process-output-max (* 1024 1024)
+        lsp-keymap-prefix "C-c l"
         lsp-idle-delay 0.500
         lsp-auto-guess-root t         ; Detect project root
         lsp-prefer-flymake nil        ; Use flycheck
@@ -270,13 +252,6 @@
 (use-package magit
   :ensure t
   :bind (("C-x g" . magit-status)))
-(use-package markdown-mode
-  :ensure t
-  :commands (markdown-mode gfm-mode)
-  :mode (("README\\.md\\'" . gfm-mode)
-         ("\\.md\\'" . markdown-mode)
-         ("\\.markdown\\'" . markdown-mode))
-  :init (setq markdown-command "multimarkdown"))
 (use-package omnisharp
   :disabled t
   :config
@@ -351,29 +326,10 @@
           ("m" "Meeting" entry (file+headline org-project-file "Meeting")
            "* %T %?\n"
            :prepend t)
-          ))
-  )
-(use-package prettier-js
-  :ensure t
-  :hook ((typescript-mode rjsx-mode scss-mode mhtml-mode json-mode gfm-mode markdown-mode) . prettier-js-mode))
-(use-package rhtml-mode :ensure t)
-(use-package rjsx-mode
-  :ensure t
-  :mode (("\\.js$" . rjsx-mode))
-  :config
-  (add-hook 'rjsx-mode-hook #'flycheck-mode)
-  (flycheck-add-mode 'javascript-eslint 'rjsx-mode))
-(use-package rspec-mode :ensure t)
+          )))
+(use-package prettier-js :ensure t)
 (use-package ruby-end :ensure t)
-(use-package ruby-mode
-  :ensure t
-  :mode (("\\.erb$" . ruby-mode)
-         ("\\.rake$" . ruby-mode)
-         ("\\.jbuilder$" . ruby-mode)
-         ("\\.builder$" . ruby-mode)
-         ("Fastfile". ruby-mode)))
 (use-package s :ensure t)
-(use-package slim-mode :ensure t)
 (use-package smart-newline
   :ensure t
   :bind (("C-j" . smart-newline)))
@@ -386,16 +342,6 @@
   :ensure t
   :config
   (smooth-scrolling-mode 1))
-(use-package swift-mode
-  :ensure t
-  :config
-  (setq swift-mode:basic-offset 2))
-(use-package typescript-mode
-  :ensure t
-  :mode (("\\.ts$" . typescript-mode)
-         ("\\.tsx$" . typescript-mode))
-  :config
-  (setq typescript-indent-level 2))
 (use-package undohist
   :ensure t
   :config
@@ -408,15 +354,6 @@
   :diminish undo-tree-mode
   :config
   (global-undo-tree-mode t))
-(use-package web-mode
-  :ensure t
-  :mode (("\\.tag$" . web-mode))
-  :config
-  (setq web-mode-engines-alist
-        '(("riot" . "\\.tag\\'")))
-  (set-face-foreground 'web-mode-html-tag-face "blue")
-  (set-face-foreground 'web-mode-html-tag-bracket-face "brightyellow")
-  (set-face-foreground 'web-mode-html-attr-name-face "brightyellow"))
 (use-package wgrep :ensure t)
 (use-package whitespace
   :defer t
@@ -434,7 +371,6 @@
   (add-hook 'prog-mode-hook #'whitespace-mode)
   (add-hook 'text-mode-hook #'whitespace-mode))
 (use-package yagist :ensure t)
-(use-package yaml-mode :ensure t)
 (use-package yasnippet
   :ensure t
   :config
@@ -442,6 +378,84 @@
   (add-hook 'markdown-mode-hook #'yas-minor-mode)
   (add-hook 'prog-mode-hook #'yas-minor-mode))
 (use-package yasnippet-snippets :ensure t)
+
+
+;;; mode
+(use-package csv-mode :ensure t)
+(use-package dockerfile-mode :ensure t)
+(use-package gitconfig-mode :ensure t)
+(use-package gitignore-mode :ensure t)
+(use-package go-mode
+  :ensure t
+  :config
+  (add-hook 'go-mode-hook
+            '(lambda ()
+               (add-hook 'before-save-hook 'gofmt-before-save)
+               (local-set-key (kbd "M-.") 'godef-jump)
+               (add-to-list 'company-backends 'company-go))))
+(use-package hgrc-mode :ensure t)
+(use-package hgignore-mode :ensure t)
+(use-package json-mode
+  :ensure t
+  :hook (json-mode . prettier-js-mode))
+(use-package kotlin-mode :ensure t)
+(use-package less-css-mode :ensure t)
+(use-package markdown-mode
+  :ensure t
+  :commands (markdown-mode gfm-mode)
+  :mode (("README\\.md\\'" . gfm-mode)
+         ("\\.md\\'" . markdown-mode)
+         ("\\.markdown\\'" . markdown-mode))
+  :hook ((markdown-mode gfm-mode) . prettier-js-mode)
+  :init (setq markdown-command "multimarkdown"))
+(use-package mhtml-mode
+  :hook ((mhtml-mode . prettier-js-mode)
+         (mhtml-mode . lsp-deferred)))
+(use-package python-mode
+  :hook (python-mode . lsp-deferred))
+(use-package rhtml-mode :ensure t)
+(use-package rjsx-mode
+  :ensure t
+  :hook ((rjsx-mode . prettier-js-mode)
+         (rjsx-mode . flycheck-mode))
+  :mode (("\\.js$" . rjsx-mode))
+  :config
+  (flycheck-add-mode 'javascript-eslint 'rjsx-mode))
+(use-package rspec-mode :ensure t)
+(use-package ruby-mode
+  :ensure t
+  :mode (("\\.erb$" . ruby-mode)
+         ("\\.rake$" . ruby-mode)
+         ("\\.jbuilder$" . ruby-mode)
+         ("\\.builder$" . ruby-mode)
+         ("Fastfile". ruby-mode)))
+(use-package rustic :ensure t)
+(use-package scss-mode
+  :hook ((scss-mode . prettier-js-mode)
+         (scss-mode . lsp-deferred)))
+(use-package slim-mode :ensure t)
+(use-package swift-mode
+  :ensure t
+  :config
+  (setq swift-mode:basic-offset 2))
+(use-package typescript-mode
+  :ensure t
+  :mode (("\\.ts$" . typescript-mode)
+         ("\\.tsx$" . typescript-mode))
+  :hook ((typescript-mode . prettier-js-mode)
+         (typescript-mode . lsp-deferred))
+  :config
+  (setq typescript-indent-level 2))
+(use-package web-mode
+  :ensure t
+  :mode (("\\.tag$" . web-mode))
+  :config
+  (setq web-mode-engines-alist
+        '(("riot" . "\\.tag\\'")))
+  (set-face-foreground 'web-mode-html-tag-face "blue")
+  (set-face-foreground 'web-mode-html-tag-bracket-face "brightyellow")
+  (set-face-foreground 'web-mode-html-attr-name-face "brightyellow"))
+(use-package yaml-mode :ensure t)
 
 ;;; language and coding
 (prefer-coding-system 'utf-8)
