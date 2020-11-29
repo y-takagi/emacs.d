@@ -31,7 +31,9 @@
   (quelpa-update-melpa-p nil)
   (quelpa-checkout-melpa-p nil))
 (use-package quelpa-use-package :ensure t)
-
+(use-package hydra
+  :ensure t
+  :bind (("<f1>" . hydra-main/body)))
 (use-package add-node-modules-path
   :ensure t
   :hook (prog-mode gfm-mode markdown-mode))
@@ -43,6 +45,19 @@
   :ensure t
   :config
   (auto-sudoedit-mode 1))
+(use-package centaur-tabs
+  :ensure t
+  :custom
+  (centaur-tabs-height 28)
+  (centaur-tabs-style "bar")
+  (centaur-tabs-set-icons t)
+  (centaur-tabs-set-bar 'over)
+  (centaur-tabs-set-close-button nil)
+  (centaur-tabs-set-modified-marker t)
+  (centaur-tabs-modified-marker "●")
+  (centaur-tabs-cycle-scope 'tabs)
+  :config
+  (centaur-tabs-mode t))
 (use-package company
   :ensure t
   :diminish company-mode
@@ -148,14 +163,6 @@
   (load-theme 'doom-dracula t)
   (doom-themes-neotree-config)
   (doom-themes-org-config))
-(use-package elscreen
-  :ensure t
-  :config
-  (elscreen-start)
-  ;; タブの先頭に[X]を表示しない
-  (setq elscreen-tab-display-kill-screen nil)
-  ;; header-lineの先頭に[<->]を表示しない
-  (setq elscreen-tab-display-control nil))
 (use-package exec-path-from-shell
   :ensure t
   :config
@@ -330,9 +337,6 @@
 (use-package prettier-js :ensure t)
 (use-package ruby-end :ensure t)
 (use-package s :ensure t)
-(use-package smart-newline
-  :ensure t
-  :bind (("C-j" . smart-newline)))
 (use-package smartparens
   :ensure t
   :config
@@ -457,6 +461,56 @@
   (set-face-foreground 'web-mode-html-attr-name-face "brightyellow"))
 (use-package yaml-mode :ensure t)
 
+;;; hydra
+(defhydra hydra-main (:hint nil :exit t)
+  "
+^Main^                      ^Project^              ^Window^
+^^^^^^-----------------------------------------------------------------
+_x_:   M-x                  _l_: find-file         _o_: other-window
+_s_:   save                 _g_: rg                _w_: split-window-below
+_f_:   find-file            _._: find-definitions  _p_: delete-window
+_b_:   switch-buffer        _/_: find-references
+_a_:   beginning-of-buffer  _,_: pop-marker-stack
+_e_:   end-of-buffer
+_RET_: mark
+_u_:   undo-tree
+_q_:   ghq
+"
+  ("x" counsel-M-x)
+  ("s" save-buffer)
+  ("f" counsel-find-file)
+  ("b" ivy-switch-buffer)
+  ("a" beginning-of-buffer)
+  ("e" end-of-buffer)
+  ("RET" hydra-mark/body)
+  ("u" undo-tree-visualize)
+  ("q" ivy-ghq-open)
+
+  ("o" other-window)
+  ("w" split-window-below)
+  ("p" delete-window)
+
+  ("l" find-file-in-repository)
+  ("g" counsel-rg)
+  ("." lsp-ui-peek-find-definitions)
+  ("/" lsp-find-references)
+  ("," xref-pop-marker-stack)
+  )
+
+
+(defhydra hydra-mark (:body-pre (set-mark-command nil) :hint nil :color pink :exit t)
+  "
+  ^Mark^
+  ^^------------------------------------------------
+  _c_: comment-or-uncomment
+  _k_: kill-region
+  _w_: copy-region
+  "
+  ("c" comment-or-uncomment-region)
+  ("k" clipboard-kill-region)
+  ("w" clipboard-kill-ring-save))
+
+
 ;;; language and coding
 (prefer-coding-system 'utf-8)
 (set-language-environment "Japanese")
@@ -481,7 +535,8 @@
 (add-hook 'conf-toml-mode-hook #'display-line-numbers-mode)
 
 ;;; disable auto indent
-(electric-indent-mode -1)
+(add-hook 'after-change-major-mode-hook
+          (lambda() (electric-indent-mode -1)))
 
 ;;; exitコマンド
 (defalias 'exit 'save-buffers-kill-terminal)
@@ -529,12 +584,10 @@
 (global-set-key "\M-w" 'clipboard-kill-ring-save)
 (global-set-key "\C-w" 'clipboard-kill-region)
 
-(global-set-key "\C-cc"    'comment-or-uncomment-region)
-(global-set-key "\C-h"     'backward-delete-char)
-(global-set-key "\C-x\C-i" 'indent-region)
-(global-set-key [C-tab]    'indent-for-tab-command)
-
-(global-unset-key "\C-x\C-z")
+(global-set-key "\C-cc"         'comment-or-uncomment-region)
+(global-set-key "\C-h"          'backward-delete-char)
+(global-set-key "\C-x\C-i"      'indent-region)
+(global-set-key [C-tab]         'indent-for-tab-command)
 
 ;;; emacs のデフォルトブラウザを eww に変更
 (setq browse-url-browser-function 'eww-browse-url)
