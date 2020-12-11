@@ -33,7 +33,8 @@
 (use-package quelpa-use-package :ensure t)
 (use-package hydra
   :ensure t
-  :bind (("<f1>" . hydra-main/body)))
+  :bind (("C-z" . hydra-main/body))
+  :config (hydra-set-property 'hydra-main :verbosity 1))
 (use-package add-node-modules-path
   :ensure t
   :hook (prog-mode gfm-mode markdown-mode))
@@ -463,19 +464,7 @@
 
 ;;; hydra
 (defhydra hydra-main (:hint nil :exit t)
-  "
-^Main^                      ^Project^              ^Window^
-^^^^^^-----------------------------------------------------------------
-_x_:   M-x                  _l_: find-file         _o_: other-window
-_s_:   save                 _g_: rg                _w_: split-window-below
-_f_:   find-file            _._: find-definitions  _p_: delete-window
-_b_:   switch-buffer        _/_: find-references
-_a_:   beginning-of-buffer  _,_: pop-marker-stack
-_e_:   end-of-buffer
-_RET_: mark
-_u_:   undo-tree
-_q_:   ghq
-"
+  "hydra-main"
   ("x" counsel-M-x)
   ("s" save-buffer)
   ("f" counsel-find-file)
@@ -485,6 +474,7 @@ _q_:   ghq
   ("RET" hydra-mark/body)
   ("u" undo-tree-visualize)
   ("q" ivy-ghq-open)
+  ("j" open-junk-file)
 
   ("o" other-window)
   ("w" split-window-below)
@@ -498,17 +488,19 @@ _q_:   ghq
   )
 
 
-(defhydra hydra-mark (:body-pre (set-mark-command nil) :hint nil :color pink :exit t)
+(defhydra hydra-mark (:body-pre (set-mark-command nil) :hint nil :color pink)
   "
-  ^Mark^
-  ^^------------------------------------------------
-  _c_: comment-or-uncomment
-  _k_: kill-region
+  ^Mark^                     ^Move^
+  ^^^^------------------------------------------------
+  _c_: comment-or-uncomment  _a_: beginning-of-buffer
+  _k_: kill-region           _e_: end-of-buffer
   _w_: copy-region
   "
-  ("c" comment-or-uncomment-region)
-  ("k" clipboard-kill-region)
-  ("w" clipboard-kill-ring-save))
+  ("c" comment-or-uncomment-region :exit t)
+  ("k" clipboard-kill-region :exit t)
+  ("w" clipboard-kill-ring-save :exit t)
+  ("a" beginning-of-buffer :exit nil)
+  ("e" end-of-buffer :exit nil))
 
 
 ;;; language and coding
