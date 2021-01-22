@@ -232,6 +232,7 @@
         lsp-signature-doc-lines 1
         lsp-before-save-edits nil
         lsp-modeline-diagnostics-mode nil
+        lsp-enable-file-watchers nil
         lsp-clients-python-library-directories '("/usr/local/" "/usr/")))
 (use-package lsp-haskell
   :ensure t
@@ -475,6 +476,7 @@
   ("u" undo-tree-visualize)
   ("q" ivy-ghq-open)
   ("j" open-junk-file)
+  ("y" counsel-yank-pop)
 
   ("o" other-window)
   ("w" split-window-below)
@@ -482,8 +484,9 @@
 
   ("l" find-file-in-repository)
   ("g" counsel-rg)
+  ("r" ivy-resume)
   ("." lsp-ui-peek-find-definitions)
-  ("/" lsp-find-references)
+  ("/" lsp-ui-peek-find-references)
   ("," xref-pop-marker-stack)
   )
 
@@ -497,6 +500,7 @@
   _w_: copy-region
   "
   ("c" comment-or-uncomment-region :exit t)
+  ("i" indent-region :exit t)
   ("k" clipboard-kill-region :exit t)
   ("w" clipboard-kill-ring-save :exit t)
   ("a" beginning-of-buffer :exit nil)
