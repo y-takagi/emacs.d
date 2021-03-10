@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: base-10-to
+# key: base-10-to
+# --
+def base10to(n, b, digits=0):
+    if (int(n / b)):
+        return base10to(int(n / b), b, digits - 1) + str(n % b)
+    return str(n % b) if digits < 2 else '0' * (digits - 1) + str(n % b)

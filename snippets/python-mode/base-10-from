@@ -1,0 +1,11 @@
+# -*- mode: snippet -*-
+# name: base-10-from
+# key: base-10-from
+# --
+def base10from(num, b):
+    n = 0
+    numlist = list(num);
+    while (numlist):
+        n *= b
+        n += int(numlist.pop(0))
+    return n
