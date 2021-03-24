@@ -170,9 +170,6 @@
   (setq exec-path-from-shell-arguments '("-l"))
   (when (memq window-system '(mac ns x))
     (exec-path-from-shell-initialize)))
-(use-package find-file-in-repository
-  :ensure t
-  :bind (("C-c f" . find-file-in-repository)))
 (use-package flycheck
   :ensure t
   :bind (("M-p" . flycheck-previous-error)
@@ -482,7 +479,7 @@
   ("w" split-window-below)
   ("p" delete-window)
 
-  ("l" find-file-in-repository)
+  ("l" counsel-git)
   ("g" counsel-rg)
   ("r" ivy-resume)
   ("." lsp-ui-peek-find-definitions)
