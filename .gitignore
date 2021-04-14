@@ -38,8 +38,8 @@ custom.el
 # cask packages
 .cask/
 
-# undohist
-undohist/
+# undo-tree
+undo/
 
 # eww
 url/

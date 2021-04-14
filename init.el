@@ -345,16 +345,12 @@
   :ensure t
   :config
   (smooth-scrolling-mode 1))
-(use-package undohist
-  :ensure t
-  :config
-  (undohist-initialize)
-  ;; 永続化を無視するファイル名の正規表現
-  (setq undohist-ignored-files
-        '("COMMIT_EDITMSG")))
 (use-package undo-tree
   :ensure t
   :diminish undo-tree-mode
+  :custom
+  (undo-tree-auto-save-history t)
+  (undo-tree-history-directory-alist '(("." . "~/.emacs.d/undo")))
   :config
   (global-undo-tree-mode t))
 (use-package wgrep :ensure t)
@@ -432,7 +428,10 @@
          ("\\.jbuilder$" . ruby-mode)
          ("\\.builder$" . ruby-mode)
          ("Fastfile". ruby-mode)))
-(use-package rustic :ensure t)
+(use-package rustic
+  :ensure t
+  :config
+  (setq rustic-format-on-save t))
 (use-package scss-mode
   :hook ((scss-mode . prettier-js-mode)
          (scss-mode . lsp-deferred)))
