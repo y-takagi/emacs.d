@@ -430,6 +430,7 @@
          ("Fastfile". ruby-mode)))
 (use-package rustic
   :ensure t
+  :hook ((rustic-mode . lsp-deferred))
   :config
   (setq rustic-format-on-save t))
 (use-package scss-mode
