@@ -8,6 +8,7 @@
 ;; package.el settings
 (require 'package)
 (setq package-enable-at-startup nil)
+(setq package-native-compile t)
 (package-initialize)
 (setq package-archives
       '(("gnu" . "http://elpa.gnu.org/packages/")
