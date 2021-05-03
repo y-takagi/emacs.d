@@ -5,6 +5,8 @@
 
 ;;(add-to-list 'load-path (concat user-emacs-directory "site-lisp"))
 
+(setq warning-minimum-level :error)
+
 ;; package.el settings
 (require 'package)
 (setq package-enable-at-startup nil)
