@@ -137,7 +137,7 @@
   :ensure t
   :config
   (dashboard-setup-startup-hook)
-  (setq initial-buffer-choice '(lambda () (get-buffer "*dashboard*")))
+  (setq initial-buffer-choice (lambda () (get-buffer "*dashboard*")))
   (setq dashboard-items '((recents . 20))))
 (use-package diminish
   :ensure t
@@ -297,7 +297,7 @@
   (setq org-src-fontify-natively t)
 
   ;; アジェンダ表示で下線を用いる
-  (add-hook 'org-agenda-mode-hook '(lambda () (hl-line-mode 1)))
+  (add-hook 'org-agenda-mode-hook (lambda () (hl-line-mode 1)))
   (setq hl-line-face 'underline)
 
   ;; diaryを
@@ -391,10 +391,10 @@
   :ensure t
   :config
   (add-hook 'go-mode-hook
-            '(lambda ()
-               (add-hook 'before-save-hook 'gofmt-before-save)
-               (local-set-key (kbd "M-.") 'godef-jump)
-               (add-to-list 'company-backends 'company-go))))
+            (lambda ()
+              (add-hook 'before-save-hook 'gofmt-before-save)
+              (local-set-key (kbd "M-.") 'godef-jump)
+              (add-to-list 'company-backends 'company-go))))
 (use-package hgrc-mode :ensure t)
 (use-package hgignore-mode :ensure t)
 (use-package json-mode
