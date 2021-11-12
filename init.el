@@ -409,7 +409,7 @@
          ("\\.md\\'" . markdown-mode)
          ("\\.markdown\\'" . markdown-mode))
   :hook ((markdown-mode gfm-mode) . prettier-js-mode)
-  :init (setq markdown-command "multimarkdown"))
+  :init (setq markdown-command "commonmarker"))
 (use-package mhtml-mode
   :hook ((mhtml-mode . prettier-js-mode)
          (mhtml-mode . lsp-deferred)))
