@@ -10,7 +10,7 @@
 ;; package.el settings
 (require 'package)
 (setq package-enable-at-startup nil)
-(setq package-native-compile t)
+;; (setq package-native-compile t)
 (package-initialize)
 (setq package-archives
       '(("gnu" . "http://elpa.gnu.org/packages/")
@@ -227,7 +227,6 @@
         lsp-auto-guess-root t         ; Detect project root
         lsp-prefer-flymake nil        ; Use flycheck
         lsp-report-if-no-buffer nil
-        lsp-disabled-clients '(angular-ls)
         lsp-signature-auto-activate t
         lsp-signature-doc-lines 1
         lsp-before-save-edits nil
@@ -239,6 +238,7 @@
   :config
   (add-hook 'haskell-mode-hook #'lsp)
   (add-hook 'haskell-literate-mode-hook #'lsp))
+(use-package lsp-tailwindcss :ensure t)
 (use-package lsp-ui
   :ensure t
   :commands lsp-ui-mode
@@ -261,12 +261,6 @@
 (use-package magit
   :ensure t
   :bind (("C-x g" . magit-status)))
-(use-package omnisharp
-  :disabled t
-  :config
-  (setq omnisharp-server-executable-path "~/.ghq/github.com/OmniSharp/omnisharp-server/OmniSharp/bin/Debug/OmniSharp.exe")
-  (define-key omnisharp-mode-map (kbd "<C-tab>") 'omnisharp-auto-complete)
-  (define-key omnisharp-mode-map "." 'omnisharp-add-dot-and-auto-complete))
 (use-package open-junk-file
   :ensure t
   :bind (("C-x j" . open-junk-file))
@@ -385,8 +379,7 @@
 ;;; mode
 (use-package csv-mode :ensure t)
 (use-package dockerfile-mode :ensure t)
-(use-package gitconfig-mode :ensure t)
-(use-package gitignore-mode :ensure t)
+(use-package git-modes :ensure t)
 (use-package go-mode
   :ensure t
   :config
@@ -395,13 +388,10 @@
               (add-hook 'before-save-hook 'gofmt-before-save)
               (local-set-key (kbd "M-.") 'godef-jump)
               (add-to-list 'company-backends 'company-go))))
-(use-package hgrc-mode :ensure t)
-(use-package hgignore-mode :ensure t)
 (use-package json-mode
   :ensure t
   :hook (json-mode . prettier-js-mode))
 (use-package kotlin-mode :ensure t)
-(use-package less-css-mode :ensure t)
 (use-package markdown-mode
   :ensure t
   :commands (markdown-mode gfm-mode)
@@ -413,6 +403,7 @@
 (use-package mhtml-mode
   :hook ((mhtml-mode . prettier-js-mode)
          (mhtml-mode . lsp-deferred)))
+(use-package protobuf-mode :ensure t)
 (use-package python-mode
   :hook (python-mode . lsp-deferred))
 (use-package rhtml-mode :ensure t)
