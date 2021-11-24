@@ -227,6 +227,7 @@
         lsp-auto-guess-root t         ; Detect project root
         lsp-prefer-flymake nil        ; Use flycheck
         lsp-report-if-no-buffer nil
+        lsp-disabled-clients '(angular-ls)
         lsp-signature-auto-activate t
         lsp-signature-doc-lines 1
         lsp-before-save-edits nil
@@ -238,7 +239,9 @@
   :config
   (add-hook 'haskell-mode-hook #'lsp)
   (add-hook 'haskell-literate-mode-hook #'lsp))
-(use-package lsp-tailwindcss :ensure t)
+(use-package lsp-tailwindcss
+  :ensure t
+  :custom (lsp-tailwindcss-add-on-mode t))
 (use-package lsp-ui
   :ensure t
   :commands lsp-ui-mode
