@@ -51,6 +51,7 @@
   (auto-sudoedit-mode 1))
 (use-package centaur-tabs
   :ensure t
+  :disabled t
   :custom
   (centaur-tabs-height 28)
   (centaur-tabs-style "bar")
@@ -341,12 +342,9 @@
   :config
   (use-package smartparens-config)
   (smartparens-global-mode t))
-(use-package smooth-scrolling
-  :ensure t
-  :config
-  (smooth-scrolling-mode 1))
 (use-package undo-tree
   :ensure t
+  :disabled t
   :diminish undo-tree-mode
   :custom
   (undo-tree-auto-save-history t)
@@ -562,6 +560,17 @@
 
 ;;; suppress warning messsage.
 (setq ad-redefinition-action 'accept)
+
+;;; scroll
+(setq mouse-wheel-scroll-amount '(1 ((shift) . 1))) ;; one line at a time
+(setq mouse-wheel-progressive-speed nil) ;; don't accelerate scrolling
+(setq mouse-wheel-follow-mouse 't) ;; scroll window under mouse
+(setq scroll-conservatively 1) ;; keyboard scroll one line at a time
+
+;;; tab-bar-mode
+(tab-bar-mode +1)
+(setq tab-bar-new-tab-choice "*scratch*")
+(setq tab-bar-tab-hints t)
 
 ;;; diredの表示オプション
 (let ((gls (executable-find "gls")))
