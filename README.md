@@ -6,6 +6,7 @@ My emacs settings.
 
 ## Install emacs to macOS with options.
 Use homebrew formula of emacs head.
+
 https://github.com/d12frosted/homebrew-emacs-plus
 
 ```
