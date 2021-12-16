@@ -2,8 +2,16 @@
 My emacs settings.
 
 ## Requirement
-- emacs26 or later
+- Latest Emacs
 
+## Install emacs to macOS with options.
+Use homebrew formula of emacs head.
+https://github.com/d12frosted/homebrew-emacs-plus
+
+```
+brew tap d12frosted/emacs-plus
+brew install emacs-plus@28 --with-native-comp
+```
 ## Setup
 
 ```bash
