@@ -39,8 +39,8 @@ custom.el
 # cask packages
 .cask/
 
-# undo-tree
-undo/
+# undo-fu-session
+undo-fu-session/
 
 # eww
 url/

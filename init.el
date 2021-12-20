@@ -10,7 +10,6 @@
 ;; package.el settings
 (require 'package)
 (setq package-enable-at-startup nil)
-;; (setq package-native-compile t)
 (package-initialize)
 (setq package-archives
       '(("gnu" . "http://elpa.gnu.org/packages/")
@@ -146,6 +145,7 @@
   (diminish 'eldoc-mode))
 (use-package direnv
   :ensure t
+  :if (executable-find "direnv")
   :config
   (direnv-mode))
 (use-package doom-modeline
@@ -171,7 +171,6 @@
 (use-package exec-path-from-shell
   :ensure t
   :config
-  (setq exec-path-from-shell-arguments '("-l"))
   (when (memq window-system '(mac ns x))
     (exec-path-from-shell-initialize)))
 (use-package flycheck
@@ -342,15 +341,15 @@
   :config
   (use-package smartparens-config)
   (smartparens-global-mode t))
-(use-package undo-tree
+(use-package undo-fu
   :ensure t
-  :disabled t
-  :diminish undo-tree-mode
-  :custom
-  (undo-tree-auto-save-history t)
-  (undo-tree-history-directory-alist '(("." . "~/.emacs.d/undo")))
+  :bind (("C-/" . undo-fu-only-undo)
+         ("C-?" . undo-fu-only-redo)))
+(use-package undo-fu-session
+  :ensure t
   :config
-  (global-undo-tree-mode t))
+  (setq undo-fu-session-incompatible-files '("/COMMIT_EDITMSG\\'" "/git-rebase-todo\\'"))
+  (global-undo-fu-session-mode))
 (use-package wgrep :ensure t)
 (use-package whitespace
   :defer t
@@ -407,6 +406,7 @@
 (use-package protobuf-mode :ensure t)
 (use-package python-mode
   :hook (python-mode . lsp-deferred))
+(use-package restart-emacs :ensure t)
 (use-package rhtml-mode :ensure t)
 (use-package rjsx-mode
   :ensure t
@@ -465,7 +465,6 @@
   ("a" beginning-of-buffer)
   ("e" end-of-buffer)
   ("RET" hydra-mark/body)
-  ("u" undo-tree-visualize)
   ("q" ivy-ghq-open)
   ("j" open-junk-file)
   ("y" counsel-yank-pop)
