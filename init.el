@@ -5,17 +5,18 @@
 
 ;;(add-to-list 'load-path (concat user-emacs-directory "site-lisp"))
 
-(setq warning-minimum-level :error)
+;;(setq warning-minimum-level :error)
 
 ;; package.el settings
 (require 'package)
-(setq package-enable-at-startup nil)
-(package-initialize)
 (setq package-archives
-      '(("gnu" . "http://elpa.gnu.org/packages/")
-        ("melpa" . "http://melpa.org/packages/")
-        ("org" . "http://orgmode.org/elpa/")))
-(package-refresh-contents)
+      '(("melpa" . "https://melpa.org/packages/")
+        ("org" . "https://orgmode.org/elpa/")
+        ("gnu" . "https://elpa.gnu.org/packages/")))
+(setq package-enable-at-startup nil)
+(setq package-native-compile t)
+(package-initialize)
+;;(package-refresh-contents)
 
 ;; ensure to use use-package
 (when (not (package-installed-p 'use-package))
@@ -350,6 +351,14 @@
   :config
   (setq undo-fu-session-incompatible-files '("/COMMIT_EDITMSG\\'" "/git-rebase-todo\\'"))
   (global-undo-fu-session-mode))
+(use-package vterm
+  ;; requirements: brew install cmake libvterm libtool
+  :ensure t
+  :custom
+  ;; enable hydra keymap
+  (vterm-keymap-exceptions '("C-z" "C-c" "C-x" "C-u" "C-g" "C-l" "M-x" "M-o" "C-v" "M-v" "C-y" "M-y"))
+  (vterm-toggle-fullscreen-p t))
+(use-package vterm-toggle :ensure t)
 (use-package wgrep :ensure t)
 (use-package whitespace
   :defer t
@@ -464,23 +473,21 @@
   ("b" ivy-switch-buffer)
   ("a" beginning-of-buffer)
   ("e" end-of-buffer)
-  ("RET" hydra-mark/body)
   ("q" ivy-ghq-open)
   ("j" open-junk-file)
   ("y" counsel-yank-pop)
-
   ("o" other-window)
   ("w" split-window-below)
   ("p" delete-window)
-
   ("l" counsel-git)
   ("g" counsel-rg)
+  ("v" vterm-toggle)
   ("r" ivy-resume)
   ("." lsp-ui-peek-find-definitions)
   ("/" lsp-ui-peek-find-references)
   ("," xref-pop-marker-stack)
+  ("RET" hydra-mark/body)
   )
-
 
 (defhydra hydra-mark (:body-pre (set-mark-command nil) :hint nil :color pink)
   "
@@ -489,11 +496,12 @@
   _c_: comment-or-uncomment  _a_: beginning-of-buffer
   _k_: kill-region           _e_: end-of-buffer
   _w_: copy-region
+  _i_: indent-region
   "
   ("c" comment-or-uncomment-region :exit t)
-  ("i" indent-region :exit t)
   ("k" clipboard-kill-region :exit t)
   ("w" clipboard-kill-ring-save :exit t)
+  ("i" indent-region :exit t)
   ("a" beginning-of-buffer :exit nil)
   ("e" end-of-buffer :exit nil))
 
@@ -596,7 +604,7 @@
   (set-fontset-font "fontset-default" 'unicode "Apple Color Emoji" nil 'prepend)
 
   ;; フルスクリーン (maximized, fullscreen)
-  ;;(add-hook 'emacs-startup-hook #'toggle-frame-maximized)
+  (add-hook 'emacs-startup-hook #'toggle-frame-maximized)
 
   ;; Modify right command to super
   ;; (setq mac-right-command-modifier 'super)
@@ -611,3 +619,5 @@
 (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
 (when (file-exists-p custom-file)
   (load custom-file))
+
+(server-start)
