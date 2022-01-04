@@ -483,6 +483,7 @@
   ("g" counsel-rg)
   ("v" vterm-toggle)
   ("r" ivy-resume)
+  ("m" magit-status)
   ("." lsp-ui-peek-find-definitions)
   ("/" lsp-ui-peek-find-references)
   ("," xref-pop-marker-stack)
