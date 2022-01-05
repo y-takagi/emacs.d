@@ -12,35 +12,20 @@ var/
 recentf
 custom.el
 /eln-cache
+history
 
 # Org-mode
 .org-id-locations
 *_archive
 
-# flymake-mode
-*_flymake.*
-
-# eshell files
-/eshell/history
-/eshell/lastdir
-
 # elpa packages
 /elpa/
-
-# quelpa packages
-/quelpa/
 
 # reftex files
 *.rel
 
 # AUCTeX auto folder
 /auto/
-
-# cask packages
-.cask/
-
-# undo-fu-session
-undo-fu-session/
 
 # eww
 url/
@@ -55,6 +40,3 @@ bookmarks
 
 # magit
 transient/
-
-# amx
-amx-items

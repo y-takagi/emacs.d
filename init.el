@@ -5,8 +5,6 @@
 
 ;;(add-to-list 'load-path (concat user-emacs-directory "site-lisp"))
 
-;;(setq warning-minimum-level :error)
-
 ;; package.el settings
 (require 'package)
 (setq package-archives
@@ -27,13 +25,6 @@
 (unless (require 'use-package nil t)
   (defmacro use-package (&rest args)))
 
-(use-package quelpa
-  :ensure t
-  :custom
-  (quelpa-self-upgrade-p nil)
-  (quelpa-update-melpa-p nil)
-  (quelpa-checkout-melpa-p nil))
-(use-package quelpa-use-package :ensure t)
 (use-package hydra
   :ensure t
   :bind (("C-z" . hydra-main/body))
@@ -44,25 +35,10 @@
 (use-package all-the-icons
   :ensure t
   :custom (all-the-icons-scale-factor 1.0))
-(use-package amx :ensure t :config (amx-mode))
 (use-package auto-sudoedit
   :ensure t
   :config
   (auto-sudoedit-mode 1))
-(use-package centaur-tabs
-  :ensure t
-  :disabled t
-  :custom
-  (centaur-tabs-height 28)
-  (centaur-tabs-style "bar")
-  (centaur-tabs-set-icons t)
-  (centaur-tabs-set-bar 'over)
-  (centaur-tabs-set-close-button nil)
-  (centaur-tabs-set-modified-marker t)
-  (centaur-tabs-modified-marker "●")
-  (centaur-tabs-cycle-scope 'tabs)
-  :config
-  (centaur-tabs-mode t))
 (use-package company
   :ensure t
   :diminish company-mode
@@ -100,40 +76,47 @@
 
   ;; 各種メジャーモードでも C-M-iで company-modeの補完を使う
   (define-key emacs-lisp-mode-map (kbd "M-/") 'company-complete))
-(use-package company-box
-  :disabled t
+(use-package vertico
   :ensure t
-  :hook (company-mode . company-box-mode)
+  :init (vertico-mode)
   :custom
-  (company-box-icons-alist 'company-box-icons-all-the-icons)
-  (company-box-doc-enable nil))
-(use-package company-quickhelp
-  :disabled t
-  :ensure t
-  :config (company-quickhelp-mode))
-(use-package counsel
-  :ensure t
-  :diminish ivy-mode counsel-mode
-  :bind (("C-s" . swiper)
-         ("C-c C-r" . ivy-resume)
-         ("C-x C-c" . counsel-M-x)
-         ("C-x C-f" . counsel-find-file)
-         ("C-c p" . counsel-git-grep)
-         ("C-c g" . counsel-rg))
-  :hook ((after-init . ivy-mode)
-         (ivy-mode . counsel-mode))
+  (vertico-count 14)
+  (vertico-resize nil))
+(use-package vertico-directory
+  :after vertico
+  :bind (:map vertico-map ("C-l" . vertico-directory-up)))
+(use-package vertico-repeat
+  :after vertico
   :config
-  (setq ivy-use-virtual-buffers t
-        ivy-initial-inputs-alist nil
-        ivy-virtual-abbreviate 'abbreviate
-        ivy-height 14
-        ivy-fixed-height-minibuffer t
-        ivy-use-selectable-prompt t
-        enable-recursive-minibuffers t
-        ivy-extra-directories '("./"))
-  (define-key ivy-minibuffer-map (kbd "C-l") 'counsel-up-directory)
-  (define-key ivy-minibuffer-map (kbd "TAB") 'counsel-down-directory))
-(use-package dash :ensure t)
+  (add-hook 'minibuffer-setup-hook #'vertico-repeat-save))
+(use-package orderless
+  :ensure t
+  :init
+  ;; Configure a custom style dispatcher (see the Consult wiki)
+  ;; (setq orderless-style-dispatchers '(+orderless-dispatch)
+  ;;       orderless-component-separator #'orderless-escapable-split-on-space)
+  (setq completion-styles '(orderless)
+        completion-category-defaults nil
+        completion-category-overrides '((file (styles partial-completion)))))
+(use-package savehist :init (savehist-mode))
+(use-package marginalia :ensure t :init (marginalia-mode))
+(use-package consult
+  :ensure t
+  :bind (("C-s" . consult-line))
+  :config
+  (consult-customize
+   consult-theme
+   :preview-key '(:debounce 0.2 any)
+   consult-ripgrep consult-git-grep consult-grep
+   consult-bookmark consult-recent-file consult-xref
+   consult--source-recent-file consult--source-project-recent-file consult--source-bookmark
+   :preview-key (kbd "M-."))
+  (setq consult-project-root-function
+        (lambda ()
+          (when-let (project (project-current))
+            (car (project-roots project))))))
+(use-package consult-ghq :ensure t)
+(use-package affe :ensure t)
 (use-package dashboard
   :ensure t
   :config
@@ -196,25 +179,6 @@
   (setq highlight-indent-guides-method 'character
         highlight-indent-guides-auto-enabled t
         highlight-indent-guides-responsive t))
-(use-package ivy-ghq
-  :quelpa (ivy-ghq :fetcher github :repo "analyticd/ivy-ghq")
-  :bind ("C-c q" . ivy-ghq-open)
-  :custom (ivy-ghq-short-list t))
-(use-package ivy-rich
-  :ensure t
-  :after (ivy)
-  :config
-  (setcdr (assq t ivy-format-functions-alist) #'ivy-format-function-line)
-  (setq ivy-rich--display-transformers-list
-        '(ivy-switch-buffer
-          (:columns
-           ((ivy-rich-candidate (:width 40))
-            (ivy-rich-switch-buffer-project (:width 30 :face success))
-            (ivy-rich-switch-buffer-path (:width (lambda (x) (ivy-rich-switch-buffer-shorten-path x (ivy-rich-minibuffer-width 0.3))))))
-           :predicate
-           (lambda (cand) (get-buffer cand)))))
-
-  (ivy-rich-mode 1))
 (use-package lsp-mode
   :ensure t
   :commands (lsp lsp-deferred)
@@ -258,16 +222,10 @@
               lsp-ui-sideline-enable nil
               lsp-ui-sideline-ignore-duplicate t
               lsp-ui-imenu-enable nil
-              lsp-ui-imenu-kind-position 'top)
-  :config
-  ;;(flycheck-add-next-checker 'lsp 'typescript-tslint)
-  )
-(use-package magit
-  :ensure t
-  :bind (("C-x g" . magit-status)))
+              lsp-ui-imenu-kind-position 'top))
+(use-package magit :ensure t)
 (use-package open-junk-file
   :ensure t
-  :bind (("C-x j" . open-junk-file))
   :config
   (setq open-junk-file-format "~/Documents/Note/%Y-%m%d-%H%M%S."))
 (use-package org
@@ -336,21 +294,17 @@
           )))
 (use-package prettier-js :ensure t)
 (use-package ruby-end :ensure t)
-(use-package s :ensure t)
 (use-package smartparens
   :ensure t
   :config
   (use-package smartparens-config)
   (smartparens-global-mode t))
-(use-package undo-fu
+(use-package undo-tree
   :ensure t
-  :bind (("C-/" . undo-fu-only-undo)
-         ("C-?" . undo-fu-only-redo)))
-(use-package undo-fu-session
-  :ensure t
-  :config
-  (setq undo-fu-session-incompatible-files '("/COMMIT_EDITMSG\\'" "/git-rebase-todo\\'"))
-  (global-undo-fu-session-mode))
+  :custom
+  (undo-tree-auto-save-history t)
+  (undo-tree-history-directory-alist '(("." . "~/.emacs.d/undo")))
+  :init (global-undo-tree-mode))
 (use-package vterm
   ;; requirements: brew install cmake libvterm libtool
   :ensure t
@@ -453,36 +407,27 @@
          (typescript-mode . lsp-deferred))
   :config
   (setq typescript-indent-level 2))
-(use-package web-mode
-  :ensure t
-  :mode (("\\.tag$" . web-mode))
-  :config
-  (setq web-mode-engines-alist
-        '(("riot" . "\\.tag\\'")))
-  (set-face-foreground 'web-mode-html-tag-face "blue")
-  (set-face-foreground 'web-mode-html-tag-bracket-face "brightyellow")
-  (set-face-foreground 'web-mode-html-attr-name-face "brightyellow"))
 (use-package yaml-mode :ensure t)
 
 ;;; hydra
 (defhydra hydra-main (:hint nil :exit t)
   "hydra-main"
-  ("x" counsel-M-x)
+  ("x" execute-extended-command)
   ("s" save-buffer)
-  ("f" counsel-find-file)
-  ("b" ivy-switch-buffer)
+  ("f" find-file)
+  ("b" consult-buffer)
   ("a" beginning-of-buffer)
   ("e" end-of-buffer)
-  ("q" ivy-ghq-open)
+  ("q" consult-ghq-find)
+  ("l" affe-find)
+  ("g" affe-grep)
+  ("u" undo-tree-visualize)
   ("j" open-junk-file)
-  ("y" counsel-yank-pop)
   ("o" other-window)
   ("w" split-window-below)
   ("p" delete-window)
-  ("l" counsel-git)
-  ("g" counsel-rg)
   ("v" vterm-toggle)
-  ("r" ivy-resume)
+  ("r" vertico-repeat)
   ("m" magit-status)
   ("." lsp-ui-peek-find-definitions)
   ("/" lsp-ui-peek-find-references)
@@ -522,6 +467,7 @@
 (setq ring-bell-function 'ignore)
 (setq vc-follow-symlinks t)
 (setq-default cursor-in-non-selected-windows nil)
+(setq enable-recursive-minibuffers t)
 
 ;; line number
 (add-hook 'prog-mode-hook #'display-line-numbers-mode)
