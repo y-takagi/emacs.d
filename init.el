@@ -103,7 +103,32 @@
 (use-package consult
   :ensure t
   :bind (("C-s" . consult-line))
+  :custom (consult-line-start-from-top t)
   :config
+  ;; Define consult-fd command
+  (defvar consult--fd-command nil)
+  (defun consult--fd-builder (input)
+    (unless consult--fd-command
+      (setq consult--fd-command
+            (if (eq 0 (call-process-shell-command "fdfind"))
+                "fdfind"
+              "fd")))
+    (pcase-let* ((`(,arg . ,opts) (consult--command-split input))
+                 (`(,re . ,hl) (funcall consult--regexp-compiler
+                                        arg 'extended)))
+      (when re
+        (list :command (append
+                        (list consult--fd-command
+                              "--color=never" "--full-path"
+                              (consult--join-regexps re 'extended))
+                        opts)
+              :highlight hl))))
+  (defun consult-fd (&optional dir initial)
+    (interactive "P")
+    (let* ((prompt-dir (consult--directory-prompt "Fd" dir))
+           (default-directory (cdr prompt-dir)))
+      (find-file (consult--find (car prompt-dir) #'consult--fd-builder initial))))
+
   (consult-customize
    consult-theme
    :preview-key '(:debounce 0.2 any)
@@ -116,7 +141,6 @@
           (when-let (project (project-current))
             (car (project-roots project))))))
 (use-package consult-ghq :ensure t)
-(use-package affe :ensure t)
 (use-package dashboard
   :ensure t
   :config
@@ -375,9 +399,7 @@
   :ensure t
   :hook ((rjsx-mode . prettier-js-mode)
          (rjsx-mode . flycheck-mode))
-  :mode (("\\.js$" . rjsx-mode))
-  :config
-  (flycheck-add-mode 'javascript-eslint 'rjsx-mode))
+  :mode (("\\.js$" . rjsx-mode)))
 (use-package rspec-mode :ensure t)
 (use-package ruby-mode
   :ensure t
@@ -419,8 +441,8 @@
   ("a" beginning-of-buffer)
   ("e" end-of-buffer)
   ("q" consult-ghq-find)
-  ("l" affe-find)
-  ("g" affe-grep)
+  ("l" consult-fd)
+  ("g" consult-ripgrep)
   ("u" undo-tree-visualize)
   ("j" open-junk-file)
   ("o" other-window)
