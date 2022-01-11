@@ -40,3 +40,6 @@ bookmarks
 
 # magit
 transient/
+
+# project.el
+projects

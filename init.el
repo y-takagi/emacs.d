@@ -14,7 +14,7 @@
 (setq package-enable-at-startup nil)
 (setq package-native-compile t)
 (package-initialize)
-;;(package-refresh-contents)
+(package-refresh-contents)
 
 ;; ensure to use use-package
 (when (not (package-installed-p 'use-package))
@@ -323,6 +323,7 @@
   :config
   (use-package smartparens-config)
   (smartparens-global-mode t))
+(use-package treemacs :ensure t)
 (use-package undo-tree
   :ensure t
   :custom
@@ -441,13 +442,10 @@
   ("a" beginning-of-buffer)
   ("e" end-of-buffer)
   ("q" consult-ghq-find)
-  ("l" consult-fd)
+  ("l" project-find-file)
   ("g" consult-ripgrep)
   ("u" undo-tree-visualize)
   ("j" open-junk-file)
-  ("o" other-window)
-  ("w" split-window-below)
-  ("p" delete-window)
   ("v" vterm-toggle)
   ("r" vertico-repeat)
   ("m" magit-status)
@@ -455,7 +453,7 @@
   ("/" lsp-ui-peek-find-references)
   ("," xref-pop-marker-stack)
   ("RET" hydra-mark/body)
-  )
+  ("w" hydra-window/body))
 
 (defhydra hydra-mark (:body-pre (set-mark-command nil) :hint nil :color pink)
   "
@@ -473,6 +471,21 @@
   ("a" beginning-of-buffer :exit nil)
   ("e" end-of-buffer :exit nil))
 
+(defhydra hydra-window (:hint nil :color red)
+  "hydra-window"
+  ("h" windmove-left)
+  ("j" windmove-down)
+  ("k" windmove-up)
+  ("l" windmove-right)
+  ("H" hydra-move-splitter-left)
+  ("J" hydra-move-splitter-down)
+  ("K" hydra-move-splitter-up)
+  ("L" hydra-move-splitter-right)
+  ("v" split-window-right)
+  ("x" split-window-below)
+  ("p" delete-window)
+  ("d" kill-this-buffer)
+  ("q" nil))
 
 ;;; language and coding
 (prefer-coding-system 'utf-8)
