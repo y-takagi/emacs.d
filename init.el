@@ -446,14 +446,16 @@
   ("g" consult-ripgrep)
   ("u" undo-tree-visualize)
   ("j" open-junk-file)
+  ("o" other-window)
+  ("w" split-window-below)
+  ("p" delete-window)
   ("v" vterm-toggle)
   ("r" vertico-repeat)
   ("m" magit-status)
   ("." lsp-ui-peek-find-definitions)
   ("/" lsp-ui-peek-find-references)
   ("," xref-pop-marker-stack)
-  ("RET" hydra-mark/body)
-  ("z" hydra-window/body))
+  ("RET" hydra-mark/body))
 
 (defhydra hydra-mark (:body-pre (set-mark-command nil) :hint nil :color pink)
   "
@@ -471,25 +473,25 @@
   ("a" beginning-of-buffer :exit nil)
   ("e" end-of-buffer :exit nil))
 
-(defhydra hydra-window (:hint nil :exit t)
-  "
-        Move: _h_:left _j_:down _k_:up _l_:right
-       Split: _w_:below _v_:right
-  Split Move: _H_:left _J_:down _K_:up _L_:right
-      Buffer: _p_:delete _d_:kill
-  "
-  ("h" windmove-left)
-  ("j" windmove-down)
-  ("k" windmove-up)
-  ("l" windmove-right)
-  ("H" hydra-move-splitter-left)
-  ("J" hydra-move-splitter-down)
-  ("K" hydra-move-splitter-up)
-  ("L" hydra-move-splitter-right)
-  ("v" split-window-right)
-  ("w" split-window-below)
-  ("p" delete-window)
-  ("d" kill-this-buffer))
+;; (defhydra hydra-window (:hint nil :exit t)
+;;   "
+;;         Move: _h_:left _j_:down _k_:up _l_:right
+;;        Split: _w_:below _v_:right
+;;   Split Move: _H_:left _J_:down _K_:up _L_:right
+;;       Buffer: _p_:delete _d_:kill
+;;   "
+;;   ("h" windmove-left)
+;;   ("j" windmove-down)
+;;   ("k" windmove-up)
+;;   ("l" windmove-right)
+;;   ("H" hydra-move-splitter-left)
+;;   ("J" hydra-move-splitter-down)
+;;   ("K" hydra-move-splitter-up)
+;;   ("L" hydra-move-splitter-right)
+;;   ("v" split-window-right)
+;;   ("w" split-window-below)
+;;   ("p" delete-window)
+;;   ("d" kill-this-buffer))
 
 ;;; language and coding
 (prefer-coding-system 'utf-8)
