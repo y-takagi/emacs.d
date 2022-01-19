@@ -179,6 +179,8 @@
 (use-package exec-path-from-shell
   :ensure t
   :config
+  (dolist (var '("LANG" "JAVA_HOME"))
+    (add-to-list 'exec-path-from-shell-variables var))
   (when (memq window-system '(mac ns x))
     (exec-path-from-shell-initialize)))
 (use-package flycheck
@@ -332,12 +334,12 @@
   :init (global-undo-tree-mode))
 (use-package vterm
   ;; requirements: brew install cmake libvterm libtool
-  :ensure t
+  :disabled t
   :custom
   ;; enable hydra keymap
   (vterm-keymap-exceptions '("C-z" "C-c" "C-x" "C-u" "C-g" "C-l" "M-x" "M-o" "C-v" "M-v" "C-y" "M-y"))
   (vterm-toggle-fullscreen-p t))
-(use-package vterm-toggle :ensure t)
+(use-package vterm-toggle :disabled t)
 (use-package wgrep :ensure t)
 (use-package whitespace
   :defer t
@@ -379,7 +381,9 @@
 (use-package json-mode
   :ensure t
   :hook (json-mode . prettier-js-mode))
-(use-package kotlin-mode :ensure t)
+(use-package kotlin-mode
+  :ensure t
+  :config (add-hook 'kotlin-mode-hook #'lsp))
 (use-package markdown-mode
   :ensure t
   :commands (markdown-mode gfm-mode)
