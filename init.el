@@ -5,6 +5,107 @@
 
 ;;(add-to-list 'load-path (concat user-emacs-directory "site-lisp"))
 
+;;; language and coding
+(prefer-coding-system 'utf-8)
+(set-language-environment "Japanese")
+;; (setq file-name-coding-system 'utf-8)
+;; (setq locale-coding-system 'utf-8)
+
+(when (fboundp 'menu-bar-mode) (menu-bar-mode -1))
+(when (fboundp 'tool-bar-mode) (tool-bar-mode -1))
+(when (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
+(blink-cursor-mode 1)
+(show-paren-mode 1) ;; highlight corresponding bracket
+(setq inhibit-startup-message t)
+(setq ring-bell-function 'ignore)
+(setq vc-follow-symlinks t)
+(setq-default cursor-in-non-selected-windows nil)
+(setq enable-recursive-minibuffers t)
+
+;; line number
+(add-hook 'prog-mode-hook #'display-line-numbers-mode)
+(add-hook 'text-mode-hook #'display-line-numbers-mode)
+(add-hook 'conf-space-mode-hook #'display-line-numbers-mode)
+(add-hook 'conf-unix-mode-hook #'display-line-numbers-mode)
+(add-hook 'conf-toml-mode-hook #'display-line-numbers-mode)
+
+;;; disable auto indent
+(add-hook 'after-change-major-mode-hook
+          (lambda() (electric-indent-mode -1)))
+
+;;; exitコマンド
+(defalias 'exit 'save-buffers-kill-terminal)
+
+;;; 変更されたファイルを自動的に再読み込み
+(global-auto-revert-mode 1)
+
+(setq default-directory "~/")
+
+;;; tab
+(setq-default tab-width 4 indent-tabs-mode nil)
+(setq-default basic-offset 2)
+(setq-default c-basic-offset 2)
+
+;; indent
+(setq css-indent-offset 2)
+(setq js-indent-level 2)
+(setq python-indent-guess-indent-offset nil)
+
+;;; file
+(setq mode-require-final-newline t)
+(setq backup-inhibited t)
+(setq make-backup-files nil)
+(setq create-lockfiles nil)
+(setq delete-auto-save-files t)
+(setq auto-save-default nil)
+
+;;; 問い合せには y か n で返答
+(fset 'yes-or-no-p 'y-or-n-p)
+
+;;; emacs permission
+;; (setq wdired-allow-to-change-permissions t)
+
+;;; suppress warning messsage.
+(setq ad-redefinition-action 'accept)
+
+;;; scroll
+(setq mouse-wheel-scroll-amount '(1 ((shift) . 1))) ;; one line at a time
+(setq mouse-wheel-progressive-speed nil) ;; don't accelerate scrolling
+(setq mouse-wheel-follow-mouse 't) ;; scroll window under mouse
+(setq scroll-conservatively 1) ;; keyboard scroll one line at a time
+
+;;; tab-bar-mode
+(tab-bar-mode +1)
+(setq tab-bar-new-tab-choice "*scratch*")
+(setq tab-bar-tab-hints t)
+
+;;; diredの表示オプション
+(let ((gls (executable-find "gls")))
+  (when gls
+    (setq insert-directory-program gls
+          dired-listing-switches "-ahl --time-style long-iso --group-directories-first")))
+
+;;; emacs のデフォルトブラウザを eww に変更
+(setq browse-url-browser-function 'eww-browse-url)
+
+(when (eq system-type 'darwin)
+  ;; Fonts
+  (add-to-list 'default-frame-alist '(font . "Ricty 16"))
+  (set-fontset-font "fontset-default" 'unicode "Apple Color Emoji" nil 'prepend)
+
+  ;; フルスクリーン (maximized, fullscreen)
+  ;;(add-hook 'emacs-startup-hook #'toggle-frame-maximized)
+
+  ;; Modify right command to super
+  ;; (setq mac-right-command-modifier 'super)
+  ;; (setq ns-command-modifier (quote meta))
+
+  ;; フォントの拡大・縮小
+  (global-set-key (kbd "s-=") (lambda () (interactive) (text-scale-increase 1)))
+  (global-set-key (kbd "s--") (lambda () (interactive) (text-scale-decrease 1)))
+  (global-set-key (kbd "s-0") (lambda () (interactive) (text-scale-increase 0)))
+  )
+
 ;; package.el settings
 (require 'package)
 (setq package-archives
@@ -25,13 +126,18 @@
 (unless (require 'use-package nil t)
   (defmacro use-package (&rest args)))
 
+(use-package exec-path-from-shell
+  :ensure t
+  :config
+  (when (memq window-system '(mac ns x))
+    (exec-path-from-shell-initialize)))
+(use-package add-node-modules-path
+  :ensure t
+  :hook (prog-mode gfm-mode markdown-mode))
 (use-package hydra
   :ensure t
   :bind (("C-z" . hydra-main/body))
   :config (hydra-set-property 'hydra-main :verbosity 1))
-(use-package add-node-modules-path
-  :ensure t
-  :hook (prog-mode gfm-mode markdown-mode))
 (use-package all-the-icons
   :ensure t
   :custom (all-the-icons-scale-factor 1.0))
@@ -176,13 +282,6 @@
   (load-theme 'doom-dracula t)
   (doom-themes-neotree-config)
   (doom-themes-org-config))
-(use-package exec-path-from-shell
-  :ensure t
-  :config
-  (dolist (var '("LANG" "JAVA_HOME"))
-    (add-to-list 'exec-path-from-shell-variables var))
-  (when (memq window-system '(mac ns x))
-    (exec-path-from-shell-initialize)))
 (use-package flycheck
   :ensure t
   :bind (("M-p" . flycheck-previous-error)
@@ -372,12 +471,12 @@
 (use-package git-modes :ensure t)
 (use-package go-mode
   :ensure t
+  :hook ((go-mode . lsp-deferred))
   :config
   (add-hook 'go-mode-hook
             (lambda ()
-              (add-hook 'before-save-hook 'gofmt-before-save)
-              (local-set-key (kbd "M-.") 'godef-jump)
-              (add-to-list 'company-backends 'company-go))))
+              (add-hook 'before-save-hook #'lsp-format-buffer t t)
+              (add-hook 'before-save-hook #'lsp-organize-imports t t))))
 (use-package json-mode
   :ensure t
   :hook (json-mode . prettier-js-mode))
@@ -497,106 +596,6 @@
 ;;   ("p" delete-window)
 ;;   ("d" kill-this-buffer))
 
-;;; language and coding
-(prefer-coding-system 'utf-8)
-(set-language-environment "Japanese")
-;; (setq file-name-coding-system 'utf-8)
-;; (setq locale-coding-system 'utf-8)
-
-(when (fboundp 'menu-bar-mode) (menu-bar-mode -1))
-(when (fboundp 'tool-bar-mode) (tool-bar-mode -1))
-(when (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
-(blink-cursor-mode 1)
-(show-paren-mode 1) ;; highlight corresponding bracket
-(setq inhibit-startup-message t)
-(setq ring-bell-function 'ignore)
-(setq vc-follow-symlinks t)
-(setq-default cursor-in-non-selected-windows nil)
-(setq enable-recursive-minibuffers t)
-
-;; line number
-(add-hook 'prog-mode-hook #'display-line-numbers-mode)
-(add-hook 'text-mode-hook #'display-line-numbers-mode)
-(add-hook 'conf-space-mode-hook #'display-line-numbers-mode)
-(add-hook 'conf-unix-mode-hook #'display-line-numbers-mode)
-(add-hook 'conf-toml-mode-hook #'display-line-numbers-mode)
-
-;;; disable auto indent
-(add-hook 'after-change-major-mode-hook
-          (lambda() (electric-indent-mode -1)))
-
-;;; exitコマンド
-(defalias 'exit 'save-buffers-kill-terminal)
-
-;;; 変更されたファイルを自動的に再読み込み
-(global-auto-revert-mode 1)
-
-(setq default-directory "~/")
-
-;;; tab
-(setq-default tab-width 4 indent-tabs-mode nil)
-(setq-default basic-offset 2)
-(setq-default c-basic-offset 2)
-
-;; indent
-(setq css-indent-offset 2)
-(setq js-indent-level 2)
-(setq python-indent-guess-indent-offset nil)
-
-;;; file
-(setq mode-require-final-newline t)
-(setq backup-inhibited t)
-(setq make-backup-files nil)
-(setq create-lockfiles nil)
-(setq delete-auto-save-files t)
-(setq auto-save-default nil)
-
-;;; 問い合せには y か n で返答
-(fset 'yes-or-no-p 'y-or-n-p)
-
-;;; emacs permission
-;; (setq wdired-allow-to-change-permissions t)
-
-;;; suppress warning messsage.
-(setq ad-redefinition-action 'accept)
-
-;;; scroll
-(setq mouse-wheel-scroll-amount '(1 ((shift) . 1))) ;; one line at a time
-(setq mouse-wheel-progressive-speed nil) ;; don't accelerate scrolling
-(setq mouse-wheel-follow-mouse 't) ;; scroll window under mouse
-(setq scroll-conservatively 1) ;; keyboard scroll one line at a time
-
-;;; tab-bar-mode
-(tab-bar-mode +1)
-(setq tab-bar-new-tab-choice "*scratch*")
-(setq tab-bar-tab-hints t)
-
-;;; diredの表示オプション
-(let ((gls (executable-find "gls")))
-  (when gls
-    (setq insert-directory-program gls
-          dired-listing-switches "-ahl --time-style long-iso --group-directories-first")))
-
-;;; emacs のデフォルトブラウザを eww に変更
-(setq browse-url-browser-function 'eww-browse-url)
-
-(when (eq system-type 'darwin)
-  ;; Fonts
-  (add-to-list 'default-frame-alist '(font . "Ricty 16"))
-  (set-fontset-font "fontset-default" 'unicode "Apple Color Emoji" nil 'prepend)
-
-  ;; フルスクリーン (maximized, fullscreen)
-  (add-hook 'emacs-startup-hook #'toggle-frame-maximized)
-
-  ;; Modify right command to super
-  ;; (setq mac-right-command-modifier 'super)
-  ;; (setq ns-command-modifier (quote meta))
-
-  ;; フォントの拡大・縮小
-  (global-set-key (kbd "s-=") (lambda () (interactive) (text-scale-increase 1)))
-  (global-set-key (kbd "s--") (lambda () (interactive) (text-scale-decrease 1)))
-  (global-set-key (kbd "s-0") (lambda () (interactive) (text-scale-increase 0)))
-  )
 
 (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
 (when (file-exists-p custom-file)
