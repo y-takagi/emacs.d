@@ -467,11 +467,12 @@
 
 ;;; mode
 (use-package csv-mode :ensure t)
-(use-package dockerfile-mode :ensure t)
+(use-package dockerfile-mode :ensure t
+  :hook (dockerfile-mode . lsp-deferred))
 (use-package git-modes :ensure t)
 (use-package go-mode
   :ensure t
-  :hook ((go-mode . lsp-deferred))
+  :hook (go-mode . lsp-deferred)
   :config
   (add-hook 'go-mode-hook
             (lambda ()
