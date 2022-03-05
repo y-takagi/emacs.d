@@ -324,6 +324,13 @@
         lsp-modeline-diagnostics-mode nil
         lsp-enable-file-watchers nil
         lsp-clients-python-library-directories '("/usr/local/" "/usr/")))
+(use-package lsp-dart
+  :ensure t
+  :custom
+  (lsp-dart-flutter-widget-guides nil)
+  (lsp-dart-closing-labels nil)
+  (lsp-dart-main-code-lens nil)
+  (lsp-dart-test-code-lens nil))
 (use-package lsp-haskell
   :ensure t
   :config
@@ -467,6 +474,13 @@
 
 ;;; mode
 (use-package csv-mode :ensure t)
+(use-package dart-mode
+  :ensure t
+  :hook (dart-mode . lsp-deferred)
+  :config
+  (add-hook 'dart-mode-hook
+            (lambda ()
+              (add-hook 'before-save-hook #'lsp-format-buffer t t))))
 (use-package dockerfile-mode :ensure t
   :hook (dockerfile-mode . lsp-deferred))
 (use-package git-modes :ensure t)
@@ -478,11 +492,15 @@
             (lambda ()
               (add-hook 'before-save-hook #'lsp-format-buffer t t)
               (add-hook 'before-save-hook #'lsp-organize-imports t t))))
+(use-package graphql-mode
+  :ensure t
+  :hook (graphql-mode . lsp-deferred))
 (use-package json-mode
   :ensure t
   :hook (json-mode . prettier-js-mode))
 (use-package kotlin-mode
   :ensure t
+  :mode (("\\.kt" . kotlin-mode) ("\\.gradle" . kotlin-mode))
   :config (add-hook 'kotlin-mode-hook #'lsp))
 (use-package markdown-mode
   :ensure t
