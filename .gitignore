@@ -43,3 +43,7 @@ transient/
 
 # project.el
 projects
+
+# dap-mode
+.dap-breakpoints
+.extension

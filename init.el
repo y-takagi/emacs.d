@@ -324,13 +324,25 @@
         lsp-modeline-diagnostics-mode nil
         lsp-enable-file-watchers nil
         lsp-clients-python-library-directories '("/usr/local/" "/usr/")))
+(use-package dap-mode
+  :ensure t
+  :config
+  (add-hook 'dap-stopped-hook
+          (lambda (arg) (call-interactively #'dap-hydra))))
 (use-package lsp-dart
   :ensure t
   :custom
   (lsp-dart-flutter-widget-guides nil)
   (lsp-dart-closing-labels nil)
   (lsp-dart-main-code-lens nil)
-  (lsp-dart-test-code-lens nil))
+  (lsp-dart-test-code-lens nil)
+  (lsp-dart-dap-flutter-hot-reload-on-save t)
+  :init
+  (dap-register-debug-template "everytv/fresh-app"
+                               (list :type "flutter"
+                                     :flutterMode "debug"
+                                     :program "lib/main.dart"
+                                     :args '("--dart-define=FLAVOR=development"))))
 (use-package lsp-haskell
   :ensure t
   :config
