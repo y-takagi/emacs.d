@@ -336,6 +336,7 @@
   (lsp-dart-closing-labels nil)
   (lsp-dart-main-code-lens nil)
   (lsp-dart-test-code-lens nil)
+  (lsp-dart-line-length 140)
   (lsp-dart-dap-flutter-hot-reload-on-save t)
   :init
   (dap-register-debug-template "everytv/fresh-app"
