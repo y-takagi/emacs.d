@@ -126,6 +126,13 @@
 (unless (require 'use-package nil t)
   (defmacro use-package (&rest args)))
 
+(use-package emacs
+  :custom
+  (modus-themes-mode-line '(moody borderless))
+  :config
+  ;; modus-operandi is light.
+  ;; modus-vivendi is dark.
+  (load-theme 'modus-vivendi))
 (use-package exec-path-from-shell
   :ensure t
   :config
@@ -269,19 +276,11 @@
   (doom-modeline-icon t)
   (doom-modeline-major-mode-icon nil)
   (doom-modeline-minor-modes nil)
-  :hook
-  (after-init . doom-modeline-mode)
+  :init
+  (doom-modeline-mode 1)
   :config
   (line-number-mode 0)
   (column-number-mode 0))
-(use-package doom-themes
-  :ensure t
-  :custom-face
-  (doom-modeline-bar ((t (:background "#6272a4"))))
-  :config
-  (load-theme 'doom-dracula t)
-  (doom-themes-neotree-config)
-  (doom-themes-org-config))
 (use-package flycheck
   :ensure t
   :bind (("M-p" . flycheck-previous-error)
