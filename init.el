@@ -322,6 +322,7 @@
         lsp-before-save-edits nil
         lsp-modeline-diagnostics-mode nil
         lsp-enable-file-watchers nil
+        lsp-overlay-document-color-char nil
         lsp-clients-python-library-directories '("/usr/local/" "/usr/")))
 (use-package dap-mode
   :ensure t
