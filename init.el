@@ -1,3 +1,4 @@
+
 ;; load-path for elisp files
 ;; emacs -l init.el等で直接ロードしたときに, user-emacs-directoryが書き換わる
 (when load-file-name
@@ -295,14 +296,9 @@
   :diminish git-gutter-mode
   :config
   (global-git-gutter-mode +1))
-(use-package highlight-indent-guides
-  :disabled t
+(use-package smartparens
   :ensure t
-  :hook (prog-mode . highlight-indent-guides-mode)
-  :config
-  (setq highlight-indent-guides-method 'character
-        highlight-indent-guides-auto-enabled t
-        highlight-indent-guides-responsive t))
+  :custom (smartparens-global-mode t))
 (use-package lsp-mode
   :ensure t
   :commands (lsp lsp-deferred)
@@ -439,11 +435,6 @@
           )))
 (use-package prettier-js :ensure t)
 (use-package ruby-end :ensure t)
-(use-package smartparens
-  :ensure t
-  :config
-  (use-package smartparens-config)
-  (smartparens-global-mode t))
 (use-package treemacs :ensure t)
 (use-package undo-tree
   :ensure t
@@ -505,9 +496,7 @@
             (lambda ()
               (add-hook 'before-save-hook #'lsp-format-buffer t t)
               (add-hook 'before-save-hook #'lsp-organize-imports t t))))
-(use-package graphql-mode
-  :ensure t
-  :hook (graphql-mode . lsp-deferred))
+(use-package graphql-mode :ensure t)
 (use-package json-mode
   :ensure t
   :hook (json-mode . prettier-js-mode))
