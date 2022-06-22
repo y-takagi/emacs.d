@@ -270,7 +270,6 @@
                '("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*"
                  nil
                  (window-parameters (mode-line-format . none)))))
-;; Consult users will also want the embark-consult package.
 (use-package embark-consult
   :ensure t
   :after (embark consult)
@@ -343,7 +342,10 @@
         lsp-modeline-diagnostics-mode nil
         lsp-enable-file-watchers nil
         lsp-overlay-document-color-char nil
-        lsp-clients-python-library-directories '("/usr/local/" "/usr/")))
+        lsp-clients-python-library-directories '("/usr/local/" "/usr/")
+        lsp-clients-deno-enable-code-lens-references nil
+        lsp-clients-deno-enable-code-lens-implementations nil
+        lsp-clients-deno-enable-code-lens-references-all-functions nil))
 (use-package dap-mode
   :ensure t
   :config
@@ -574,10 +576,17 @@
   :ensure t
   :mode (("\\.ts$" . typescript-mode)
          ("\\.tsx$" . typescript-mode))
-  :hook ((typescript-mode . prettier-js-mode)
-         (typescript-mode . lsp-deferred))
+  :hook (typescript-mode . prettier-js-mode)
   :config
-  (setq typescript-indent-level 2))
+  (setq typescript-indent-level 2)
+
+  ;; Place .dir-locals.el with below code where to run deno-ls
+  ;; ((typescript-mode . ((lsp-enabled-clients . (deno-ls)))))
+  (defun run-local-vars-mode-hook ()
+    "Run `major-mode' hook after the local variables have been processed."
+    (run-hooks (intern (concat (symbol-name major-mode) "-local-vars-hook"))))
+  (add-hook 'hack-local-variables-hook 'run-local-vars-mode-hook)
+  (add-hook 'typescript-mode-local-vars-hook #'lsp-deferred))
 (use-package yaml-mode :ensure t)
 
 ;;; hydra
