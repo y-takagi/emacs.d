@@ -478,7 +478,6 @@
 (use-package vterm-toggle :disabled t)
 (use-package wgrep :ensure t)
 (use-package whitespace
-  :defer t
   :diminish whitespace-mode
   :config
   ;;; 行末スペースとtabの色付け
@@ -558,7 +557,7 @@
          ("\\.rake$" . ruby-mode)
          ("\\.jbuilder$" . ruby-mode)
          ("\\.builder$" . ruby-mode)
-         ("Fastfile". ruby-mode)))
+         ("Fastfile$". ruby-mode)))
 (use-package rustic
   :ensure t
   :hook ((rustic-mode . lsp-deferred))
@@ -581,7 +580,8 @@
   (setq typescript-indent-level 2)
 
   ;; Place .dir-locals.el with below code where to run deno-ls
-  ;; ((typescript-mode . ((lsp-enabled-clients . (deno-ls)))))
+  ;; ((typescript-mode . ((lsp-enabled-clients . (deno-ls))))
+  ;;  (typescript-mode (eval add-hook 'before-save-hook #'lsp-format-buffer t t)))
   (defun run-local-vars-mode-hook ()
     "Run `major-mode' hook after the local variables have been processed."
     (run-hooks (intern (concat (symbol-name major-mode) "-local-vars-hook"))))
