@@ -141,7 +141,7 @@
     (exec-path-from-shell-initialize)))
 (use-package add-node-modules-path
   :ensure t
-  :hook (prog-mode gfm-mode markdown-mode))
+  :hook ((prog-mode gfm-mode markdown-mode) . add-node-modules-path))
 (use-package hydra
   :ensure t
   :bind (("C-z" . hydra-main/body))
@@ -343,6 +343,7 @@
         lsp-enable-file-watchers nil
         lsp-overlay-document-color-char nil
         lsp-clients-python-library-directories '("/usr/local/" "/usr/")
+        lsp-enable-suggest-server-download nil
         lsp-clients-deno-enable-code-lens-references nil
         lsp-clients-deno-enable-code-lens-implementations nil
         lsp-clients-deno-enable-code-lens-references-all-functions nil))
