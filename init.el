@@ -114,6 +114,7 @@
         ("org" . "https://orgmode.org/elpa/")
         ("gnu" . "https://elpa.gnu.org/packages/")))
 (setq package-enable-at-startup nil)
+(setq native-comp-driver-options '("-Wl,-w"))
 (setq package-native-compile t)
 (package-initialize)
 (package-refresh-contents)
@@ -153,6 +154,7 @@
   :ensure t
   :config
   (auto-sudoedit-mode 1))
+(use-package eglot :ensure t)
 (use-package company
   :ensure t
   :diminish company-mode
@@ -284,10 +286,6 @@
   (dashboard-setup-startup-hook)
   (setq initial-buffer-choice (lambda () (get-buffer "*dashboard*")))
   (setq dashboard-items '((recents . 20))))
-(use-package diminish
-  :ensure t
-  :config
-  (diminish 'eldoc-mode))
 (use-package direnv
   :ensure t
   :if (executable-find "direnv")
@@ -311,9 +309,6 @@
          ("M-n" . flycheck-next-error))
   :config
   (setq flycheck-checker-error-threshold nil))
-(use-package format-all
-  :ensure t
-  :hook ((emacs-lisp-mode python-mode) . format-all-mode))
 (use-package git-gutter
   :ensure t
   :diminish git-gutter-mode
@@ -322,75 +317,6 @@
 (use-package smartparens
   :ensure t
   :custom (smartparens-global-mode t))
-(use-package lsp-mode
-  :ensure t
-  :commands (lsp lsp-deferred)
-  :bind (:map lsp-mode-map
-              ("C-c C-d" . lsp-describe-thing-at-point))
-  :init
-  (setq gc-cons-threshold 100000000
-        read-process-output-max (* 1024 1024)
-        lsp-keymap-prefix "C-c l"
-        lsp-idle-delay 0.500
-        lsp-auto-guess-root t         ; Detect project root
-        lsp-prefer-flymake nil        ; Use flycheck
-        lsp-report-if-no-buffer nil
-        lsp-disabled-clients '(angular-ls)
-        lsp-signature-auto-activate t
-        lsp-signature-doc-lines 1
-        lsp-before-save-edits nil
-        lsp-modeline-diagnostics-mode nil
-        lsp-enable-file-watchers nil
-        lsp-overlay-document-color-char nil
-        lsp-clients-python-library-directories '("/usr/local/" "/usr/")
-        lsp-enable-suggest-server-download nil
-        lsp-clients-deno-enable-code-lens-references nil
-        lsp-clients-deno-enable-code-lens-implementations nil
-        lsp-clients-deno-enable-code-lens-references-all-functions nil))
-(use-package dap-mode
-  :ensure t
-  :config
-  (add-hook 'dap-stopped-hook
-          (lambda (arg) (call-interactively #'dap-hydra))))
-(use-package lsp-dart
-  :ensure t
-  :custom
-  (lsp-dart-flutter-widget-guides nil)
-  (lsp-dart-closing-labels nil)
-  (lsp-dart-main-code-lens nil)
-  (lsp-dart-test-code-lens nil)
-  (lsp-dart-line-length 140)
-  (lsp-dart-dap-flutter-hot-reload-on-save t)
-  :init
-  (dap-register-debug-template "everytv/fresh-app"
-                               (list :type "flutter"
-                                     :flutterMode "debug"
-                                     :program "lib/main.dart"
-                                     :args '("--dart-define=FLAVOR=development"))))
-(use-package lsp-haskell
-  :ensure t
-  :config
-  (add-hook 'haskell-mode-hook #'lsp)
-  (add-hook 'haskell-literate-mode-hook #'lsp))
-(use-package lsp-tailwindcss
-  :ensure t
-  :custom (lsp-tailwindcss-add-on-mode t))
-(use-package lsp-ui
-  :ensure t
-  :commands lsp-ui-mode
-  :after (flycheck)
-  :bind (:map lsp-ui-mode-map
-              ([remap xref-find-definitions] . lsp-ui-peek-find-definitions)
-              ([remap xref-find-references] . lsp-ui-peek-find-references)
-              ("C-c u" . lsp-ui-imenu))
-  :init (setq lsp-ui-doc-enable nil
-              lsp-ui-doc-header t
-              lsp-ui-doc-include-signature t
-              lsp-ui-doc-position 'top
-              lsp-ui-sideline-enable nil
-              lsp-ui-sideline-ignore-duplicate t
-              lsp-ui-imenu-enable nil
-              lsp-ui-imenu-kind-position 'top))
 (use-package magit :ensure t)
 (use-package open-junk-file
   :ensure t
@@ -469,14 +395,6 @@
   (undo-tree-auto-save-history t)
   (undo-tree-history-directory-alist '(("." . "~/.emacs.d/undo")))
   :init (global-undo-tree-mode))
-(use-package vterm
-  ;; requirements: brew install cmake libvterm libtool
-  :disabled t
-  :custom
-  ;; enable hydra keymap
-  (vterm-keymap-exceptions '("C-z" "C-c" "C-x" "C-u" "C-g" "C-l" "M-x" "M-o" "C-v" "M-v" "C-y" "M-y"))
-  (vterm-toggle-fullscreen-p t))
-(use-package vterm-toggle :disabled t)
 (use-package wgrep :ensure t)
 (use-package whitespace
   :diminish whitespace-mode
@@ -504,32 +422,17 @@
 
 ;;; mode
 (use-package csv-mode :ensure t)
-(use-package dart-mode
-  :ensure t
-  :hook (dart-mode . lsp-deferred)
-  :config
-  (add-hook 'dart-mode-hook
-            (lambda ()
-              (add-hook 'before-save-hook #'lsp-format-buffer t t))))
-(use-package dockerfile-mode :ensure t
-  :hook (dockerfile-mode . lsp-deferred))
+(use-package dart-mode :ensure t)
+(use-package dockerfile-mode :ensure t)
 (use-package git-modes :ensure t)
-(use-package go-mode
-  :ensure t
-  :hook (go-mode . lsp-deferred)
-  :config
-  (add-hook 'go-mode-hook
-            (lambda ()
-              (add-hook 'before-save-hook #'lsp-format-buffer t t)
-              (add-hook 'before-save-hook #'lsp-organize-imports t t))))
+(use-package go-mode :ensure t)
 (use-package graphql-mode :ensure t)
 (use-package json-mode
   :ensure t
   :hook (json-mode . prettier-js-mode))
 (use-package kotlin-mode
   :ensure t
-  :mode (("\\.kt" . kotlin-mode) ("\\.gradle" . kotlin-mode))
-  :config (add-hook 'kotlin-mode-hook #'lsp))
+  :mode (("\\.kt" . kotlin-mode) ("\\.gradle" . kotlin-mode)))
 (use-package markdown-mode
   :ensure t
   :commands (markdown-mode gfm-mode)
@@ -538,12 +441,8 @@
          ("\\.markdown\\'" . markdown-mode))
   :hook ((markdown-mode gfm-mode) . prettier-js-mode)
   :init (setq markdown-command "commonmarker"))
-(use-package mhtml-mode
-  :hook ((mhtml-mode . prettier-js-mode)
-         (mhtml-mode . lsp-deferred)))
 (use-package protobuf-mode :ensure t)
-(use-package python-mode
-  :hook (python-mode . lsp-deferred))
+(use-package python-mode :ensure t)
 (use-package restart-emacs :ensure t)
 (use-package rhtml-mode :ensure t)
 (use-package rjsx-mode
@@ -561,12 +460,10 @@
          ("Fastfile$". ruby-mode)))
 (use-package rustic
   :ensure t
-  :hook ((rustic-mode . lsp-deferred))
   :config
   (setq rustic-format-on-save t))
 (use-package scss-mode
-  :hook ((scss-mode . prettier-js-mode)
-         (scss-mode . lsp-deferred)))
+  :hook (scss-mode . prettier-js-mode))
 (use-package slim-mode :ensure t)
 (use-package swift-mode
   :ensure t
@@ -576,18 +473,10 @@
   :ensure t
   :mode (("\\.ts$" . typescript-mode)
          ("\\.tsx$" . typescript-mode))
-  :hook (typescript-mode . prettier-js-mode)
+  :hook ((typescript-mode . prettier-js-mode)
+         (typescript-mode . eglot-ensure))
   :config
-  (setq typescript-indent-level 2)
-
-  ;; Place .dir-locals.el with below code where to run deno-ls
-  ;; ((typescript-mode . ((lsp-enabled-clients . (deno-ls))))
-  ;;  (typescript-mode (eval add-hook 'before-save-hook #'lsp-format-buffer t t)))
-  (defun run-local-vars-mode-hook ()
-    "Run `major-mode' hook after the local variables have been processed."
-    (run-hooks (intern (concat (symbol-name major-mode) "-local-vars-hook"))))
-  (add-hook 'hack-local-variables-hook 'run-local-vars-mode-hook)
-  (add-hook 'typescript-mode-local-vars-hook #'lsp-deferred))
+  (setq typescript-indent-level 2))
 (use-package yaml-mode :ensure t)
 
 ;;; hydra
@@ -610,8 +499,6 @@
   ("v" vterm-toggle)
   ("r" vertico-repeat)
   ("m" magit-status)
-  ("." lsp-ui-peek-find-definitions)
-  ("/" lsp-ui-peek-find-references)
   ("," xref-pop-marker-stack)
   ("RET" hydra-mark/body))
 
