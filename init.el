@@ -1,4 +1,3 @@
-
 ;; load-path for elisp files
 ;; emacs -l init.el等で直接ロードしたときに, user-emacs-directoryが書き換わる
 (when load-file-name
@@ -114,6 +113,7 @@
         ("org" . "https://orgmode.org/elpa/")
         ("gnu" . "https://elpa.gnu.org/packages/")))
 (setq package-enable-at-startup nil)
+(setq native-comp-driver-options '("-Wl,-w"))
 (setq package-native-compile t)
 (package-initialize)
 (package-refresh-contents)
