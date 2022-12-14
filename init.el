@@ -21,6 +21,7 @@
 (setq vc-follow-symlinks t)
 (setq-default cursor-in-non-selected-windows nil)
 (setq enable-recursive-minibuffers t)
+(setq warning-suppress-types '(lsp-mode))
 
 ;; line number
 (add-hook 'prog-mode-hook #'display-line-numbers-mode)
@@ -242,6 +243,9 @@
     (let* ((prompt-dir (consult--directory-prompt "Fd" dir))
            (default-directory (cdr prompt-dir)))
       (find-file (consult--find (car prompt-dir) #'consult--fd-builder initial))))
+  (defun consult-ripgrep-at-point ()
+    (interactive)
+    (consult-ripgrep nil (thing-at-point 'symbol)))
 
   (consult-customize
    consult-theme
@@ -602,6 +606,7 @@
   ("q" consult-ghq-find)
   ("l" project-find-file)
   ("g" consult-ripgrep)
+  ("h" consult-ripgrep-at-point)
   ("u" undo-tree-visualize)
   ("j" open-junk-file)
   ("o" other-window)
