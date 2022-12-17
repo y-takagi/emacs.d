@@ -618,6 +618,7 @@
   ("." lsp-ui-peek-find-definitions)
   ("/" lsp-ui-peek-find-references)
   ("," xref-pop-marker-stack)
+  ("t" hydra-tab/body)
   ("RET" hydra-mark/body))
 
 (defhydra hydra-mark (:body-pre (set-mark-command nil) :hint nil :color pink)
@@ -635,6 +636,18 @@
   ("i" indent-region :exit t)
   ("a" beginning-of-buffer :exit nil)
   ("e" end-of-buffer :exit nil))
+
+(defhydra hydra-tab (:hint nil :exit t)
+  "
+  ^Tab^
+  ^^^^------------
+  _n_: new-tab
+  _r_: rename-tab
+  _b_: switch-tab
+  "
+  ("n" tab-bar-new-tab)
+  ("r" tab-bar-rename-tab)
+  ("b" tab-switcher))
 
 ;; (defhydra hydra-window (:hint nil :exit t)
 ;;   "
