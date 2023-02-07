@@ -513,6 +513,7 @@
                       :underline "#dc322f")
   (set-face-attribute 'whitespace-trailing nil
                       :background "#dc322f")
+  (add-hook 'conf-mode-hook #'whitespace-mode)
   (add-hook 'prog-mode-hook #'whitespace-mode)
   (add-hook 'text-mode-hook #'whitespace-mode))
 (use-package yagist :ensure t)
