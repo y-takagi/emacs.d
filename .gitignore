@@ -47,3 +47,6 @@ projects
 # dap-mode
 .dap-breakpoints
 .extension
+
+# quelpa
+/quelpa

@@ -21,7 +21,8 @@
 (setq vc-follow-symlinks t)
 (setq-default cursor-in-non-selected-windows nil)
 (setq enable-recursive-minibuffers t)
-(setq warning-suppress-types '(lsp-mode))
+(setq warning-suppress-types '((lsp-mode)))
+(setq warning-suppress-log-types '((lsp-mode)))
 
 ;; line number
 (add-hook 'prog-mode-hook #'display-line-numbers-mode)
@@ -124,6 +125,19 @@
   (package-install 'use-package))
 (require 'use-package)
 
+;; Setup quelpa
+(unless (package-installed-p 'quelpa)
+  (with-temp-buffer
+    (url-insert-file-contents "https://raw.githubusercontent.com/quelpa/quelpa/master/quelpa.el")
+    (eval-buffer)))
+
+;; Setup quelpa-use-package
+(quelpa
+ '(quelpa-use-package
+   :fetcher git
+   :url "https://github.com/quelpa/quelpa-use-package.git"))
+(require 'quelpa-use-package)
+
 ;; Do nothing if use-package.el doesn't exist
 (unless (require 'use-package nil t)
   (defmacro use-package (&rest args)))
@@ -191,6 +205,11 @@
 
   ;; 各種メジャーモードでも C-M-iで company-modeの補完を使う
   (define-key emacs-lisp-mode-map (kbd "M-/") 'company-complete))
+(use-package tree-sitter
+  :ensure t
+  :config
+  (global-tree-sitter-mode))
+(use-package tree-sitter-langs :ensure t)
 (use-package vertico
   :ensure t
   :init (vertico-mode)
@@ -545,6 +564,8 @@
 (use-package mhtml-mode
   :hook ((mhtml-mode . prettier-js-mode)
          (mhtml-mode . lsp-deferred)))
+(use-package prisma-mode
+  :quelpa (prisma-mode :fetcher github :repo "pimeys/emacs-prisma-mode"))
 (use-package protobuf-mode :ensure t)
 (use-package python-mode
   :hook (python-mode . lsp-deferred))
@@ -647,7 +668,8 @@
   "
   ("n" tab-bar-new-tab)
   ("r" tab-bar-rename-tab)
-  ("b" tab-switcher))
+  ("b" tab-switcher)
+  ("d" tab-bar-close-tab))
 
 ;; (defhydra hydra-window (:hint nil :exit t)
 ;;   "
