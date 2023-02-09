@@ -301,6 +301,11 @@
   ;; auto-updating embark collect buffer
   :hook
   (embark-collect-mode . consult-preview-at-point-mode))
+(use-package openwith
+  :ensure t
+  :custom (openwith-associations '(("\\.pdf\\'" "open" (file))))
+  :config
+  (openwith-mode 1))
 (use-package dashboard
   :ensure t
   :config
