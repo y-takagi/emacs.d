@@ -156,6 +156,7 @@
     (exec-path-from-shell-initialize)))
 (use-package add-node-modules-path
   :ensure t
+  :custom (add-node-modules-path-command "echo \"$(npm root)/.bin\"")
   :hook ((prog-mode gfm-mode markdown-mode) . add-node-modules-path))
 (use-package hydra
   :ensure t
@@ -639,11 +640,11 @@
   ("o" other-window)
   ("w" split-window-below)
   ("p" delete-window)
-  ("v" vterm-toggle)
   ("r" vertico-repeat)
   ("m" magit-status)
   ("." lsp-ui-peek-find-definitions)
   ("/" lsp-ui-peek-find-references)
+  ("\\" lsp-execute-code-action)
   ("," xref-pop-marker-stack)
   ("t" hydra-tab/body)
   ("RET" hydra-mark/body))
