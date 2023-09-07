@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+## Angular
+npm i -g @angular/language-service@next typescript @angular/language-server

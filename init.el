@@ -1,174 +1,141 @@
-;; load-path for elisp files
-;; emacs -l init.el等で直接ロードしたときに, user-emacs-directoryが書き換わる
-(when load-file-name
-  (setq user-emacs-directory (file-name-directory load-file-name)))
-
-;;(add-to-list 'load-path (concat user-emacs-directory "site-lisp"))
-
-;;; language and coding
-(prefer-coding-system 'utf-8)
-(set-language-environment "Japanese")
-;; (setq file-name-coding-system 'utf-8)
-;; (setq locale-coding-system 'utf-8)
-
-(when (fboundp 'menu-bar-mode) (menu-bar-mode -1))
-(when (fboundp 'tool-bar-mode) (tool-bar-mode -1))
-(when (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
-(blink-cursor-mode 1)
-(show-paren-mode 1) ;; highlight corresponding bracket
-(setq inhibit-startup-message t)
-(setq ring-bell-function 'ignore)
-(setq vc-follow-symlinks t)
-(setq-default cursor-in-non-selected-windows nil)
-(setq enable-recursive-minibuffers t)
-(setq warning-suppress-types '((lsp-mode)))
-(setq warning-suppress-log-types '((lsp-mode)))
-
-;; line number
-(add-hook 'prog-mode-hook #'display-line-numbers-mode)
-(add-hook 'text-mode-hook #'display-line-numbers-mode)
-(add-hook 'conf-space-mode-hook #'display-line-numbers-mode)
-(add-hook 'conf-unix-mode-hook #'display-line-numbers-mode)
-(add-hook 'conf-toml-mode-hook #'display-line-numbers-mode)
-
-;;; disable auto indent
-(add-hook 'after-change-major-mode-hook
-          (lambda() (electric-indent-mode -1)))
-
-;;; exitコマンド
-(defalias 'exit 'save-buffers-kill-terminal)
-
-;;; 変更されたファイルを自動的に再読み込み
-(global-auto-revert-mode 1)
-
-(setq default-directory "~/")
-
-;;; tab
-(setq-default tab-width 4 indent-tabs-mode nil)
-(setq-default basic-offset 2)
-(setq-default c-basic-offset 2)
-
-;; indent
-(setq css-indent-offset 2)
-(setq js-indent-level 2)
-(setq python-indent-guess-indent-offset nil)
-
-;;; file
-(setq mode-require-final-newline t)
-(setq backup-inhibited t)
-(setq make-backup-files nil)
-(setq create-lockfiles nil)
-(setq delete-auto-save-files t)
-(setq auto-save-default nil)
-
-;;; 問い合せには y か n で返答
-(fset 'yes-or-no-p 'y-or-n-p)
-
-;;; emacs permission
-;; (setq wdired-allow-to-change-permissions t)
-
-;;; suppress warning messsage.
-(setq ad-redefinition-action 'accept)
-
-;;; scroll
-(setq mouse-wheel-scroll-amount '(1 ((shift) . 1))) ;; one line at a time
-(setq mouse-wheel-progressive-speed nil) ;; don't accelerate scrolling
-(setq mouse-wheel-follow-mouse 't) ;; scroll window under mouse
-(setq scroll-conservatively 1) ;; keyboard scroll one line at a time
-
-;;; tab-bar-mode
-(tab-bar-mode +1)
-(setq tab-bar-new-tab-choice "*scratch*")
-(setq tab-bar-tab-hints t)
-
-;;; diredの表示オプション
-(let ((gls (executable-find "gls")))
-  (when gls
-    (setq insert-directory-program gls
-          dired-listing-switches "-ahl --time-style long-iso --group-directories-first")))
-
-;;; emacs のデフォルトブラウザを eww に変更
-(setq browse-url-browser-function 'eww-browse-url)
-
-(when (eq system-type 'darwin)
-  ;; Fonts
-  (add-to-list 'default-frame-alist '(font . "Ricty 16"))
-  (set-fontset-font "fontset-default" 'unicode "Apple Color Emoji" nil 'prepend)
-
-  ;; フルスクリーン (maximized, fullscreen)
-  ;;(add-hook 'emacs-startup-hook #'toggle-frame-maximized)
-
-  ;; Modify right command to super
-  ;; (setq mac-right-command-modifier 'super)
-  ;; (setq ns-command-modifier (quote meta))
-
-  ;; フォントの拡大・縮小
-  (global-set-key (kbd "s-=") (lambda () (interactive) (text-scale-increase 1)))
-  (global-set-key (kbd "s--") (lambda () (interactive) (text-scale-decrease 1)))
-  (global-set-key (kbd "s-0") (lambda () (interactive) (text-scale-increase 0)))
-  )
-
-;; package.el settings
-(require 'package)
-(setq package-archives
-      '(("melpa" . "https://melpa.org/packages/")
-        ("org" . "https://orgmode.org/elpa/")
-        ("gnu" . "https://elpa.gnu.org/packages/")))
-(setq package-enable-at-startup nil)
-(setq native-comp-driver-options '("-Wl,-w"))
-(setq package-native-compile t)
-(package-initialize)
-(package-refresh-contents)
-
-;; ensure to use use-package
-(when (not (package-installed-p 'use-package))
-  (package-install 'use-package))
-(require 'use-package)
-
-;; Setup quelpa
-(unless (package-installed-p 'quelpa)
-  (with-temp-buffer
-    (url-insert-file-contents "https://raw.githubusercontent.com/quelpa/quelpa/master/quelpa.el")
-    (eval-buffer)))
-
-;; Setup quelpa-use-package
-(quelpa
- '(quelpa-use-package
-   :fetcher git
-   :url "https://github.com/quelpa/quelpa-use-package.git"))
-(require 'quelpa-use-package)
-
-;; Do nothing if use-package.el doesn't exist
-(unless (require 'use-package nil t)
-  (defmacro use-package (&rest args)))
-
 (use-package emacs
   :custom
   (modus-themes-mode-line '(moody borderless))
+  (custom-file (expand-file-name "custom.el" user-emacs-directory))
+  (inhibit-startup-message t)
+  (ring-bell-function 'ignore)
+  (vc-follow-symlinks t)
+  (enable-recursive-minibuffers t)
+  (warning-suppress-types '((lsp-mode)))
+  (warning-suppress-log-types '((lsp-mode)))
+  (split-width-threshold nil)
+  (default-directory "~/")
+  (browse-url-browser-function 'eww-browse-url "emacs のデフォルトブラウザを eww に変更")
+  (cursor-in-non-selected-windows nil)
+  (indent-tabs-mode nil)
+  (tab-width 4)
+  (basic-offset 2)
+  (css-indent-offset 2)
+  (js-indent-level 2)
+  (python-indent-guess-indent-offset nil)
+  (c-basic-offset 2)
+  (mode-require-final-newline t)
+  (backup-inhibited t)
+  (make-backup-files nil)
+  (create-lockfiles nil)
+  (delete-auto-save-files t)
+  (auto-save-default nil)
+  (ad-redefinition-action 'accept "suppress warning messsage.")
+  (mouse-wheel-scroll-amount '(1 ((shift) . 1)) "scroll one line at a time")
+  (mouse-wheel-progressive-speed nil "don't accelerate scrolling")
+  (mouse-wheel-follow-mouse t "scroll window under mouse")
+  (scroll-conservatively 1 "keyboard scroll one line at a time")
+  (tab-bar-new-tab-choice "*scratch*")
+  (tab-bar-tab-hints t)
+  (package-archives
+   '(("melpa" . "https://melpa.org/packages/")
+     ("org" . "https://orgmode.org/elpa/")
+     ("gnu" . "https://elpa.gnu.org/packages/")))
+  (native-comp-driver-options '("-Wl,-w"))
+  (package-native-compile t "AOT compilation on package install.")
+  :hook
+  ;; line number
+  (prog-mode . display-line-numbers-mode)
+  (text-mode . display-line-numbers-mode)
+  (conf-space-mode . display-line-numbers-mode)
+  (conf-unix-mode-hook . display-line-numbers-mode)
+  (conf-toml-mode-hook . display-line-numbers-mode)
+  ;; disable auto indent
+  (after-change-major-mode . (lambda() (electric-indent-mode -1)))
+  :init
+  ;; load-path for elisp files
+  ;; emacs -l init.el等で直接ロードしたときに, user-emacs-directoryが書き換わる
+  (when load-file-name
+    (setq user-emacs-directory (file-name-directory load-file-name)))
+
+  ;; exitコマンド
+  (defalias 'exit 'save-buffers-kill-terminal)
+
+  ;; diredの表示オプション
+  ;; (let ((gls (executable-find "gls")))
+  ;;   (when gls
+  ;;     (setq insert-directory-program gls
+  ;;           dired-listing-switches "-ahl --time-style long-iso --group-directories-first")))
+
+  (when (eq system-type 'darwin)
+    ;; Fonts
+    (add-to-list 'default-frame-alist '(font . "Ricty 14"))
+    (set-fontset-font "fontset-default" 'unicode "Apple Color Emoji" nil 'prepend)
+
+    ;; フルスクリーン (maximized, fullscreen)
+    ;;(add-hook 'emacs-startup-hook #'toggle-frame-maximized)
+
+    ;; Modify right command to super
+    ;; (setq mac-right-command-modifier 'super)
+    ;; (setq ns-command-modifier (quote meta))
+    )
+
+  (when (fboundp 'menu-bar-mode) (menu-bar-mode -1))
+  (when (fboundp 'tool-bar-mode) (tool-bar-mode -1))
+  (when (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
+  (prefer-coding-system 'utf-8) ;; language and coding
+  (set-language-environment "Japanese") ;; language and coding
+  (blink-cursor-mode 1)
+  (show-paren-mode 1) ;; highlight corresponding bracket
+  (global-auto-revert-mode 1) ;; 変更されたファイルを自動的に再読み込み
+  (fset 'yes-or-no-p 'y-or-n-p) ;; 問い合せには y か n で返答
+  (tab-bar-mode +1)
+  (package-refresh-contents)
   :config
   ;; modus-operandi is light.
   ;; modus-vivendi is dark.
   (load-theme 'modus-vivendi))
+
+(use-package whitespace
+  :diminish whitespace-mode
+  :hook
+  (conf-mode . whitespace-mode)
+  (prog-mode . whitespace-mode)
+  (text-mode . whitespace-mode)
+  :custom
+  (whitespace-style '(face trailing tabs space-mark tab-mark))
+  (whitespace-display-mappings '((tab-mark ?\t [?\u00BB ?\t] [?\\ ?\t])))
+  :custom-face
+  (whitespace-tab ((t (:foreground "#dc322f" :underline "#dc322f"))))
+  (whitespace-trailing ((t (:background "#dc322f")))))
+
+(use-package treesit :custom (treesit-font-lock-level 4))
+
+(use-package treesit-auto
+  :ensure t
+  :custom
+  (treesit-auto-langs '(bash css dockerfile go html javascript json make markdown python rust tsx typescript yaml))
+  :config
+  (global-treesit-auto-mode))
+
+(use-package nerd-icons :ensure t)
+
 (use-package exec-path-from-shell
+  :if (memq window-system '(mac ns))
   :ensure t
   :config
-  (when (memq window-system '(mac ns x))
-    (exec-path-from-shell-initialize)))
+  (exec-path-from-shell-initialize))
+
 (use-package add-node-modules-path
   :ensure t
   :custom (add-node-modules-path-command "echo \"$(npm root)/.bin\"")
   :hook ((prog-mode gfm-mode markdown-mode) . add-node-modules-path))
+
 (use-package hydra
   :ensure t
   :bind (("C-z" . hydra-main/body))
   :config (hydra-set-property 'hydra-main :verbosity 1))
-(use-package all-the-icons
-  :ensure t
-  :custom (all-the-icons-scale-factor 1.0))
+
 (use-package auto-sudoedit
   :ensure t
   :config
   (auto-sudoedit-mode 1))
+
 (use-package company
   :ensure t
   :diminish company-mode
@@ -206,24 +173,23 @@
 
   ;; 各種メジャーモードでも C-M-iで company-modeの補完を使う
   (define-key emacs-lisp-mode-map (kbd "M-/") 'company-complete))
-(use-package tree-sitter
-  :ensure t
-  :config
-  (global-tree-sitter-mode))
-(use-package tree-sitter-langs :ensure t)
+
 (use-package vertico
   :ensure t
   :init (vertico-mode)
   :custom
   (vertico-count 14)
   (vertico-resize nil))
+
 (use-package vertico-directory
   :after vertico
   :bind (:map vertico-map ("C-l" . vertico-directory-up)))
+
 (use-package vertico-repeat
   :after vertico
   :config
   (add-hook 'minibuffer-setup-hook #'vertico-repeat-save))
+
 (use-package orderless
   :ensure t
   :init
@@ -234,7 +200,9 @@
         completion-category-defaults nil
         completion-category-overrides '((file (styles partial-completion)))))
 (use-package savehist :init (savehist-mode))
+
 (use-package marginalia :ensure t :init (marginalia-mode))
+
 (use-package consult
   :ensure t
   :bind (("C-s" . consult-line))
@@ -278,7 +246,9 @@
         (lambda ()
           (when-let (project (project-current))
             (car (project-roots project))))))
+
 (use-package consult-ghq :ensure t)
+
 (use-package embark
   :ensure t
   :bind
@@ -294,6 +264,7 @@
                '("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*"
                  nil
                  (window-parameters (mode-line-format . none)))))
+
 (use-package embark-consult
   :ensure t
   :after (embark consult)
@@ -302,26 +273,26 @@
   ;; auto-updating embark collect buffer
   :hook
   (embark-collect-mode . consult-preview-at-point-mode))
+
 (use-package openwith
   :ensure t
   :custom (openwith-associations '(("\\.pdf\\'" "open" (file))))
   :config
   (openwith-mode 1))
+
 (use-package dashboard
   :ensure t
   :config
   (dashboard-setup-startup-hook)
   (setq initial-buffer-choice (lambda () (get-buffer "*dashboard*")))
   (setq dashboard-items '((recents . 20))))
-(use-package diminish
-  :ensure t
-  :config
-  (diminish 'eldoc-mode))
+
 (use-package direnv
   :ensure t
   :if (executable-find "direnv")
   :config
   (direnv-mode))
+
 (use-package doom-modeline
   :ensure t
   :custom
@@ -334,23 +305,26 @@
   :config
   (line-number-mode 0)
   (column-number-mode 0))
+
 (use-package flycheck
   :ensure t
   :bind (("M-p" . flycheck-previous-error)
          ("M-n" . flycheck-next-error))
   :config
   (setq flycheck-checker-error-threshold nil))
-(use-package format-all
-  :ensure t
-  :hook ((emacs-lisp-mode python-mode) . format-all-mode))
+
 (use-package git-gutter
   :ensure t
   :diminish git-gutter-mode
   :config
   (global-git-gutter-mode +1))
+
 (use-package smartparens
   :ensure t
   :custom (smartparens-global-mode t))
+
+(use-package multiple-cursors :ensure t)
+
 (use-package lsp-mode
   :ensure t
   :commands (lsp lsp-deferred)
@@ -364,11 +338,9 @@
         lsp-auto-guess-root t         ; Detect project root
         lsp-prefer-flymake nil        ; Use flycheck
         lsp-report-if-no-buffer nil
-        lsp-disabled-clients '(angular-ls)
-        lsp-signature-auto-activate t
-        lsp-signature-doc-lines 1
+        ;;lsp-disabled-clients '(angular-ls)
+        lsp-eldoc-enable-hover nil
         lsp-before-save-edits nil
-        lsp-modeline-diagnostics-mode nil
         lsp-enable-file-watchers nil
         lsp-overlay-document-color-char nil
         lsp-clients-python-library-directories '("/usr/local/" "/usr/")
@@ -376,11 +348,13 @@
         lsp-clients-deno-enable-code-lens-references nil
         lsp-clients-deno-enable-code-lens-implementations nil
         lsp-clients-deno-enable-code-lens-references-all-functions nil))
+
 (use-package dap-mode
   :ensure t
   :config
   (add-hook 'dap-stopped-hook
           (lambda (arg) (call-interactively #'dap-hydra))))
+
 (use-package lsp-dart
   :ensure t
   :custom
@@ -396,14 +370,17 @@
                                      :flutterMode "debug"
                                      :program "lib/main.dart"
                                      :args '("--dart-define=FLAVOR=development"))))
+
 (use-package lsp-haskell
   :ensure t
   :config
   (add-hook 'haskell-mode-hook #'lsp)
   (add-hook 'haskell-literate-mode-hook #'lsp))
+
 (use-package lsp-tailwindcss
   :ensure t
   :custom (lsp-tailwindcss-add-on-mode t))
+
 (use-package lsp-ui
   :ensure t
   :commands lsp-ui-mode
@@ -412,19 +389,23 @@
               ([remap xref-find-definitions] . lsp-ui-peek-find-definitions)
               ([remap xref-find-references] . lsp-ui-peek-find-references)
               ("C-c u" . lsp-ui-imenu))
-  :init (setq lsp-ui-doc-enable nil
+  :init (setq lsp-ui-doc-show-with-cursor t
               lsp-ui-doc-header t
               lsp-ui-doc-include-signature t
-              lsp-ui-doc-position 'top
+              lsp-ui-doc-position 'at-point
+              lsp-ui-doc-delay 0.5
               lsp-ui-sideline-enable nil
               lsp-ui-sideline-ignore-duplicate t
               lsp-ui-imenu-enable nil
               lsp-ui-imenu-kind-position 'top))
+
 (use-package magit :ensure t)
+
 (use-package open-junk-file
   :ensure t
   :config
   (setq open-junk-file-format "~/Documents/Note/%Y-%m%d-%H%M%S."))
+
 (use-package org
   :ensure t
   :config
@@ -489,15 +470,19 @@
            "* %T %?\n"
            :prepend t)
           )))
+
 (use-package prettier-js :ensure t)
+
 (use-package ruby-end :ensure t)
-(use-package treemacs :ensure t)
+
 (use-package undo-tree
   :ensure t
   :custom
   (undo-tree-auto-save-history t)
   (undo-tree-history-directory-alist '(("." . "~/.emacs.d/undo")))
-  :init (global-undo-tree-mode))
+  :init
+  (global-undo-tree-mode))
+
 (use-package vterm
   ;; requirements: brew install cmake libvterm libtool
   :disabled t
@@ -505,113 +490,62 @@
   ;; enable hydra keymap
   (vterm-keymap-exceptions '("C-z" "C-c" "C-x" "C-u" "C-g" "C-l" "M-x" "M-o" "C-v" "M-v" "C-y" "M-y"))
   (vterm-toggle-fullscreen-p t))
+
 (use-package vterm-toggle :disabled t)
+
 (use-package wgrep :ensure t)
-(use-package whitespace
-  :diminish whitespace-mode
-  :config
-  ;;; 行末スペースとtabの色付け
-  (setq whitespace-style '(face trailing tabs space-mark tab-mark))
-  (setq whitespace-display-mappings
-        '((tab-mark ?\t [?\u00BB ?\t] [?\\ ?\t])))
-  (set-face-attribute 'whitespace-tab nil
-                      :foreground "#dc322f"
-                      :underline "#dc322f")
-  (set-face-attribute 'whitespace-trailing nil
-                      :background "#dc322f")
-  (add-hook 'conf-mode-hook #'whitespace-mode)
-  (add-hook 'prog-mode-hook #'whitespace-mode)
-  (add-hook 'text-mode-hook #'whitespace-mode))
+
 (use-package yagist :ensure t)
+
 (use-package yasnippet
   :ensure t
   :config
   (yas-reload-all)
   (add-hook 'markdown-mode-hook #'yas-minor-mode)
   (add-hook 'prog-mode-hook #'yas-minor-mode))
+
 (use-package yasnippet-snippets :ensure t)
 
-
 ;;; mode
+
+(use-package css-ts-mode
+  :hook
+  (css-ts-mode . prettier-js-mode)
+  (css-ts-mode . lsp-deferred))
+
 (use-package csv-mode :ensure t)
-(use-package dart-mode
-  :ensure t
-  :hook (dart-mode . lsp-deferred)
-  :config
-  (add-hook 'dart-mode-hook
-            (lambda ()
-              (add-hook 'before-save-hook #'lsp-format-buffer t t))))
-(use-package dockerfile-mode :ensure t
-  :hook (dockerfile-mode . lsp-deferred))
-(use-package git-modes :ensure t)
-(use-package go-mode
-  :ensure t
-  :hook (go-mode . lsp-deferred)
-  :config
-  (add-hook 'go-mode-hook
-            (lambda ()
-              (add-hook 'before-save-hook #'lsp-format-buffer t t)
-              (add-hook 'before-save-hook #'lsp-organize-imports t t))))
-(use-package graphql-mode :ensure t)
-(use-package json-mode
-  :ensure t
-  :hook (json-mode . prettier-js-mode))
-(use-package kotlin-mode
-  :ensure t
-  :mode (("\\.kt" . kotlin-mode) ("\\.gradle" . kotlin-mode))
-  :config (add-hook 'kotlin-mode-hook #'lsp))
+
+(use-package json-ts-mode
+  :hook (json-ts-mode . prettier-js-mode))
+
+(use-package js-ts-mode
+  :hook
+  (js-ts-mode . prettier-js-mode)
+  (js-ts-mode . lsp-deferred))
+
 (use-package markdown-mode
-  :ensure t
   :commands (markdown-mode gfm-mode)
   :mode (("README\\.md\\'" . gfm-mode)
          ("\\.md\\'" . markdown-mode)
          ("\\.markdown\\'" . markdown-mode))
   :hook ((markdown-mode gfm-mode) . prettier-js-mode)
   :init (setq markdown-command "commonmarker"))
-(use-package mhtml-mode
-  :hook ((mhtml-mode . prettier-js-mode)
-         (mhtml-mode . lsp-deferred)))
-(use-package prisma-mode
-  :quelpa (prisma-mode :fetcher github :repo "pimeys/emacs-prisma-mode"))
-(use-package protobuf-mode :ensure t)
-(use-package python-mode
-  :hook (python-mode . lsp-deferred))
-(use-package restart-emacs :ensure t)
-(use-package rhtml-mode :ensure t)
-(use-package rjsx-mode
-  :ensure t
-  :hook ((rjsx-mode . prettier-js-mode)
-         (rjsx-mode . flycheck-mode))
-  :mode (("\\.js$" . rjsx-mode)))
-(use-package rspec-mode :ensure t)
-(use-package ruby-mode
-  :ensure t
-  :mode (("\\.erb$" . ruby-mode)
-         ("\\.rake$" . ruby-mode)
-         ("\\.jbuilder$" . ruby-mode)
-         ("\\.builder$" . ruby-mode)
-         ("Fastfile$". ruby-mode)))
-(use-package rustic
-  :ensure t
-  :hook ((rustic-mode . lsp-deferred))
-  :config
-  (setq rustic-format-on-save t))
-(use-package scss-mode
-  :hook ((scss-mode . prettier-js-mode)
-         (scss-mode . lsp-deferred)))
-(use-package slim-mode :ensure t)
-(use-package swift-mode
-  :ensure t
-  :config
-  (setq swift-mode:basic-offset 2))
-(use-package typescript-mode
-  :ensure t
-  :mode (("\\.ts$" . typescript-mode)
-         ("\\.tsx$" . typescript-mode))
-  :hook (typescript-mode . prettier-js-mode)
-  :config
-  (setq typescript-indent-level 2)
 
+(use-package mhtml-mode
+  :hook
+  (mhtml-mode . prettier-js-mode)
+  (mhtml-mode . lsp-deferred))
+
+(use-package python-ts-mode
+  :hook (python-ts-mode . lsp-deferred))
+
+(use-package typescript-ts-mode
+  :mode (("\\.ts$" . typescript-ts-mode)
+         ("\\.tsx$" . typescript-ts-mode))
+  :hook
+  (typescript-ts-mode . prettier-js-mode)
+  (typescript-ts-mode . lsp-deferred)
+  :config
   ;; Place .dir-locals.el with below code where to run deno-ls
   ;; ((typescript-mode . ((lsp-enabled-clients . (deno-ls))))
   ;;  (typescript-mode (eval add-hook 'before-save-hook #'lsp-format-buffer t t)))
@@ -620,7 +554,31 @@
     (run-hooks (intern (concat (symbol-name major-mode) "-local-vars-hook"))))
   (add-hook 'hack-local-variables-hook 'run-local-vars-mode-hook)
   (add-hook 'typescript-mode-local-vars-hook #'lsp-deferred))
-(use-package yaml-mode :ensure t)
+
+;; (use-package dart-mode
+;;   :ensure t
+;;   :hook (dart-mode . lsp-deferred)
+;;   :config
+;;   (add-hook 'dart-mode-hook
+;;             (lambda ()
+;;               (add-hook 'before-save-hook #'lsp-format-buffer t t))))
+
+;; (use-package go-mode
+;;   :ensure t
+;;   :hook (go-mode . lsp-deferred)
+;;   :config
+;;   (add-hook 'go-mode-hook
+;;             (lambda ()
+;;               (add-hook 'before-save-hook #'lsp-format-buffer t t)
+;;               (add-hook 'before-save-hook #'lsp-organize-imports t t))))
+
+;; (use-package kotlin-mode
+;;   :ensure t
+;;   :mode (("\\.kt" . kotlin-mode) ("\\.gradle" . kotlin-mode))
+;;   :config (add-hook 'kotlin-mode-hook #'lsp))
+
+;; (use-package prisma-mode
+;;   :vc (:url "https://github.com/davidarenas/prisma-mode" :branch "master"))
 
 ;;; hydra
 (defhydra hydra-main (:hint nil :exit t)
@@ -646,8 +604,8 @@
   ("/" lsp-ui-peek-find-references)
   ("\\" lsp-execute-code-action)
   ("," xref-pop-marker-stack)
-  ("t" hydra-tab/body)
-  ("RET" hydra-mark/body))
+  ("RET" hydra-mark/body)
+  ("z" hydra-zoom/body))
 
 (defhydra hydra-mark (:body-pre (set-mark-command nil) :hint nil :color pink)
   "
@@ -665,18 +623,24 @@
   ("a" beginning-of-buffer :exit nil)
   ("e" end-of-buffer :exit nil))
 
-(defhydra hydra-tab (:hint nil :exit t)
-  "
-  ^Tab^
-  ^^^^------------
-  _n_: new-tab
-  _r_: rename-tab
-  _b_: switch-tab
-  "
-  ("n" tab-bar-new-tab)
-  ("r" tab-bar-rename-tab)
-  ("b" tab-switcher)
-  ("d" tab-bar-close-tab))
+(defhydra hydra-zoom ()
+  "zoom"
+  ("j" text-scale-increase "in")
+  ("k" text-scale-decrease "out")
+  ("l" (text-scale-adjust 0) "adjust"))
+
+;; (defhydra hydra-tab (:hint nil :exit t)
+;;   "
+;;   ^Tab^
+;;   ^^^^------------
+;;   _n_: new-tab
+;;   _r_: rename-tab
+;;   _b_: switch-tab
+;;   "
+;;   ("n" tab-bar-new-tab)
+;;   ("r" tab-bar-rename-tab)
+;;   ("b" tab-switcher)
+;;   ("d" tab-bar-close-tab))
 
 ;; (defhydra hydra-window (:hint nil :exit t)
 ;;   "
@@ -697,10 +661,5 @@
 ;;   ("w" split-window-below)
 ;;   ("p" delete-window)
 ;;   ("d" kill-this-buffer))
-
-
-(setq custom-file (expand-file-name "custom.el" user-emacs-directory))
-(when (file-exists-p custom-file)
-  (load custom-file))
 
 (server-start)
