@@ -509,6 +509,8 @@
 ;;; mode
 
 (use-package css-ts-mode
+  :mode (("\\.css$" . css-ts-mode)
+         ("\\.scss$" . css-ts-mode))
   :hook
   (css-ts-mode . prettier-js-mode)
   (css-ts-mode . lsp-deferred))
@@ -554,6 +556,10 @@
     (run-hooks (intern (concat (symbol-name major-mode) "-local-vars-hook"))))
   (add-hook 'hack-local-variables-hook 'run-local-vars-mode-hook)
   (add-hook 'typescript-mode-local-vars-hook #'lsp-deferred))
+
+(use-package yaml-ts-mode
+  :mode (("\\.yaml$" . yaml-ts-mode)
+         ("\\.yml$" . yaml-ts-mode)))
 
 ;; (use-package dart-mode
 ;;   :ensure t
