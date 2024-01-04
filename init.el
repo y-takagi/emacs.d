@@ -25,6 +25,7 @@
   (create-lockfiles nil)
   (delete-auto-save-files t)
   (auto-save-default nil)
+  (use-short-answers t)
   (ad-redefinition-action 'accept "suppress warning messsage.")
   (mouse-wheel-scroll-amount '(1 ((shift) . 1)) "scroll one line at a time")
   (mouse-wheel-progressive-speed nil "don't accelerate scrolling")
@@ -83,7 +84,6 @@
   (blink-cursor-mode 1)
   (show-paren-mode 1) ;; highlight corresponding bracket
   (global-auto-revert-mode 1) ;; 変更されたファイルを自動的に再読み込み
-  (fset 'yes-or-no-p 'y-or-n-p) ;; 問い合せには y か n で返答
   (tab-bar-mode +1)
   (package-refresh-contents)
   :config
@@ -125,11 +125,6 @@
   :ensure t
   :custom (add-node-modules-path-command "echo \"$(npm root)/.bin\"")
   :hook ((prog-mode gfm-mode markdown-mode) . add-node-modules-path))
-
-(use-package hydra
-  :ensure t
-  :bind (("C-z" . hydra-main/body))
-  :config (hydra-set-property 'hydra-main :verbosity 1))
 
 (use-package auto-sudoedit
   :ensure t
@@ -385,26 +380,17 @@
   :ensure t
   :commands lsp-ui-mode
   :after (flycheck)
-  :bind (:map lsp-ui-mode-map
-              ([remap xref-find-definitions] . lsp-ui-peek-find-definitions)
-              ([remap xref-find-references] . lsp-ui-peek-find-references)
-              ("C-c u" . lsp-ui-imenu))
   :init (setq lsp-ui-doc-show-with-cursor t
-              lsp-ui-doc-header t
-              lsp-ui-doc-include-signature t
               lsp-ui-doc-position 'at-point
               lsp-ui-doc-delay 0.5
               lsp-ui-sideline-enable nil
-              lsp-ui-sideline-ignore-duplicate t
-              lsp-ui-imenu-enable nil
-              lsp-ui-imenu-kind-position 'top))
+              lsp-ui-imenu-enable nil))
 
 (use-package magit :ensure t)
 
 (use-package open-junk-file
   :ensure t
-  :config
-  (setq open-junk-file-format "~/Documents/Note/%Y-%m%d-%H%M%S."))
+  :custom (open-junk-file-format "~/Documents/Note/%Y-%m%d-%H%M%S."))
 
 (use-package org
   :ensure t
@@ -506,11 +492,10 @@
 
 (use-package yasnippet-snippets :ensure t)
 
-;;; mode
+;;; Major mode
 
 (use-package css-ts-mode
-  :mode (("\\.css$" . css-ts-mode)
-         ("\\.scss$" . css-ts-mode))
+  :mode (("\\.scss$" . css-ts-mode))
   :hook
   (css-ts-mode . prettier-js-mode)
   (css-ts-mode . lsp-deferred))
@@ -542,8 +527,7 @@
   :hook (python-ts-mode . lsp-deferred))
 
 (use-package typescript-ts-mode
-  :mode (("\\.ts$" . typescript-ts-mode)
-         ("\\.tsx$" . typescript-ts-mode))
+  :mode (("\\.ts\\'" . typescript-ts-mode))
   :hook
   (typescript-ts-mode . prettier-js-mode)
   (typescript-ts-mode . lsp-deferred)
@@ -558,8 +542,7 @@
   (add-hook 'typescript-mode-local-vars-hook #'lsp-deferred))
 
 (use-package yaml-ts-mode
-  :mode (("\\.yaml$" . yaml-ts-mode)
-         ("\\.yml$" . yaml-ts-mode)))
+  :mode (("\\.ya?ml\\'" . yaml-ts-mode)))
 
 ;; (use-package dart-mode
 ;;   :ensure t
@@ -587,6 +570,11 @@
 ;;   :vc (:url "https://github.com/davidarenas/prisma-mode" :branch "master"))
 
 ;;; hydra
+(use-package hydra
+  :ensure t
+  :bind (("C-z" . hydra-main/body))
+  :config (hydra-set-property 'hydra-main :verbosity 1))
+
 (defhydra hydra-main (:hint nil :exit t)
   "hydra-main"
   ("x" execute-extended-command)
@@ -595,7 +583,7 @@
   ("b" consult-buffer)
   ("a" beginning-of-buffer)
   ("e" end-of-buffer)
-  ("q" consult-ghq-find)
+  ("q" consult-ghq-switch-project)
   ("l" project-find-file)
   ("g" consult-ripgrep)
   ("h" consult-ripgrep-at-point)
@@ -668,4 +656,5 @@
 ;;   ("p" delete-window)
 ;;   ("d" kill-this-buffer))
 
+;;; Other
 (server-start)
