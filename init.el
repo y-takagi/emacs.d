@@ -1,3 +1,4 @@
+
 (use-package emacs
   :custom
   (modus-themes-mode-line '(moody borderless))
@@ -10,7 +11,6 @@
   (warning-suppress-log-types '((lsp-mode)))
   (split-width-threshold nil)
   (default-directory "~/")
-  (browse-url-browser-function 'eww-browse-url "emacs のデフォルトブラウザを eww に変更")
   (cursor-in-non-selected-windows nil)
   (indent-tabs-mode nil)
   (tab-width 4)
@@ -243,6 +243,11 @@
             (car (project-roots project))))))
 
 (use-package consult-ghq :ensure t)
+
+(use-package editorconfig
+  :ensure t
+  :config
+  (editorconfig-mode 1))
 
 (use-package embark
   :ensure t
@@ -566,8 +571,6 @@
 ;;   :mode (("\\.kt" . kotlin-mode) ("\\.gradle" . kotlin-mode))
 ;;   :config (add-hook 'kotlin-mode-hook #'lsp))
 
-;; (use-package prisma-mode
-;;   :vc (:url "https://github.com/davidarenas/prisma-mode" :branch "master"))
 
 ;;; hydra
 (use-package hydra

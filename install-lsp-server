@@ -1,4 +1,10 @@
 #!/usr/bin/env bash
 
+## Typescript
+npm i -g typescript-language-server typescript
+
+## HTML/CSS/JSON
+npm i -g vscode-langservers-extracted
+
 ## Angular
-npm i -g @angular/language-service@next typescript @angular/language-server
+npm i -g @angular/language-service@next @angular/language-server
