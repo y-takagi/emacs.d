@@ -1,3 +1,14 @@
+(unless (package-installed-p 'quelpa)
+  (with-temp-buffer
+    (url-insert-file-contents "https://raw.githubusercontent.com/quelpa/quelpa/master/quelpa.el")
+    (eval-buffer)
+    (quelpa-self-upgrade)))
+
+(quelpa
+ '(quelpa-use-package
+   :fetcher git
+   :url "https://github.com/quelpa/quelpa-use-package.git"))
+(require 'quelpa-use-package)
 
 (use-package emacs
   :custom
@@ -381,6 +392,9 @@
   :ensure t
   :custom (lsp-tailwindcss-add-on-mode t))
 
+(use-package lsp-biome
+  :quelpa (lsp-biome :fetcher github :repo "cxa/lsp-biome"))
+
 (use-package lsp-ui
   :ensure t
   :commands lsp-ui-mode
@@ -535,7 +549,8 @@
   :mode (("\\.ts\\'" . typescript-ts-mode))
   :hook
   (typescript-ts-mode . prettier-js-mode)
-  (typescript-ts-mode . lsp-deferred)
+  (typescript-ts-mode . (lambda () (setq-local lsp-disabled-clients '(angular-ls))))
+  ;;(typescript-ts-mode . lsp-deferred)
   :config
   ;; Place .dir-locals.el with below code where to run deno-ls
   ;; ((typescript-mode . ((lsp-enabled-clients . (deno-ls))))
@@ -544,7 +559,7 @@
     "Run `major-mode' hook after the local variables have been processed."
     (run-hooks (intern (concat (symbol-name major-mode) "-local-vars-hook"))))
   (add-hook 'hack-local-variables-hook 'run-local-vars-mode-hook)
-  (add-hook 'typescript-mode-local-vars-hook #'lsp-deferred))
+  (add-hook 'typescript-ts-mode-local-vars-hook #'lsp-deferred))
 
 (use-package yaml-ts-mode
   :mode (("\\.ya?ml\\'" . yaml-ts-mode)))
