@@ -351,6 +351,7 @@
         lsp-report-if-no-buffer nil
         ;;lsp-disabled-clients '(angular-ls)
         lsp-eldoc-enable-hover nil
+        lsp-eldoc-render-all nil
         lsp-before-save-edits nil
         lsp-enable-file-watchers nil
         lsp-overlay-document-color-char nil
@@ -476,7 +477,13 @@
            :prepend t)
           )))
 
-(use-package prettier-js :ensure t)
+(use-package reformatter
+  :ensure t
+  :config
+  (reformatter-define prettier-format
+    :program "prettier"
+    :args `("--stdin-filepath" ,(buffer-file-name))
+    :lighter " PrettierFmt"))
 
 (use-package ruby-end :ensure t)
 
@@ -516,17 +523,17 @@
 (use-package css-ts-mode
   :mode (("\\.scss$" . css-ts-mode))
   :hook
-  (css-ts-mode . prettier-js-mode)
+  (css-ts-mode . prettier-format-on-save-mode)
   (css-ts-mode . lsp-deferred))
 
 (use-package csv-mode :ensure t)
 
 (use-package json-ts-mode
-  :hook (json-ts-mode . prettier-js-mode))
+  :hook (json-ts-mode . prettier-format-on-save-mode))
 
 (use-package js-ts-mode
   :hook
-  (js-ts-mode . prettier-js-mode)
+  (js-ts-mode . prettier-format-on-save-mode)
   (js-ts-mode . lsp-deferred))
 
 (use-package markdown-mode
@@ -534,12 +541,12 @@
   :mode (("README\\.md\\'" . gfm-mode)
          ("\\.md\\'" . markdown-mode)
          ("\\.markdown\\'" . markdown-mode))
-  :hook ((markdown-mode gfm-mode) . prettier-js-mode)
+  :hook ((markdown-mode gfm-mode) . prettier-format-on-save-mode)
   :init (setq markdown-command "commonmarker"))
 
 (use-package mhtml-mode
   :hook
-  (mhtml-mode . prettier-js-mode)
+  (mhtml-mode . prettier-format-on-save-mode)
   (mhtml-mode . lsp-deferred))
 
 (use-package python-ts-mode
@@ -548,13 +555,11 @@
 (use-package typescript-ts-mode
   :mode (("\\.ts\\'" . typescript-ts-mode))
   :hook
-  (typescript-ts-mode . prettier-js-mode)
+  (typescript-ts-mode . prettier-format-on-save-mode)
   (typescript-ts-mode . (lambda () (setq-local lsp-disabled-clients '(angular-ls))))
-  ;;(typescript-ts-mode . lsp-deferred)
   :config
   ;; Place .dir-locals.el with below code where to run deno-ls
   ;; ((typescript-mode . ((lsp-enabled-clients . (deno-ls))))
-  ;;  (typescript-mode (eval add-hook 'before-save-hook #'lsp-format-buffer t t)))
   (defun run-local-vars-mode-hook ()
     "Run `major-mode' hook after the local variables have been processed."
     (run-hooks (intern (concat (symbol-name major-mode) "-local-vars-hook"))))
