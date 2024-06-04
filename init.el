@@ -389,12 +389,12 @@
   (add-hook 'haskell-mode-hook #'lsp)
   (add-hook 'haskell-literate-mode-hook #'lsp))
 
+(use-package lsp-biome
+  :quelpa (lsp-biome :fetcher github :repo "cxa/lsp-biome"))
+
 (use-package lsp-tailwindcss
   :ensure t
   :custom (lsp-tailwindcss-add-on-mode t))
-
-(use-package lsp-biome
-  :quelpa (lsp-biome :fetcher github :repo "cxa/lsp-biome"))
 
 (use-package lsp-ui
   :ensure t
@@ -480,10 +480,21 @@
 (use-package reformatter
   :ensure t
   :config
+  (reformatter-define biome-format
+    :program "biome"
+    :args `("check" "--apply" "--stdin-file-path" ,(buffer-file-name))
+    :lighter " BiomeFmt")
+
   (reformatter-define prettier-format
     :program "prettier"
     :args `("--stdin-filepath" ,(buffer-file-name))
-    :lighter " PrettierFmt"))
+    :lighter " PrettierFmt")
+
+  (defun my/web-format-hook ()
+    (cond ((executable-find "biome")
+           (biome-format-on-save-mode))
+          ((executable-find "prettier")
+           (prettier-format-on-save-mode)))))
 
 (use-package ruby-end :ensure t)
 
@@ -523,17 +534,19 @@
 (use-package css-ts-mode
   :mode (("\\.scss$" . css-ts-mode))
   :hook
-  (css-ts-mode . prettier-format-on-save-mode)
+  (css-ts-mode . my/web-format-hook)
   (css-ts-mode . lsp-deferred))
 
 (use-package csv-mode :ensure t)
 
 (use-package json-ts-mode
-  :hook (json-ts-mode . prettier-format-on-save-mode))
+  :hook
+  (json-ts-mode . lsp-deferred)
+  (json-ts-mode . my/web-format-hook))
 
 (use-package js-ts-mode
   :hook
-  (js-ts-mode . prettier-format-on-save-mode)
+  (js-ts-mode . my/web-format-hook)
   (js-ts-mode . lsp-deferred))
 
 (use-package markdown-mode
@@ -541,12 +554,12 @@
   :mode (("README\\.md\\'" . gfm-mode)
          ("\\.md\\'" . markdown-mode)
          ("\\.markdown\\'" . markdown-mode))
-  :hook ((markdown-mode gfm-mode) . prettier-format-on-save-mode)
+  :hook ((markdown-mode gfm-mode) . my/web-format-hook)
   :init (setq markdown-command "commonmarker"))
 
 (use-package mhtml-mode
   :hook
-  (mhtml-mode . prettier-format-on-save-mode)
+  (mhtml-mode . my/web-format-hook)
   (mhtml-mode . lsp-deferred))
 
 (use-package python-ts-mode
@@ -555,8 +568,8 @@
 (use-package typescript-ts-mode
   :mode (("\\.ts\\'" . typescript-ts-mode))
   :hook
-  (typescript-ts-mode . prettier-format-on-save-mode)
   (typescript-ts-mode . (lambda () (setq-local lsp-disabled-clients '(angular-ls))))
+  (typescript-ts-mode . my/web-format-hook)
   :config
   ;; Place .dir-locals.el with below code where to run deno-ls
   ;; ((typescript-mode . ((lsp-enabled-clients . (deno-ls))))
