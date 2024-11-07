@@ -1,15 +1,3 @@
-(unless (package-installed-p 'quelpa)
-  (with-temp-buffer
-    (url-insert-file-contents "https://raw.githubusercontent.com/quelpa/quelpa/master/quelpa.el")
-    (eval-buffer)
-    (quelpa-self-upgrade)))
-
-(quelpa
- '(quelpa-use-package
-   :fetcher git
-   :url "https://github.com/quelpa/quelpa-use-package.git"))
-(require 'quelpa-use-package)
-
 (use-package emacs
   :custom
   (modus-themes-mode-line '(moody borderless))
@@ -76,7 +64,7 @@
 
   (when (eq system-type 'darwin)
     ;; Fonts
-    (add-to-list 'default-frame-alist '(font . "Ricty 14"))
+    (add-to-list 'default-frame-alist '(font . "HackGen 14"))
     (set-fontset-font "fontset-default" 'unicode "Apple Color Emoji" nil 'prepend)
 
     ;; フルスクリーン (maximized, fullscreen)
@@ -389,9 +377,6 @@
   (add-hook 'haskell-mode-hook #'lsp)
   (add-hook 'haskell-literate-mode-hook #'lsp))
 
-(use-package lsp-biome
-  :quelpa (lsp-biome :fetcher github :repo "cxa/lsp-biome"))
-
 (use-package lsp-tailwindcss
   :ensure t
   :custom (lsp-tailwindcss-add-on-mode t))
@@ -505,16 +490,6 @@
   (undo-tree-history-directory-alist '(("." . "~/.emacs.d/undo")))
   :init
   (global-undo-tree-mode))
-
-(use-package vterm
-  ;; requirements: brew install cmake libvterm libtool
-  :disabled t
-  :custom
-  ;; enable hydra keymap
-  (vterm-keymap-exceptions '("C-z" "C-c" "C-x" "C-u" "C-g" "C-l" "M-x" "M-o" "C-v" "M-v" "C-y" "M-y"))
-  (vterm-toggle-fullscreen-p t))
-
-(use-package vterm-toggle :disabled t)
 
 (use-package wgrep :ensure t)
 
