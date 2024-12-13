@@ -108,7 +108,7 @@
 (use-package treesit-auto
   :ensure t
   :custom
-  (treesit-auto-langs '(bash css dockerfile go html javascript json make markdown python rust tsx typescript yaml))
+  (treesit-auto-langs '(bash css dockerfile go html javascript json make python rust tsx typescript yaml))
   :config
   (global-treesit-auto-mode))
 
@@ -472,14 +472,14 @@
 
   (reformatter-define prettier-format
     :program "prettier"
-    :args `("--stdin-filepath" ,(buffer-file-name))
-    :lighter " PrettierFmt")
+    :args `("--stdin-filepath" ,(buffer-file-name)))
 
   (defun my/web-format-hook ()
     (cond ((executable-find "biome")
            (biome-format-on-save-mode))
           ((executable-find "prettier")
-           (prettier-format-on-save-mode)))))
+           (prettier-format-on-save-mode))))
+  )
 
 (use-package ruby-end :ensure t)
 
@@ -509,7 +509,7 @@
 (use-package css-ts-mode
   :mode (("\\.scss$" . css-ts-mode))
   :hook
-  (css-ts-mode . my/web-format-hook)
+  (css-ts-mode . prettier-format-on-save-mode)
   (css-ts-mode . lsp-deferred))
 
 (use-package csv-mode :ensure t)
@@ -517,11 +517,11 @@
 (use-package json-ts-mode
   :hook
   (json-ts-mode . lsp-deferred)
-  (json-ts-mode . my/web-format-hook))
+  (json-ts-mode . prettier-format-on-save-mode))
 
 (use-package js-ts-mode
   :hook
-  (js-ts-mode . my/web-format-hook)
+  (js-ts-mode . prettier-format-on-save-mode)
   (js-ts-mode . lsp-deferred))
 
 (use-package markdown-mode
@@ -529,12 +529,12 @@
   :mode (("README\\.md\\'" . gfm-mode)
          ("\\.md\\'" . markdown-mode)
          ("\\.markdown\\'" . markdown-mode))
-  :hook ((markdown-mode gfm-mode) . my/web-format-hook)
+  :hook ((markdown-mode gfm-mode) . prettier-format-on-save-mode)
   :init (setq markdown-command "commonmarker"))
 
 (use-package mhtml-mode
   :hook
-  (mhtml-mode . my/web-format-hook)
+  (mhtml-mode . prettier-format-on-save-mode)
   (mhtml-mode . lsp-deferred))
 
 (use-package python-ts-mode
@@ -544,7 +544,8 @@
   :mode (("\\.ts\\'" . typescript-ts-mode))
   :hook
   (typescript-ts-mode . (lambda () (setq-local lsp-disabled-clients '(angular-ls))))
-  (typescript-ts-mode . my/web-format-hook)
+  (typescript-ts-mode . prettier-format-on-save-mode)
+  (typescript-ts-mode . (lambda () (add-hook 'before-save-hook #'lsp-eslint-apply-all-fixes)))
   :config
   ;; Place .dir-locals.el with below code where to run deno-ls
   ;; ((typescript-mode . ((lsp-enabled-clients . (deno-ls))))
@@ -553,6 +554,13 @@
     (run-hooks (intern (concat (symbol-name major-mode) "-local-vars-hook"))))
   (add-hook 'hack-local-variables-hook 'run-local-vars-mode-hook)
   (add-hook 'typescript-ts-mode-local-vars-hook #'lsp-deferred))
+
+(use-package tsx-ts-mode
+  :mode (("\\.tsx\\'" . tsx-ts-mode))
+  :hook
+  (tsx-ts-mode . lsp-deferred)
+  (tsx-ts-mode . prettier-format-on-save-mode)
+  (tsx-ts-mode . (lambda () (add-hook 'before-save-hook #'lsp-eslint-apply-all-fixes))))
 
 (use-package yaml-ts-mode
   :mode (("\\.ya?ml\\'" . yaml-ts-mode)))
